@@ -523,4 +523,4 @@ Path: `/[servizio]-[capoluogo]` · `/pronto-intervento`
 ---
 
 *Documento esempio anonimizzato · Versione FIXUP showcase aprile 2026*
-*Per il deliverable reale completo (28 pagine PDF brandizzato): contattare https://cal.com/max-pavesio/consulenza-formazione*
+*Per il deliverable reale completo (28 pagine PDF brandizzato): contattare https://cal.com/max-pavesio/call-30-minuti*
