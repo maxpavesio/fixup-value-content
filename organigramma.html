@@ -369,22 +369,20 @@
 
   footer {
     text-align: center;
-    margin-top: 48px;
+    margin-top: 64px;
     padding-top: 32px;
     border-top: 1px solid var(--border);
     color: var(--text-muted);
-    font-size: 12px;
+    font-size: 13px;
+    line-height: 1.8;
   }
-
+  footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+  footer a:hover { color: var(--accent); }
   footer strong { color: var(--accent); }
-
-  .brand-footer-logo {
-    display: block;
-    margin: 0 auto 16px;
-    max-width: 140px;
-    height: auto;
-    opacity: 0.7;
-  }
+  .brand-footer-logo { display: block; margin: 0 auto 16px; max-width: 160px; height: auto; opacity: 0.85; }
+  .badges { display: flex; justify-content: center; align-items: center; gap: 22px; margin-top: 18px; flex-wrap: wrap; }
+  .badges img { max-height: 52px; width: auto; opacity: 0.78; transition: opacity 0.2s ease; }
+  .badges img:hover { opacity: 1; }
 
   /* Responsive */
   @media (max-width: 768px) {
@@ -904,7 +902,12 @@
 
   <footer>
     <img src="loghi/fixup-logo-payoff-bianco.png" alt="FIXUP — Consulenza, Formazione, Performance, Business AI" class="brand-footer-logo">
-    <div style="font-size: 11px; color: var(--text-muted);">Copyright © 2026 — <strong style="color: var(--text-dim);">FIXUP AGENCY SRL</strong> — P.IVA 05008520230 — REA 463212</div>
+    <p>© 2026 <strong>FIXUP AGENCY SRL</strong> · Google Premier Partner Top 3% Italia · ADworld Experience Winning Case Story 2023</p>
+    <p><a href="https://cal.com/max-pavesio/discovery-call">Prenota call discovery</a> · <a href="mailto:info@fixup.agency">info@fixup.agency</a> · <a href="https://fixup.agency">fixup.agency</a></p>
+    <p style="font-size: 11px; color: var(--text-muted); margin-top: 8px;">P.IVA 05008520230 · REA 463212</p>
+    <div class="badges">
+      <img src="loghi/google-premier-partner.png" alt="Google Premier Partner Top 3% Italia">
+    </div>
   </footer>
 
 </div>

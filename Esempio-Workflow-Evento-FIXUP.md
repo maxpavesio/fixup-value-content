@@ -163,7 +163,7 @@ Se questo workflow ti interessa applicato al tuo contesto specifico:
 
 **Call discovery 30 minuti** → mappiamo insieme quale tuo processo ad alto consumo di tempo è candidato n.1 per essere orchestrato con Personal OS. Output: ipotesi ore consulenza + ROI atteso. Zero impegno, zero costo.
 
-👉 **https://cal.com/max-pavesio/call-30-minuti**
+👉 **https://cal.com/max-pavesio/discovery-call**
 
 ---
 
