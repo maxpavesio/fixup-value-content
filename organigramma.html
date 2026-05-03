@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Organigramma Personal-OS · FIXUP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #EA5D0B;
+    --primary-dark: #BB4A08;
+    --primary-light: #EE7D3B;
+    --primary-soft: rgba(234, 93, 11, 0.12);
+    --accent: #FFE14D;
+    --accent-soft: rgba(255, 225, 77, 0.12);
+    --bg: #0A0A0C;
+    --bg-card: #1A1A22;
+    --bg-card-hover: #22222C;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --text: #F5F5F7;
+    --text-dim: #9B9BA3;
+    --text-muted: #6A6A75;
+    --success: #4ADE80;
+    --danger: #F87171;
+    --warning: #FFE14D;
+    --info: #60A5FA;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    padding: 40px 20px;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(234, 93, 11, 0.10) 0, transparent 55%),
+      radial-gradient(ellipse at 80% 90%, rgba(255, 225, 77, 0.06) 0, transparent 55%);
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h1 {
+    font-size: 44px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    padding: 4px 0;
+  }
+
+  .brand-logo {
+    display: block;
+    margin: 0 auto 20px;
+    max-width: 220px;
+    height: auto;
+    opacity: 0.95;
+  }
+
+  .subtitle {
+    color: var(--text-dim);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5;
+    margin-top: 4px;
+  }
+
+  .meta {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-card);
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  .meta-item strong {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* Tree layout */
+  .tree-level {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-bottom: 48px;
+    position: relative;
+  }
+
+  .tree-level::before {
+    content: '';
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 24px;
+    background: linear-gradient(to bottom, var(--primary), transparent);
+  }
+
+  .tree-level:first-of-type::before { display: none; }
+
+  /* Root node */
+  .root-node {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+    color: white;
+    padding: 28px 48px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow:
+      0 12px 40px rgba(234, 93, 11, 0.45),
+      0 0 0 1px rgba(255, 225, 77, 0.25);
+    position: relative;
+    min-width: 400px;
+  }
+
+  .root-node h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .root-node p {
+    font-size: 14px;
+    opacity: 0.9;
+    font-weight: 500;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .card:hover {
+    background: var(--bg-card-hover);
+    border-color: rgba(234, 93, 11, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(234, 93, 11, 0.18);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .icon {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: #FFFFFF;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(234, 93, 11, 0.35);
+  }
+
+  .count-badge {
+    background: rgba(234, 93, 11, 0.18);
+    color: var(--primary-light);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    border: 1px solid rgba(234, 93, 11, 0.3);
+  }
+
+  .status-badge {
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .status-on { background: rgba(74, 222, 128, 0.15); color: var(--success); border: 1px solid rgba(74, 222, 128, 0.3); }
+  .status-off { background: rgba(248, 113, 113, 0.15); color: var(--danger); border: 1px solid rgba(248, 113, 113, 0.3); }
+
+  /* Item lists */
+  .item-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .item-list li {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--text);
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .item-list li:hover {
+    background: rgba(234, 93, 11, 0.08);
+  }
+
+  .item-list li code {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    font-size: 12px;
+    color: var(--primary-light);
+    font-weight: 600;
+  }
+
+  .item-dim {
+    color: var(--text-muted) !important;
+    font-size: 11px !important;
+    font-style: italic;
+  }
+
+  /* Group section */
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin: 14px 0 8px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--border-strong);
+  }
+
+  .section-title:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+
+  /* Grid layouts */
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    width: 100%;
+    max-width: 1400px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 24px;
+    width: 100%;
+    max-width: 1400px;
+  }
+
+  /* Pills / chips */
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .pill {
+    background: rgba(234, 93, 11, 0.1);
+    color: var(--primary-light);
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1px solid rgba(234, 93, 11, 0.25);
+    font-family: 'SF Mono', Monaco, monospace;
+  }
+
+  .pill-muted {
+    background: rgba(155, 155, 163, 0.08);
+    color: var(--text-dim);
+    border-color: var(--border-strong);
+  }
+
+  .pill-success {
+    background: rgba(255, 225, 77, 0.12);
+    color: var(--accent);
+    border-color: rgba(255, 225, 77, 0.35);
+  }
+
+  /* Footer stats */
+  .footer-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 48px;
+    padding: 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 36px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+    margin-bottom: 6px;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+
+  footer strong { color: var(--accent); }
+
+  .brand-footer-logo {
+    display: block;
+    margin: 0 auto 16px;
+    max-width: 140px;
+    height: auto;
+    opacity: 0.7;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    h1 { font-size: 28px; }
+    .root-node { min-width: auto; padding: 20px; }
+    .grid-3, .grid-2 { grid-template-columns: 1fr; }
+  }
+
+  /* Print */
+  @media print {
+    body { background: white; color: black; padding: 20px; }
+    .card { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <img src="../../brand/loghi/fixup-logo-bianco.png" alt="FIXUP" class="brand-logo">
+    <h1>Organigramma Personal-OS</h1>
+    <p class="subtitle">Architettura sistema FIXUP Agency · Marketing · Sales · Ads · Operations</p>
+    <div class="meta">
+      <div class="meta-item">📅 Last update <strong>3 Mag 2026</strong></div>
+      <div class="meta-item">👤 <strong>info@fixup.agency</strong></div>
+      <div class="meta-item">⚡ <strong>Claude Code · Opus 4.7 (1M)</strong></div>
+    </div>
+  </header>
+
+  <!-- ROOT -->
+  <div class="tree-level">
+    <div class="root-node">
+      <h2>PERSONAL-OS</h2>
+      <p>Execution environment FIXUP · Marketing · Sales · Ads · Ops</p>
+    </div>
+  </div>
+
+  <!-- LEVEL 1 — 3 macro-colonne -->
+  <div class="tree-level">
+    <div class="grid-3">
+
+      <!-- MCP -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">⚡</span> MCP Servers</div>
+          <span class="count-badge">8</span>
+        </div>
+        <ul class="item-list">
+          <li><code>meta-ads</code> · campagne Facebook/IG</li>
+          <li><code>Meta MCP Official</code> <span class="status-badge status-on">ADV</span> · insights, benchmarks, dataset quality</li>
+          <li><code>Meta Agent OS</code> <span class="status-badge status-on">ADV</span> · Foreplay: brand/creative intel, ads library</li>
+          <li><code>google-ads</code> <span class="status-badge status-on">ADV</span> · keyword, GAQL</li>
+          <li><code>gmail</code> · read/write email</li>
+          <li><code>google-calendar</code> · eventi</li>
+          <li><code>gdrive</code> · file Drive</li>
+          <li><code>composio</code> · gateway deferred
+            <div class="pills" style="margin-top:6px;">
+              <span class="pill pill-muted">Asana</span>
+              <span class="pill pill-muted">Canva</span>
+              <span class="pill pill-muted">Notion</span>
+              <span class="pill pill-muted">Slack</span>
+              <span class="pill pill-muted">gomarble</span>
+              <span class="pill pill-muted">Bright Data</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- PLUGIN -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">🔌</span> Plugin</div>
+          <span class="count-badge">4 att · 2 off</span>
+        </div>
+        <ul class="item-list">
+          <li><code>superpowers</code> <span class="status-badge status-on">ON</span></li>
+          <li><code>claude-mem</code> <span class="status-badge status-on">ON</span> · memoria persistente</li>
+          <li><code>caveman</code> <span class="status-badge status-on">ON</span> · modalità compressa</li>
+          <li><code>skill-creator</code> <span class="status-badge status-on">ON</span></li>
+          <li><code>design</code> <span class="status-badge status-off">OFF</span></li>
+          <li><code>gopls-lsp</code> <span class="status-badge status-off">OFF</span></li>
+        </ul>
+      </div>
+
+      <!-- HOOKS + CONFIG -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">🪝</span> Hooks &amp; Config</div>
+          <span class="count-badge">5</span>
+        </div>
+        <div class="section-title">Automation hooks</div>
+        <ul class="item-list">
+          <li><code>SessionStart</code> → gsd-check-update</li>
+          <li><code>PreToolUse</code> → gsd-prompt-guard</li>
+          <li><code>PostToolUse</code> → gsd-context-monitor</li>
+          <li><code>StatusLine</code> → statusline.sh</li>
+        </ul>
+        <div class="section-title">Config files</div>
+        <ul class="item-list">
+          <li class="item-dim">~/.claude/settings.json</li>
+          <li class="item-dim">~/.claude/CLAUDE.md (vuoto)</li>
+          <li class="item-dim">~/.claude.json (MCP)</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LEVEL 2 — AGENTS -->
+  <div class="tree-level">
+    <div class="grid-2">
+
+      <!-- Global agents -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">🤖</span> Agents Global</div>
+          <span class="count-badge">5</span>
+        </div>
+        <p class="item-dim" style="margin-bottom:12px;">~/.claude/agents/</p>
+        <div class="pills">
+          <span class="pill">chief-of-staff</span>
+          <span class="pill">code-reviewer</span>
+          <span class="pill">doc-updater</span>
+          <span class="pill">planner</span>
+          <span class="pill">refactor-cleaner</span>
+        </div>
+      </div>
+
+      <!-- Project agents -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">🎯</span> Agents Project</div>
+          <span class="count-badge">19</span>
+        </div>
+        <p class="item-dim" style="margin-bottom:12px;">Personal-os/.claude/agents/</p>
+
+        <div class="section-title">SALES (8)</div>
+        <div class="pills">
+          <span class="pill">account-strategist</span>
+          <span class="pill">coach</span>
+          <span class="pill">deal-strategist</span>
+          <span class="pill">discovery-coach</span>
+          <span class="pill">engineer</span>
+          <span class="pill">outbound-strategist</span>
+          <span class="pill">pipeline-analyst</span>
+          <span class="pill">proposal-strategist</span>
+        </div>
+
+        <div class="section-title">PAID MEDIA (7)</div>
+        <div class="pills">
+          <span class="pill">auditor</span>
+          <span class="pill">creative-strategist</span>
+          <span class="pill">paid-social</span>
+          <span class="pill">ppc-strategist</span>
+          <span class="pill">programmatic-buyer</span>
+          <span class="pill">search-query-analyst</span>
+          <span class="pill">tracking</span>
+        </div>
+
+        <div class="section-title">MKT / GROWTH (3)</div>
+        <div class="pills">
+          <span class="pill">growth-hacker</span>
+          <span class="pill">seo-specialist</span>
+          <span class="pill">trend-researcher</span>
+        </div>
+
+        <div class="section-title">OTHER (1)</div>
+        <div class="pills">
+          <span class="pill">product-trend-researcher</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LEVEL 3 — COMMANDS / SKILLS -->
+  <div class="tree-level">
+    <div class="grid-3">
+
+      <!-- Commands -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">⚙️</span> Commands</div>
+          <span class="count-badge">8</span>
+        </div>
+        <div class="section-title">Global (~/.claude/commands/)</div>
+        <div class="pills">
+          <span class="pill">/plan</span>
+          <span class="pill">/code-review</span>
+          <span class="pill">/context-budget</span>
+          <span class="pill">/prompt-optimize</span>
+          <span class="pill">/save-session</span>
+          <span class="pill">/resume-session</span>
+          <span class="pill">/sessions</span>
+        </div>
+        <div class="section-title">Project</div>
+        <div class="pills">
+          <span class="pill pill-success">/contratti:genera</span>
+          <span class="pill pill-success">/marketing-adv:analisi</span>
+          <span class="pill pill-success">/marketing-adv:report</span>
+        </div>
+      </div>
+
+      <!-- Skills project -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">📚</span> Skills Project</div>
+          <span class="count-badge">19</span>
+        </div>
+        <p class="item-dim" style="margin-bottom:12px;">Personal-os/.claude/skills/</p>
+        <div class="section-title">CORE</div>
+        <div class="pills">
+          <span class="pill pill-success">personal-os</span>
+          <span class="pill pill-success">claude-api</span>
+          <span class="pill pill-success">mcp-builder</span>
+          <span class="pill pill-success">skill-creator</span>
+        </div>
+        <div class="section-title">DOCS</div>
+        <div class="pills">
+          <span class="pill">pptx</span>
+          <span class="pill">docx</span>
+          <span class="pill">xlsx</span>
+          <span class="pill">pdf</span>
+          <span class="pill">doc-coauthoring</span>
+        </div>
+        <div class="section-title">DESIGN</div>
+        <div class="pills">
+          <span class="pill">canvas-design</span>
+          <span class="pill">frontend-design</span>
+          <span class="pill">brand-guidelines</span>
+          <span class="pill">theme-factory</span>
+          <span class="pill">nanobanana</span>
+          <span class="pill">algorithmic-art</span>
+          <span class="pill">web-artifacts-builder</span>
+        </div>
+        <div class="section-title">COMMS</div>
+        <div class="pills">
+          <span class="pill">internal-comms</span>
+          <span class="pill">slack-gif-creator</span>
+          <span class="pill">webapp-testing</span>
+        </div>
+      </div>
+
+      <!-- Skills global -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">🌐</span> Skills Global</div>
+          <span class="count-badge">617</span>
+        </div>
+        <p class="item-dim" style="margin-bottom:12px;">~/.claude/skills/ (standalone)</p>
+        <div class="section-title">CATEGORIE CHIAVE</div>
+        <div class="pills">
+          <span class="pill">SEO (~30)</span>
+          <span class="pill">CRO (~8)</span>
+          <span class="pill">Content</span>
+          <span class="pill">Automation (80+)</span>
+          <span class="pill">Apify</span>
+          <span class="pill">n8n / Make</span>
+          <span class="pill">CRM integrations</span>
+          <span class="pill">Research</span>
+          <span class="pill">Ads</span>
+        </div>
+        <div class="section-title">PLUGIN-BUNDLED</div>
+        <ul class="item-list">
+          <li><code>/superpowers:*</code> · brainstorm · plan · TDD</li>
+          <li><code>/claude-mem:*</code> · memory · timeline</li>
+          <li><code>/caveman:*</code> · compress mode</li>
+          <li><code>/skill-creator:*</code></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LEVEL 3.5 — MARKETING ADV WORKSPACE -->
+  <div class="tree-level">
+    <div class="grid-2">
+
+      <div class="card" style="border-color: var(--primary);">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">📊</span> Marketing ADV · Workspace</div>
+          <span class="status-badge status-on">NEW</span>
+        </div>
+        <p class="item-dim" style="margin-bottom:12px;">Personal-os/Marketing ADV/ · paid · social · SEO · competitor · creative</p>
+
+        <div class="section-title">STRUTTURA</div>
+        <ul class="item-list">
+          <li><code>Report/</code> · output finali brandizzati FIXUP (HTML/PDF/MD)</li>
+          <li><code>Analisi/</code> · WIP, dati grezzi, esplorazioni</li>
+          <li class="item-dim">Naming: {YYYY-MM-DD}_{cliente|brand}_{tipo}/</li>
+        </ul>
+
+        <div class="section-title">MCP RICHIESTI</div>
+        <div class="pills">
+          <span class="pill pill-success">google-ads</span>
+          <span class="pill pill-success">Meta MCP Official</span>
+          <span class="pill pill-success">Meta Agent OS</span>
+        </div>
+
+        <div class="section-title">SLASH COMMANDS</div>
+        <ul class="item-list">
+          <li><code>/marketing-adv:analisi</code> [tipo] [cliente] · esplorativa</li>
+          <li><code>/marketing-adv:report</code> [tipo] [cliente] · consegnabile finale</li>
+          <li class="item-dim">Tipi: competitor · creative-intel · paid-audit · brand-discovery · keyword-research · trend-analysis · funnel-map · landing-analysis · audience · deep-dive · health-check · custom</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-color: var(--primary);">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">🧰</span> Marketing ADV · Skills</div>
+          <span class="count-badge">80+</span>
+        </div>
+        <p class="item-dim" style="margin-bottom:12px;">Tutte le skill marketing utilizzabili dal workspace</p>
+
+        <div class="section-title">PAID & ADS INTEL</div>
+        <div class="pills">
+          <span class="pill">paid-ads</span>
+          <span class="pill">ad-creative</span>
+          <span class="pill">ad-funnel-mapper</span>
+          <span class="pill">creative-intelligence</span>
+          <span class="pill">creative-velocity</span>
+          <span class="pill">creative-analyzer</span>
+          <span class="pill">top-performer-copy</span>
+          <span class="pill">facebook-ads-library</span>
+          <span class="pill">search-ads</span>
+          <span class="pill">landing-page-analyzer</span>
+          <span class="pill">ads-dashboard</span>
+          <span class="pill">performance-tracking</span>
+          <span class="pill">video-transcription</span>
+          <span class="pill">brief-generator</span>
+        </div>
+
+        <div class="section-title">BRAND & COMPETITOR</div>
+        <div class="pills">
+          <span class="pill">brand-discovery</span>
+          <span class="pill">brand-creative-dna</span>
+          <span class="pill">competitor-analysis</span>
+          <span class="pill">competitive-landscape</span>
+          <span class="pill">trend-analyzer</span>
+          <span class="pill">market-research</span>
+          <span class="pill">alert-system</span>
+          <span class="pill">apify-competitor-intelligence</span>
+        </div>
+
+        <div class="section-title">SEO (~30)</div>
+        <div class="pills">
+          <span class="pill">seo</span>
+          <span class="pill">seo-audit</span>
+          <span class="pill">seo-technical</span>
+          <span class="pill">seo-content</span>
+          <span class="pill">seo-keyword-strategist</span>
+          <span class="pill">seo-content-writer</span>
+          <span class="pill">seo-meta-optimizer</span>
+          <span class="pill">seo-schema</span>
+          <span class="pill">ai-seo</span>
+          <span class="pill">geo-fundamentals</span>
+          <span class="pill">programmatic-seo</span>
+          <span class="pill">seo-cannibalization-detector</span>
+        </div>
+
+        <div class="section-title">SOCIAL & SCRAPING</div>
+        <div class="pills">
+          <span class="pill">apify-ultimate-scraper</span>
+          <span class="pill">apify-content-analytics</span>
+          <span class="pill">apify-audience-analysis</span>
+          <span class="pill">instagram-automation</span>
+          <span class="pill">tiktok-automation</span>
+          <span class="pill">linkedin-automation</span>
+          <span class="pill">social-orchestrator</span>
+          <span class="pill pill-muted">social-scraper-os v1.2</span>
+        </div>
+
+        <div class="section-title">COPY · FUNNEL · CRO</div>
+        <div class="pills">
+          <span class="pill">copywriting</span>
+          <span class="pill">cold-email</span>
+          <span class="pill">email-sequence</span>
+          <span class="pill">marketing-psychology</span>
+          <span class="pill">landing-page-generator</span>
+          <span class="pill">page-cro</span>
+          <span class="pill">form-cro</span>
+          <span class="pill">popup-cro</span>
+          <span class="pill">lead-magnets</span>
+          <span class="pill">growth-engine</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LEVEL 4 — MEMORY + FILESYSTEM -->
+  <div class="tree-level">
+    <div class="grid-2">
+
+      <!-- Memory -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">🧠</span> Memory (claude-mem)</div>
+          <span class="count-badge">10</span>
+        </div>
+        <p class="item-dim" style="margin-bottom:12px;">~/.claude/projects/.../memory/</p>
+        <div class="section-title">INDEX</div>
+        <ul class="item-list">
+          <li><code>MEMORY.md</code> · index centrale</li>
+        </ul>
+        <div class="section-title">WORKSPACE</div>
+        <ul class="item-list">
+          <li>workspace_purpose · capability_inventory</li>
+          <li>working_method</li>
+        </ul>
+        <div class="section-title">FEEDBACK</div>
+        <ul class="item-list">
+          <li>google_mcp · folder_structure · presentazioni</li>
+        </ul>
+        <div class="section-title">PROJECTS</div>
+        <ul class="item-list">
+          <li>contratti_engine · tag_slides · telegram_bot_persistent</li>
+        </ul>
+      </div>
+
+      <!-- Filesystem -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">📁</span> Filesystem Personal-os/</div>
+          <span class="count-badge">10 dir</span>
+        </div>
+        <ul class="item-list">
+          <li><code>00_clienti/</code> · cartelle cliente (2 liv)</li>
+          <li><code>01_strumenti/</code> · google-ads-manager, tool</li>
+          <li><code>02_app/</code> · amministrazione, casa-malez, trasferte</li>
+          <li><code>03_contratti/</code> · output /contratti:genera</li>
+          <li><code>99_archivio/</code> · storico</li>
+          <li><code>Marketing ADV/</code> <span class="status-badge status-on">NEW</span>
+            <div class="pills" style="margin-top:6px;">
+              <span class="pill pill-success">Report/</span>
+              <span class="pill pill-success">Analisi/</span>
+            </div>
+          </li>
+          <li><code>brand/</code> · loghi, template, asset FIXUP</li>
+          <li><code>guide/</code> · guide interne</li>
+          <li><code>reports/</code> · report generati</li>
+          <li><code>workspace/</code> · .code-workspace (3)</li>
+          <li><code>.claude/</code> · config progetto</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LEVEL 5 — INTEGRAZIONI -->
+  <div class="tree-level">
+    <div class="grid-3">
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">📱</span> Telegram Bridge</div>
+        </div>
+        <ul class="item-list">
+          <li><code>@max_pavesio_antigravity_bot</code></li>
+          <li class="item-dim">Bridge → Claude Code CLI</li>
+          <li class="item-dim">Autostart crontab · watchdog 5min</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">📓</span> NotebookLM</div>
+        </div>
+        <ul class="item-list">
+          <li><code>notebooklm-py</code> (Python CLI)</li>
+          <li><code>skill:notebooklm</code></li>
+          <li class="item-dim">Playwright + Chromium</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">☁️</span> Stack Produzione</div>
+        </div>
+        <ul class="item-list">
+          <li><code>Supabase</code> · amministrazione-app DB</li>
+          <li><code>Vercel</code> · amministrazione.vercel.app</li>
+          <li><code>GitHub</code> · repo + Actions</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STATS FOOTER -->
+  <div class="footer-stats">
+    <div class="stat">
+      <div class="stat-value">8</div>
+      <div class="stat-label">MCP servers</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">4</div>
+      <div class="stat-label">Plugin attivi</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">24</div>
+      <div class="stat-label">Agents totali</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">617</div>
+      <div class="stat-label">Skills standalone</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">19</div>
+      <div class="stat-label">Skills project</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">16</div>
+      <div class="stat-label">Memory nodes</div>
+    </div>
+  </div>
+
+  <footer>
+    <img src="../../brand/loghi/fixup-logo-payoff-bianco.png" alt="FIXUP — Consulenza, Formazione, Performance, Business AI" class="brand-footer-logo">
+    <div style="font-size: 11px; color: var(--text-muted);">Copyright © 2026 — <strong style="color: var(--text-dim);">FIXUP AGENCY SRL</strong> — P.IVA 05008520230 — REA 463212</div>
+  </footer>
+
+</div>
+</body>
+</html>

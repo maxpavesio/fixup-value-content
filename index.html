@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIXUP · Value Content</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #EA5D0B;
+    --primary-light: #EE7D3B;
+    --accent: #FFE14D;
+    --bg: #0A0A0C;
+    --bg-card: #1A1A22;
+    --bg-card-hover: #22222C;
+    --border: rgba(255, 255, 255, 0.08);
+    --text: #F5F5F7;
+    --text-dim: #9B9BA3;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 500;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    padding: 60px 24px;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(234, 93, 11, 0.12) 0, transparent 55%),
+      radial-gradient(ellipse at 80% 90%, rgba(255, 225, 77, 0.07) 0, transparent 55%);
+  }
+  .container { max-width: 880px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 64px; }
+  h1 {
+    font-size: 48px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    padding: 4px 0;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .subtitle { color: var(--text-dim); font-size: 18px; font-weight: 500; }
+  .meta { color: var(--text-dim); font-size: 14px; margin-top: 12px; }
+  .grid { display: grid; gap: 20px; }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s ease;
+    display: block;
+  }
+  .card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+  }
+  .card-icon { font-size: 32px; margin-bottom: 12px; }
+  .card h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  .card p { color: var(--text-dim); font-size: 15px; line-height: 1.6; }
+  .card .arrow {
+    display: inline-block;
+    margin-top: 16px;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 14px;
+  }
+  footer {
+    text-align: center;
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+  footer a { color: var(--primary); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>FIXUP · Value Content</h1>
+    <p class="subtitle">Asset showcase · esempi anonimizzati · workflow potenziati</p>
+    <p class="meta">📅 Last update 3 maggio 2026</p>
+  </header>
+
+  <div class="grid">
+    <a href="organigramma.html" class="card">
+      <div class="card-icon">🟣</div>
+      <h2>Organigramma Personal OS</h2>
+      <p>Mappa visiva interattiva: 18+ agenti AI specializzati, MCP servers, plugin, hooks, skills. L'architettura completa che FIXUP orchestra ogni giorno via Claude Code + 1M context window.</p>
+      <span class="arrow">Apri organigramma →</span>
+    </a>
+
+    <a href="Esempio-Report-Audit-FIXUP.md" class="card">
+      <div class="card-icon">📊</div>
+      <h2>Esempio Report Audit Google Ads</h2>
+      <p>Caso multi-brand anonimizzato · 28 sezioni · 6 capitoli operativi: sintesi KPI, struttura account, audit keyword, liste negative, keyword set finali, copy RSA + PMax pronti.</p>
+      <span class="arrow">Leggi report →</span>
+    </a>
+
+    <a href="Esempio-Workflow-Evento-FIXUP.md" class="card">
+      <div class="card-icon">🚀</div>
+      <h2>Esempio Workflow Evento</h2>
+      <p>Caso anonimizzato preparazione end-to-end evento networking B2B · 13 meeting · -85% tempo prep · 15 deliverable in 12h vs 80h con metodo tradizionale.</p>
+      <span class="arrow">Leggi workflow →</span>
+    </a>
+  </div>
+
+  <footer>
+    <p>© 2026 FIXUP Agency · Google Premier Partner Top 3% Italia</p>
+    <p style="margin-top: 8px;"><a href="https://cal.com/max-pavesio/consulenza-formazione">Prenota call discovery</a> · <a href="mailto:max@fixup.agency">max@fixup.agency</a></p>
+  </footer>
+</div>
+</body>
+</html>
