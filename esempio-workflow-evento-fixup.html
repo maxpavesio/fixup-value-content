@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIXUP · Esempio Workflow Evento Networking B2B</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #EA5D0B;
+    --primary-light: #EE7D3B;
+    --primary-dark: #BB4A08;
+    --accent: #FFE14D;
+    --bg: #000000;
+    --bg-card: #202020;
+    --bg-code: #181818;
+    --border: rgba(255, 255, 255, 0.10);
+    --border-strong: rgba(255, 255, 255, 0.18);
+    --text: #F0F0F0;
+    --text-dim: #B0B0B0;
+    --text-muted: #808080;
+    --success: #4ADE80;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 500;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    padding: 60px 24px;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(ellipse at 20% 5%, rgba(234, 93, 11, 0.10) 0, transparent 55%),
+      radial-gradient(ellipse at 80% 95%, rgba(255, 225, 77, 0.05) 0, transparent 55%);
+  }
+  .container { max-width: 920px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 48px; }
+  .logo { max-width: 200px; width: 100%; height: auto; margin: 0 auto 18px; display: block; }
+  .claim { color: var(--accent); font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 28px; }
+  h1 {
+    font-size: 38px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    padding: 4px 0;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .meta-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 32px 0;
+    text-align: left;
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+  .meta-block strong { color: var(--text); }
+  h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-top: 56px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-strong);
+  }
+  h3 { font-size: 20px; font-weight: 600; color: var(--text); margin-top: 32px; margin-bottom: 12px; }
+  h4 { font-size: 16px; font-weight: 600; color: var(--accent); margin-top: 22px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  p { margin-bottom: 14px; color: var(--text-dim); }
+  strong { color: var(--text); font-weight: 600; }
+  ul, ol { margin: 0 0 16px 24px; color: var(--text-dim); }
+  li { margin-bottom: 6px; }
+  blockquote {
+    background: rgba(234, 93, 11, 0.08);
+    border-left: 3px solid var(--primary);
+    padding: 16px 22px;
+    border-radius: 0 8px 8px 0;
+    margin: 24px 0;
+    color: var(--text-dim);
+  }
+  blockquote strong { color: var(--accent); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 14px;
+  }
+  th {
+    background: rgba(234, 93, 11, 0.12);
+    color: var(--accent);
+    text-align: left;
+    padding: 12px 14px;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border-strong);
+  }
+  td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-dim);
+    vertical-align: top;
+  }
+  td strong { color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255, 255, 255, 0.03); }
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg-code);
+    color: var(--accent);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 13px;
+    border: 1px solid var(--border);
+  }
+  hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+  .hero-stat {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(234, 93, 11, 0.15) 0%, rgba(255, 225, 77, 0.08) 100%);
+    border: 1px solid var(--primary);
+    border-radius: 16px;
+    padding: 32px;
+    margin: 32px 0;
+  }
+  .hero-stat .big {
+    font-size: 56px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    line-height: 1;
+    margin: 8px 0;
+  }
+  .hero-stat .label { color: var(--text-dim); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+  .phase-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin: 20px 0;
+  }
+  .phase-box h3 { color: var(--primary); margin-top: 0; }
+  .phase-box .time-saved {
+    display: inline-block;
+    background: rgba(74, 222, 128, 0.15);
+    color: var(--success);
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-left: 8px;
+  }
+  .cta-box {
+    background: linear-gradient(135deg, rgba(234, 93, 11, 0.15) 0%, rgba(255, 225, 77, 0.08) 100%);
+    border: 1px solid var(--primary);
+    border-radius: 16px;
+    padding: 36px;
+    text-align: center;
+    margin: 56px 0;
+  }
+  .cta-box h3 { color: var(--text); margin-top: 0; font-size: 22px; }
+  .cta-button {
+    display: inline-block;
+    background: var(--primary);
+    color: var(--bg);
+    padding: 14px 28px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    margin-top: 16px;
+    transition: all 0.2s ease;
+    font-size: 15px;
+  }
+  .cta-button:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(234, 93, 11, 0.3); }
+  footer {
+    text-align: center;
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.8;
+  }
+  footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+  footer a:hover { color: var(--accent); }
+  .premier-badge { display: inline-block; margin-top: 16px; max-width: 130px; height: auto; opacity: 0.75; }
+  .back-link { display: inline-block; margin-bottom: 32px; color: var(--text-muted); text-decoration: none; font-size: 14px; }
+  .back-link:hover { color: var(--primary); }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="index.html" class="back-link">← Torna a Value Content</a>
+
+  <header>
+    <img src="loghi/fixup-logo-bianco.png" alt="FIXUP Agency" class="logo">
+    <p class="claim">Consulenza · Formazione · Performance · Business AI</p>
+    <h1>Esempio Workflow Evento Networking B2B</h1>
+  </header>
+
+  <div class="meta-block">
+    <p><strong>Caso anonimizzato:</strong> preparazione end-to-end di un evento vendor-buyer enterprise · 2 giornate · 13 meeting one-to-one da 15 minuti</p>
+    <p><strong>Stack:</strong> Personal OS FIXUP (18 agenti AI specializzati + MCP integrati + automazioni)</p>
+    <p><strong>Comparativa:</strong> workflow potenziato vs metodo tradizionale agenzia/in-house</p>
+  </div>
+
+  <blockquote>Versione anonimizzata di un caso reale FIXUP. Nomi prospect, aziende, contatti e dati sensibili sostituiti con placeholder. L'obiettivo è mostrare cosa cambia quando un'agenzia smette di "preparare manualmente" e inizia a "orchestrare con AI".</blockquote>
+
+  <div class="hero-stat">
+    <div class="label">Tempo prep totale</div>
+    <div class="big">-85%</div>
+    <p style="color: var(--text-dim); margin: 0;">12 ore con Personal OS vs 80 ore metodo tradizionale</p>
+  </div>
+
+  <h2>⚡ Risultato in un colpo d'occhio</h2>
+  <table>
+    <thead><tr><th>KPI evento</th><th>Tradizionale</th><th>Personal OS</th><th>Risparmio</th></tr></thead>
+    <tbody>
+      <tr><td>Tempo prep totale</td><td>~80 ore</td><td><strong>~12 ore</strong></td><td><strong>-85%</strong></td></tr>
+      <tr><td>Profili evento analizzati</td><td>13/78</td><td><strong>78/78 ranked</strong></td><td>+500% copertura</td></tr>
+      <tr><td>Dossier intel pre-meeting</td><td>5-6 superficiali</td><td><strong>13 deep verificati</strong></td><td>+2x qualità</td></tr>
+      <tr><td>Tempo recap post-meeting</td><td>30-45 min cad.</td><td><strong>5-8 min cad.</strong></td><td>-80%</td></tr>
+      <tr><td>Follow-up entro 72h</td><td>4-5</td><td><strong>13/13</strong></td><td>+160%</td></tr>
+      <tr><td>Conversion meeting → call</td><td>15-25%</td><td><strong>>50% (HOT)</strong></td><td>2-3x</td></tr>
+    </tbody>
+  </table>
+
+  <blockquote>13 meeting in 2 giorni preparati, eseguiti, recap-ati e follow-up-ati con qualità deliverable enterprise — usando il tempo equivalente a <strong>1,5 giornate di lavoro invece di 2 settimane</strong>.</blockquote>
+
+  <hr>
+
+  <h2>🎯 La sfida iniziale</h2>
+  <p>Un evento networking B2B settoriale (formato vendor-buyer one-to-one, 2 giorni) presenta un problema di scala industriale:</p>
+  <ul>
+    <li><strong>78 profili buyer</strong> da analizzare per selezionare i 13 con cui fissare meeting</li>
+    <li><strong>15 minuti</strong> di tempo effettivo per ogni meeting → zero margine per "scoprire chi è il prospect"</li>
+    <li><strong>Personalizzazione richiesta:</strong> menzionare per ognuno il loro pain reale, i numeri della loro azienda, i loro vincoli specifici, le loro tecnologie in uso</li>
+    <li><strong>Window post-evento:</strong> 24-72h massimo per follow-up prima che la memoria del prospect si raffreddi</li>
+    <li><strong>Volume output:</strong> 13 dossier + 13 briefing meeting + 13 recap + 13 email follow-up + 13 LinkedIn connection + materiali demo + cheat-sheet operativi</li>
+  </ul>
+  <p>In agenzie tradizionali questo lavoro consuma <strong>2 persone × 1 settimana</strong> o viene eseguito a metà — con conseguente meeting "buchi nell'acqua" perché ci si presenta impreparati.</p>
+
+  <hr>
+
+  <h2>🔄 Il workflow potenziato Personal OS</h2>
+
+  <div class="phase-box">
+    <h3>Fase 1 · Selezione targeting intelligente <span class="time-saved">2h vs 12h</span></h3>
+    <p><strong>Input:</strong> lista 78 profili buyer evento</p>
+    <p><strong>Personal OS attiva:</strong> agente <code>account-strategist</code> (analisi fit) + <code>pipeline-analyst</code> (scoring multi-criterio) → shortlist 25 ranked + top 13 con motivazione esplicita.</p>
+    <p><strong>Cosa cambia:</strong> invece di "scegliere a sentimento i nomi che suonano interessanti", parti da un'analisi sistematica di tutto il pool con scoring trasparente.</p>
+  </div>
+
+  <div class="phase-box">
+    <h3>Fase 2 · Intelligence pre-meeting <span class="time-saved">3h vs 25h</span></h3>
+    <p><strong>Personal OS attiva (in parallelo):</strong> 13 dossier social-intel automatizzati (LinkedIn · Instagram · ads · stampa) via ScrapeCreators + Brightdata MCP · agente <code>discovery-coach</code> per pain extraction · <code>competitor-analysis</code> mapping · web research verificato.</p>
+    <p><strong>Cosa cambia:</strong> invece di "guardo LinkedIn 5 minuti prima del meeting", arrivi al meeting sapendo già 3 numeri specifici della loro azienda + 2 pain points da agganciare nei primi 60 secondi.</p>
+  </div>
+
+  <div class="phase-box">
+    <h3>Fase 3 · Toolkit operativo evento <span class="time-saved">2h vs 8h</span></h3>
+    <table>
+      <thead><tr><th>Asset</th><th>Cosa è</th><th>Volume</th></tr></thead>
+      <tbody>
+        <tr><td>Agenda definitiva</td><td>Mappa cronologica + prep sheet 1pg cad.</td><td>13 schede</td></tr>
+        <tr><td>Cheat-sheet armi+numeri</td><td>6 case study + numeri memorizzabili</td><td>1 pagina</td></tr>
+        <tr><td>Demo Personal OS 90 sec</td><td>Script verbale + fallback</td><td>1 doc</td></tr>
+        <tr><td>Objection handling</td><td>12 obiezioni + risposta calibrata</td><td>1 playbook</td></tr>
+        <tr><td>Template follow-up</td><td>Pre-segmentati HOT/WARM/COLD</td><td>13 bozze</td></tr>
+        <tr><td>Recap pre-compilati</td><td>File MD con sezioni vuote</td><td>13 template</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Cosa cambia:</strong> entri all'evento con un kit operativo completo, non con un quaderno bianco.</p>
+  </div>
+
+  <div class="phase-box">
+    <h3>Fase 4 · Esecuzione + dashboard live <span class="time-saved">durante evento</span></h3>
+    <p><strong>Personal OS attiva:</strong> dashboard HTML interattiva governance evento · bot Telegram personale per update vocali tra meeting · audio recording Plaud → trascrizione asincrona post-meeting (no note manuali = attenzione 100% sul prospect).</p>
+    <p><strong>Cosa cambia:</strong> durante il meeting di 15 minuti sei presente al 100%. La dashboard ti dice in 3 secondi chi è il prossimo prospect, cosa devi ricordare, qual è la sua leva.</p>
+  </div>
+
+  <div class="phase-box">
+    <h3>Fase 5 · Triage post-meeting <span class="time-saved">3h vs 15h</span></h3>
+    <p><strong>Personal OS attiva:</strong> agente <code>meeting-intelligence</code> → estrazione automatica pain · obiettivi · stack tech · obiezioni · timeline. 13 recap strutturati. Re-scoring HOT/WARM/COLD basato su segnali reali. Update CRM (GoHighLevel) automatico.</p>
+    <p><strong>Cosa cambia:</strong> invece di "ho 13 ore di audio da risentire", hai 13 recap leggibili in 5 minuti con punti chiave evidenziati.</p>
+  </div>
+
+  <div class="phase-box">
+    <h3>Fase 6 · Follow-up personalizzati <span class="time-saved">2h vs 20h</span></h3>
+    <p><strong>Personal OS attiva:</strong> agente <code>outbound-strategist</code> → drafting 13 email follow-up uniche con quote letterali del prospect dalla trascrizione · asset specifico mostrato in meeting · proposta operativa con date concrete · CTA call diretta. Tier-prioritization automatica (24h HOT · 48h WARM · 1 settimana COLD).</p>
+    <p><strong>Cosa cambia:</strong> ogni prospect riceve un'email che dimostra di essere stato ascoltato. <strong>Conversion atteso: 2-3x sopra benchmark.</strong></p>
+  </div>
+
+  <hr>
+
+  <h2>📦 Output deliverable complessivo</h2>
+  <p>In <strong>~12 ore di lavoro</strong> orchestrate con Personal OS, i deliverable prodotti sono:</p>
+  <table>
+    <thead><tr><th>#</th><th>Deliverable</th><th>Quantità</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Selezione targeting motivata su 78 profili</td><td>1 ranking + 13 motivazioni</td></tr>
+      <tr><td>2</td><td>Dossier intel pre-meeting verificati</td><td>13 (di cui 6 deep HOT)</td></tr>
+      <tr><td>3</td><td>Briefing operativo per giorno evento</td><td>2 documenti</td></tr>
+      <tr><td>4</td><td>Cheat-sheet armi + 6 case study</td><td>1 pagina A4</td></tr>
+      <tr><td>5</td><td>Script demo Personal OS 90 secondi</td><td>1 + fallback verbale</td></tr>
+      <tr><td>6</td><td>Playbook obiezioni</td><td>12 scenari + risposte</td></tr>
+      <tr><td>7</td><td>Template follow-up segmentati</td><td>13 bozze</td></tr>
+      <tr><td>8</td><td>Recap pre-compilati formato standard</td><td>13 template</td></tr>
+      <tr><td>9</td><td>Dashboard HTML governance live evento</td><td>1 web app</td></tr>
+      <tr><td>10</td><td>Trascrizioni audio meeting (Plaud)</td><td>13 file</td></tr>
+      <tr><td>11</td><td>Recap strutturati post-meeting</td><td>13 documenti</td></tr>
+      <tr><td>12</td><td>Email follow-up uniche personalizzate</td><td>13 email</td></tr>
+      <tr><td>13</td><td>LinkedIn connection custom</td><td>13 messaggi</td></tr>
+      <tr><td>14</td><td>CSV import contatti CRM</td><td>1 file pronto</td></tr>
+      <tr><td>15</td><td>Audit pipeline 30/60/90gg post-evento</td><td>1 dashboard</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Totale:</strong> <strong>15 categorie di deliverable</strong> — l'equivalente di 2-3 settimane di lavoro di un senior consultant tradizionale, condensate in <strong>1,5 giornate di esecuzione orchestrata</strong>.</p>
+
+  <hr>
+
+  <h2>💰 Cosa significa per te</h2>
+  <p>Questo workflow non è "una demo carina di AI". È esattamente il modello operativo che FIXUP applica ai progetti cliente, declinato in altri contesti:</p>
+  <table>
+    <thead><tr><th>Il tuo contesto</th><th>Equivalente Personal OS</th></tr></thead>
+    <tbody>
+      <tr><td>Lancio campagna multi-paese</td><td>Targeting + audit tracking + creative variants + dashboard governance + report automatici</td></tr>
+      <tr><td>Ottimizzazione account paid</td><td>Audit 28 sezioni + restructuring keyword + RSA/PMax copy + framework test + monitoring KPI live</td></tr>
+      <tr><td>Onboarding nuovo cliente B2B</td><td>Discovery deep + competitor analysis + measurement plan + audit baseline + 90gg roadmap</td></tr>
+      <tr><td>Gestione portfolio multi-cliente</td><td>Dashboard unificata + alert anomalie + report client-ready + capacity planning team</td></tr>
+      <tr><td>Eventi/fiere/networking commerciale</td><td>Quello che hai appena letto, replicato sul tuo settore</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Il principio:</strong> ogni processo ripetibile può essere orchestrato da agenti AI specializzati con human-in-the-loop. Non è "AI che sostituisce", è <strong>"AI che amplifica"</strong> — il consulente senior smette di fare lavoro a basso valore e fa solo le scelte strategiche.</p>
+
+  <div class="cta-box">
+    <h3>🚀 Prossimo step</h3>
+    <p>Call discovery 30 minuti — mappiamo insieme quale tuo processo ad alto consumo di tempo è candidato n.1 per essere orchestrato con Personal OS. Output: ipotesi ore consulenza + ROI atteso. Zero impegno, zero costo.</p>
+    <a href="https://cal.com/max-pavesio/consulenza-formazione" class="cta-button">Prenota call discovery</a>
+  </div>
+
+  <footer>
+    <p>Max Pavesio · CEO Fixup Agency · Google Premier Partner Top 3% Italia</p>
+    <p><a href="mailto:max@fixup.agency">max@fixup.agency</a> · <a href="https://fixup.agency">fixup.agency</a></p>
+    <p><em>Esempio anonimizzato di workflow reale FIXUP · contenuto value per stakeholder · maggio 2026</em></p>
+    <img src="loghi/google-premier-partner.png" alt="Google Premier Partner" class="premier-badge">
+  </footer>
+</div>
+</body>
+</html>

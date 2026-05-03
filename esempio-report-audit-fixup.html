@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIXUP · Esempio Report Audit Google Ads</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #EA5D0B;
+    --primary-light: #EE7D3B;
+    --primary-dark: #BB4A08;
+    --accent: #FFE14D;
+    --bg: #000000;
+    --bg-card: #202020;
+    --bg-code: #181818;
+    --border: rgba(255, 255, 255, 0.10);
+    --border-strong: rgba(255, 255, 255, 0.18);
+    --text: #F0F0F0;
+    --text-dim: #B0B0B0;
+    --text-muted: #808080;
+    --success: #4ADE80;
+    --danger: #F87171;
+    --warning: #FFE14D;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 500;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    padding: 60px 24px;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(ellipse at 20% 5%, rgba(234, 93, 11, 0.10) 0, transparent 55%),
+      radial-gradient(ellipse at 80% 95%, rgba(255, 225, 77, 0.05) 0, transparent 55%);
+  }
+  .container { max-width: 920px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 56px; }
+  .logo { max-width: 200px; width: 100%; height: auto; margin: 0 auto 18px; display: block; }
+  .claim { color: var(--accent); font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 28px; }
+  h1 {
+    font-size: 38px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    padding: 4px 0;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .meta-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 32px 0;
+    text-align: left;
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+  .meta-block strong { color: var(--text); }
+  h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-top: 56px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-strong);
+  }
+  h3 { font-size: 20px; font-weight: 600; color: var(--text); margin-top: 32px; margin-bottom: 12px; }
+  h4 { font-size: 16px; font-weight: 600; color: var(--accent); margin-top: 24px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  p { margin-bottom: 14px; color: var(--text-dim); }
+  strong { color: var(--text); font-weight: 600; }
+  ul, ol { margin: 0 0 16px 24px; color: var(--text-dim); }
+  li { margin-bottom: 6px; }
+  blockquote {
+    background: rgba(234, 93, 11, 0.08);
+    border-left: 3px solid var(--primary);
+    padding: 14px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 20px 0;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+  blockquote strong { color: var(--accent); font-style: normal; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 14px;
+  }
+  th {
+    background: rgba(234, 93, 11, 0.12);
+    color: var(--accent);
+    text-align: left;
+    padding: 12px 14px;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border-strong);
+  }
+  td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-dim);
+    vertical-align: top;
+  }
+  td strong { color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255, 255, 255, 0.03); }
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg-code);
+    color: var(--accent);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 13px;
+    border: 1px solid var(--border);
+  }
+  pre {
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 16px 0;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-dim);
+  }
+  pre code { background: none; border: none; padding: 0; color: var(--text-dim); }
+  hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+  .alert-critical {
+    background: rgba(248, 113, 113, 0.10);
+    border-left: 3px solid var(--danger);
+    padding: 14px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+  }
+  .alert-warning {
+    background: rgba(255, 225, 77, 0.08);
+    border-left: 3px solid var(--warning);
+    padding: 14px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+  }
+  .alert-orange {
+    background: rgba(234, 93, 11, 0.10);
+    border-left: 3px solid var(--primary);
+    padding: 14px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+  }
+  .cta-box {
+    background: linear-gradient(135deg, rgba(234, 93, 11, 0.15) 0%, rgba(255, 225, 77, 0.08) 100%);
+    border: 1px solid var(--primary);
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    margin: 48px 0;
+  }
+  .cta-box h3 { color: var(--text); margin-top: 0; }
+  .cta-button {
+    display: inline-block;
+    background: var(--primary);
+    color: var(--bg);
+    padding: 14px 28px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    margin-top: 16px;
+    transition: all 0.2s ease;
+    font-size: 15px;
+  }
+  .cta-button:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(234, 93, 11, 0.3); }
+  footer {
+    text-align: center;
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.8;
+  }
+  footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+  footer a:hover { color: var(--accent); }
+  .premier-badge { display: inline-block; margin-top: 16px; max-width: 130px; height: auto; opacity: 0.75; }
+  .back-link { display: inline-block; margin-bottom: 32px; color: var(--text-muted); text-decoration: none; font-size: 14px; }
+  .back-link:hover { color: var(--primary); }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="index.html" class="back-link">← Torna a Value Content</a>
+
+  <header>
+    <img src="loghi/fixup-logo-bianco.png" alt="FIXUP Agency" class="logo">
+    <p class="claim">Consulenza · Formazione · Performance · Business AI</p>
+    <h1>Esempio Report Strategico Google Ads</h1>
+  </header>
+
+  <div class="meta-block">
+    <p><strong>Cliente:</strong> Caso multi-brand anonimizzato (Cliente A · Servizi locali + Cliente B · E-commerce nicchia)</p>
+    <p><strong>Tipo deliverable:</strong> Audit strutturale account · Accorpamento · Architettura unica · Copy pronti al lancio</p>
+    <p><strong>Data esempio:</strong> Aprile 2026</p>
+    <p><strong>Pagine equivalenti:</strong> 28 sezioni · 6 capitoli operativi</p>
+  </div>
+
+  <blockquote>Versione anonimizzata di un report reale FIXUP. Scopo: mostrare struttura, profondità e formato del deliverable tipico durante una fase di audit + restructuring account Google Ads. Tutti i nomi, ID e KW specifiche sono stati sostituiti con placeholder.</blockquote>
+
+  <h2>📋 Indice</h2>
+  <ol>
+    <li><strong>Sintesi esecutiva & KPI</strong> — pag. 03</li>
+    <li><strong>Struttura account unica</strong> — pag. 04</li>
+    <li><strong>Audit keyword e search terms</strong> — pag. 05</li>
+    <li><strong>Liste negative pronte all'uso</strong> — pag. 09</li>
+    <li><strong>Keyword set finali per campagna</strong> — pag. 13</li>
+    <li><strong>Copy annunci RSA + PMax</strong> — pag. 17</li>
+  </ol>
+  <blockquote>Il piano di lancio operativo (timeline, fasi, scaling) è gestito separatamente in fase di kick-off progetto. Questo report copre la parte strategico-creativa.</blockquote>
+
+  <hr>
+
+  <h2>01 · Sintesi esecutiva</h2>
+  <h3>Performance attuale · LAST_30_DAYS (situazione pre-intervento)</h3>
+  <table>
+    <thead><tr><th>Metric</th><th>Valore</th></tr></thead>
+    <tbody>
+      <tr><td>Spesa totale</td><td><strong>€2.683</strong></td></tr>
+      <tr><td>Conversioni</td><td><strong>280</strong></td></tr>
+      <tr><td>CPA medio</td><td><strong>€9,58</strong></td></tr>
+      <tr><td>Keyword attive</td><td><strong>508</strong></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Account a confronto</h3>
+  <table>
+    <thead><tr><th>Account</th><th>Customer ID</th><th>Spesa</th><th>Conv.</th><th>CPA</th><th>Stato</th></tr></thead>
+    <tbody>
+      <tr><td>Cliente B (e-com)</td><td>YYY-YYY-YYYY</td><td>€244</td><td>73</td><td>€3,35</td><td>🟢 Performante</td></tr>
+      <tr><td>Cliente A (servizi)</td><td>XXX-XXX-XXXX</td><td>€2.439</td><td>207</td><td>€11,77</td><td>🟡 Da ottimizzare</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Problemi rilevati</h3>
+
+  <div class="alert-critical">
+    <h4>🔴 CRITICO · Campagna prodotto-specifico (Cliente A)</h4>
+    <p><strong>€395 spesi in 30 giorni con 0 conversioni.</strong> KW concentrate su modelli prodotto specifici. L'utente cerca scheda tecnica, non installatore.</p>
+  </div>
+
+  <div class="alert-warning">
+    <h4>🟡 ATTENZIONE · Campagna chiamate-sito (Cliente A)</h4>
+    <p>196 KW miste, di cui 15+ BROAD generiche e 28 KW DIY. <strong>CPA €39 vs target €25.</strong></p>
+  </div>
+
+  <div class="alert-warning">
+    <h4>🟡 ATTENZIONE · Campagna ricerca brand (Cliente B)</h4>
+    <p><strong>62% delle 112 KW sono brand competitor diretti</strong> (8+ competitor brand) → traffico fuori target.</p>
+  </div>
+
+  <div class="alert-orange">
+    <h4>🟠 CANNIBALIZZAZIONE</h4>
+    <p>2 PMax attive sullo stesso brand Cliente A. <strong>Tenerne una sola</strong> post-merge per ottimizzare il learning.</p>
+  </div>
+
+  <h3>Target post-accorpamento · 90 giorni</h3>
+  <table>
+    <thead><tr><th>KPI</th><th>Baseline</th><th>Target</th><th>Variazione</th></tr></thead>
+    <tbody>
+      <tr><td>Conversioni mensili</td><td>~280</td><td>330+</td><td><strong>+18%</strong></td></tr>
+      <tr><td>CPA medio</td><td>€9,58</td><td>€8,00–€9,00</td><td><strong>−12%</strong></td></tr>
+      <tr><td>Spesa mensile</td><td>€2.683</td><td>€3.000</td><td>+12%</td></tr>
+      <tr><td>Search Impr. Share core</td><td>n/a</td><td>>65%</td><td>nuovo KPI</td></tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h2>02 · Struttura account unica</h2>
+  <p><strong>Architettura proposta:</strong> 1 account · 2 brand · 3 linee servizio · 5 campagne iniziali + 2 in fase 2</p>
+
+  <h3>Mappa logica</h3>
+  <pre><code>Account Master
+├── Brand Cliente A (servizi locali)
+│   ├── Linea servizio 1 (urgenza/intervento)  → Search
+│   └── Linea servizio 2 (sostituzione/installazione) → Search + PMax + DemGen Fase 2
+│
+└── Brand Cliente B (e-com prodotto nicchia)
+    └── Linea servizio 3 (vendita prodotto core) → Search + PMax + DemGen Fase 2</code></pre>
+
+  <h3>Logica di lancio in 2 fasi</h3>
+  <h4>FASE 1 · Lancio iniziale (5 campagne)</h4>
+  <ul>
+    <li><code>CA_Search_LineaServizio1</code> · €15/g</li>
+    <li><code>CA_Search_LineaServizio2</code> · €15/g</li>
+    <li><code>CA_PMax_LineaServizio2</code> · €25/g</li>
+    <li><code>CB_Search_Prodotto</code> · €10/g</li>
+    <li><code>CB_PMax_Prodotto</code> · €15/g</li>
+  </ul>
+  <p><strong>Totale: €80/giorno · €2.400/mese</strong></p>
+
+  <h4>FASE 2 · Espansione DemGen (gate dopo 30 giorni)</h4>
+  <p>Valutazione PMax delivery → DemGen per estendere awareness/consideration. Budget aggiuntivo previsto: €20/giorno.</p>
+
+  <h3>Naming convention</h3>
+  <p>Pattern unico: <code>{BRAND}_{TIPO}_{SERVIZIO}</code> — es. <code>CA_Search_LineaServizio1</code>, <code>CB_PMax_Prodotto</code>.</p>
+
+  <hr>
+
+  <h2>03 · Audit keyword e search terms</h2>
+  <h3>Panoramica campagne attive (pre-intervento)</h3>
+  <table>
+    <thead><tr><th>Campagna</th><th>Account</th><th>Tipo</th><th>Spesa 30g</th><th>Conv.</th><th>CPA</th><th>Verdetto</th></tr></thead>
+    <tbody>
+      <tr><td>Ricerca_lead</td><td>CB</td><td>Search</td><td>€244</td><td>73</td><td>€3,35</td><td>🟢 OK</td></tr>
+      <tr><td>Chiamate-Sito</td><td>CA</td><td>Search</td><td>€275</td><td>7</td><td>€39,27</td><td>🟡 KW caotiche</td></tr>
+      <tr><td>Ricerca_lead_LineaServizio2</td><td>CA</td><td>Search</td><td>€395</td><td>0</td><td>—</td><td>🔴 CRITICO</td></tr>
+      <tr><td>Agency precedente · PMax</td><td>CA</td><td>PMax</td><td>€1.069</td><td>134</td><td>€7,98</td><td>🟢 Driver principale</td></tr>
+      <tr><td>Website traffic · PMax-3</td><td>CA</td><td>PMax</td><td>€699</td><td>67</td><td>€10,44</td><td>🟠 Cannibalizza</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Cliente A · Campagna LineaServizio2 · 200+ KW</h3>
+  <div class="alert-critical">
+    <p><strong>🔴 CATASTROFICO · 0 conversioni in 30 giorni con €395 spesi.</strong> CPC medio €5,35, segno chiaro di Quality Score basso e mismatch tra annuncio e intent.</p>
+  </div>
+
+  <h4>Cosa non funziona</h4>
+  <ul>
+    <li>90% delle KW sono modelli specifici → utente cerca scheda tecnica/prezzo prodotto, non installatore</li>
+    <li>KW "bonus/incentivi/detrazione" (40+ KW) → utenti in fase informativa, non pronti</li>
+    <li>KW "preventivo" mancano quasi del tutto</li>
+  </ul>
+
+  <h4>Da fare</h4>
+  <p>Riscrivere con focus <strong>transazionale + locale</strong> + pausare KW modello specifico (trasferire in PMax che gestisce shopping intent meglio).</p>
+
+  <hr>
+
+  <h2>04 · Liste negative pronte all'uso</h2>
+  <blockquote>Le tre liste vanno create come <strong>shared negative lists</strong> in Google Ads e applicate selettivamente. Non vanno aggiunte come negativi a livello campagna singola — riduce la manutenibilità nel tempo.</blockquote>
+
+  <h3>Lista A · GLOBALE (account-level)</h3>
+  <p>Da applicare a <strong>tutte</strong> le campagne. Esclude DIY, informazionali, competitor non rilevanti.</p>
+  <ul>
+    <li><strong>DIY · Informazionale (40+):</strong> fai da te · tutorial · istruzioni · video · pdf · gratis · come fare · come funziona · rimedi · bicarbonato · amazon · ebay · forum · wikipedia · youtube...</li>
+    <li><strong>Lavoro · Formazione (10+):</strong> lavoro · stipendio · corso · diploma · attestato · cv · curriculum...</li>
+    <li><strong>Documenti · Certificazioni (8):</strong> certificazione · normativa · legge · decreto...</li>
+    <li><strong>Brand competitor assistenza locale (30+)</strong></li>
+  </ul>
+
+  <h3>Lista B · BRAND CLIENTE A (specifica servizi)</h3>
+  <ul>
+    <li><strong>Geo fuori area</strong> (12 province escluse)</li>
+    <li><strong>Servizi non offerti</strong> (8)</li>
+    <li><strong>Errori · Reset</strong> (riparazione, non sostituzione, 25+): errore e01 · errore e02 · codice errore · tasto reset · spia rossa · non parte · lampeggia...</li>
+    <li><strong>Bonus · Incentivi</strong> (fase informativa, 12): bonus · incentivo · detrazione · agevolazione · conto termico · sconto in fattura · 730...</li>
+    <li><strong>Modelli prodotto specifici</strong> (40+)</li>
+  </ul>
+
+  <h3>Lista C · BRAND CLIENTE B (specifica e-com prodotto)</h3>
+  <ul>
+    <li><strong>Brand competitor</strong> (40+)</li>
+    <li><strong>DIY + Informazionali specifici</strong> (10)</li>
+    <li><strong>Aggregatori + Geo fuori area</strong> (10)</li>
+  </ul>
+
+  <h3>Mappa applicazione</h3>
+  <table>
+    <thead><tr><th>Campagna</th><th>Lista A</th><th>Lista B</th><th>Lista C</th></tr></thead>
+    <tbody>
+      <tr><td>CA_Search_LineaServizio1</td><td>✓</td><td>✓</td><td>—</td></tr>
+      <tr><td>CA_Search_LineaServizio2</td><td>✓</td><td>✓</td><td>—</td></tr>
+      <tr><td>CA_PMax_LineaServizio2</td><td>✓</td><td>✓ (escl. brand top)</td><td>—</td></tr>
+      <tr><td>CB_Search_Prodotto</td><td>✓</td><td>—</td><td>✓</td></tr>
+      <tr><td>CB_PMax_Prodotto</td><td>✓</td><td>—</td><td>✓</td></tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h2>05 · Keyword set finali per campagna</h2>
+  <blockquote>Convenzione: <code>"phrase"</code> = PHRASE · <code>[esatta]</code> = EXACT</blockquote>
+
+  <h3>Campagna 1 · CA_Search_LineaServizio1</h3>
+  <p><strong>€15/g · Search · Geo: Capoluogo + 25 km · Bid: Maximize Conversions · 24/7</strong></p>
+  <h4>Ad Group A · Pronto Intervento (urgenza)</h4>
+  <pre><code>"[servizio] [capoluogo]"           [[servizio] [capoluogo]]
+"pronto intervento [servizio]"     [pronto intervento [servizio]]
+"[servizio] urgente [capoluogo]"
+"[servizio] h24 [capoluogo]"
+"sos [servizio] [capoluogo]"
+"[servizio] notturno [capoluogo]"
+"[servizio] festivo [capoluogo]"
+"chiamare [servizio] [capoluogo]"</code></pre>
+  <h4>Ad Group B · Frazioni & Comuni limitrofi</h4>
+  <p>(12 zone totali)</p>
+  <h4>Ad Group C · Riparazioni specifiche</h4>
+  <p>(10 riparazioni)</p>
+
+  <h3>Campagna 2 · CA_Search_LineaServizio2</h3>
+  <p><strong>€15/g · Search · Geo: Capoluogo + 30 km · Bid: Maximize Conversions · Lun-Sab 7-22</strong></p>
+  <h4>Ad Group A · Sostituzione/Cambio</h4>
+  <pre><code>"sostituzione [prodotto] [capoluogo]"   [sostituzione [prodotto] [capoluogo]]
+"cambio [prodotto] [capoluogo]"
+"installazione [prodotto] [capoluogo]"
+"preventivo sostituzione [prodotto]"</code></pre>
+  <h4>Ad Group B · Tecnologia core · Ad Group C · Brand top installati (4 brand max)</h4>
+
+  <h3>Campagna 3 · CA_PMax_LineaServizio2</h3>
+  <p><strong>€25/g · PMax · Geo: Capoluogo + 30 km · Bid: Max Conv (→ tCPA €45 dopo 30 conv) · Final URL expansion ON</strong></p>
+  <p><strong>Search themes (5):</strong> sostituzione [prodotto] [tipologia] · installazione [prodotto] [capoluogo] · preventivo [prodotto] · cambio [prodotto] [tipologia] · [prodotto] [brand top] [capoluogo]</p>
+  <h4>Audience signals</h4>
+  <ul>
+    <li>Custom segment: cerche "sostituzione [prodotto]" ultimi 30g</li>
+    <li>In-market: Home & Garden &gt; Home Improvement</li>
+    <li>Demografica: 35-65 anni, proprietari casa</li>
+    <li>Geo intent: [Capoluogo] metropolitana</li>
+  </ul>
+
+  <h3>Campagna 4 · CB_Search_Prodotto · Campagna 5 · CB_PMax_Prodotto</h3>
+  <p>Struttura analoga con Ad Group dedicati a Prodotto core · Tecnologia specifica · Brand · Problemi locali.</p>
+
+  <hr>
+
+  <h2>06 · Copy annunci</h2>
+  <p><strong>Convenzione validazione:</strong> Headline ≤ 30 caratteri · Descriptions ≤ 90 caratteri · Long headline PMax ≤ 90 caratteri · validati carattere per carattere.</p>
+
+  <h3>Esempio · CA_Search_LineaServizio1 · Ad Group A · Pronto Intervento</h3>
+  <h4>RSA #1 · Headlines (15)</h4>
+  <ol>
+    <li>[Servizio] [Capoluogo] 24h</li>
+    <li>Pronto Intervento Subito</li>
+    <li>[Servizio] Urgente Oggi</li>
+    <li>Chiamaci Ora · [Capoluogo]</li>
+    <li>Risolviamo in 30 Minuti</li>
+    <li>[Servizio] H24 [Capoluogo]</li>
+    <li>Tecnico in Sede Oggi</li>
+    <li>SOS [Servizio] [Capoluogo]</li>
+    <li>Preventivo Gratuito</li>
+    <li>20+ Anni di Esperienza</li>
+    <li>Notturno · Festivo · Subito</li>
+    <li>Centro · Provincia [BO]</li>
+    <li>Garanzia Lavoro Scritta</li>
+    <li>[Brand Cliente A] [Capoluogo]</li>
+    <li>Chiama Ora · Risolviamo</li>
+  </ol>
+
+  <h4>Descriptions (4)</h4>
+  <ol>
+    <li>[Servizio] professionista a [Capoluogo]. Pronto intervento 24/7, preventivo chiaro, garanzia.</li>
+    <li>[Riparazione 1], [riparazione 2], [riparazione 3]. Risolviamo subito a [Capoluogo] e provincia.</li>
+    <li>Tecnici qualificati in 30 minuti. Senza chiamata fuori porta nascosta. Trasparenza totale.</li>
+    <li>[Brand Cliente A]: pronto intervento [Capoluogo] H24. 20+ anni nel settore. Preventivo gratis.</li>
+  </ol>
+  <p>Path: <code>/[servizio]-[capoluogo]</code> · <code>/pronto-intervento</code></p>
+
+  <h3>Pattern replicato per le altre 4 campagne</h3>
+  <blockquote>Per ognuna delle 4 campagne residue (CA_Search_LineaServizio2, CA_PMax, CB_Search, CB_PMax) il report originale contiene:
+    <ul>
+      <li>1+ RSA con 15 headlines + 4 descriptions per ogni Ad Group</li>
+      <li>Per le PMax: lista headlines/long headlines/descriptions/CTA + brief asset visuali</li>
+      <li>Tutto validato carattere per carattere su limiti Google</li>
+    </ul>
+  </blockquote>
+
+  <hr>
+
+  <h2>📌 Note operative finali</h2>
+  <ul>
+    <li><strong>Modello costo Fixup:</strong> ore consulenza + setup + presidio settimanale 30 min</li>
+    <li><strong>Tempistiche tipiche:</strong> report consegnato in 7-10 giorni lavorativi · go-live campagne in 2-3 giorni post-approvazione</li>
+    <li><strong>Cosa serve dal cliente:</strong> accessi Google Ads + brief brand voice + validazione legale copy</li>
+    <li><strong>Cosa NON è incluso in questa fase:</strong> SEO, content production sito, gestione social organico, email marketing automation (sono pacchetti separati)</li>
+  </ul>
+
+  <div class="cta-box">
+    <h3>🚀 Prossimo step</h3>
+    <p>Call 30 minuti per capire come applicare questo formato al tuo account paid.</p>
+    <a href="https://cal.com/max-pavesio/consulenza-formazione" class="cta-button">Prenota call discovery</a>
+  </div>
+
+  <footer>
+    <p><em>Documento esempio anonimizzato · Versione FIXUP showcase aprile 2026</em></p>
+    <p>Max Pavesio · CEO Fixup Agency · Google Premier Partner Top 3% Italia</p>
+    <p><a href="mailto:max@fixup.agency">max@fixup.agency</a> · <a href="https://fixup.agency">fixup.agency</a></p>
+    <img src="loghi/google-premier-partner.png" alt="Google Premier Partner" class="premier-badge">
+  </footer>
+</div>
+</body>
+</html>
