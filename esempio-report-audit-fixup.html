@@ -196,7 +196,9 @@
   }
   footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
   footer a:hover { color: var(--accent); }
-  .premier-badge { display: inline-block; margin-top: 16px; max-width: 130px; height: auto; opacity: 0.75; }
+  .badges { display: flex; justify-content: center; align-items: center; gap: 22px; margin-top: 18px; flex-wrap: wrap; }
+  .badges img { max-height: 52px; width: auto; opacity: 0.78; transition: opacity 0.2s ease; }
+  .badges img:hover { opacity: 1; }
   .back-link { display: inline-block; margin-bottom: 32px; color: var(--text-muted); text-decoration: none; font-size: 14px; }
   .back-link:hover { color: var(--primary); }
 </style>
@@ -495,9 +497,12 @@
 
   <footer>
     <p><em>Documento esempio anonimizzato · Versione FIXUP showcase aprile 2026</em></p>
-    <p>Max Pavesio · CEO Fixup Agency · Google Premier Partner Top 3% Italia</p>
-    <p><a href="mailto:max@fixup.agency">max@fixup.agency</a> · <a href="https://fixup.agency">fixup.agency</a></p>
-    <img src="loghi/google-premier-partner.png" alt="Google Premier Partner" class="premier-badge">
+    <p>Max Pavesio · CEO Fixup Agency · Google Premier Partner Top 3% Italia · ADworld Experience Winning Case Story 2023</p>
+    <p><a href="mailto:info@fixup.agency">info@fixup.agency</a> · <a href="https://fixup.agency">fixup.agency</a></p>
+    <div class="badges">
+      <img src="loghi/google-premier-partner.png" alt="Google Premier Partner Top 3% Italia">
+      <img src="loghi/adworld-experience.png" alt="ADworld Experience Winning Case Story 2023">
+    </div>
   </footer>
 </div>
 </body>

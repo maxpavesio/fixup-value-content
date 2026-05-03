@@ -168,6 +168,6 @@ Se questo workflow ti interessa applicato al tuo contesto specifico:
 ---
 
 **Max Pavesio** · CEO Fixup Agency · Google Premier Partner Top 3% Italia
-max@fixup.agency · fixup.agency
+info@fixup.agency · fixup.agency
 
 *Esempio anonimizzato di workflow reale FIXUP · contenuto value per stakeholder · maggio 2026*

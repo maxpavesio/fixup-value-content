@@ -19,4 +19,4 @@ Asset linkati nei follow-up email FIXUP a prospect. Versione mirror anche su Not
 
 ---
 
-© 2026 FIXUP Agency · max@fixup.agency
+© 2026 FIXUP Agency · info@fixup.agency
