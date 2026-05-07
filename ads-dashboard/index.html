@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIXUP · Performance Dashboard (Demo)</title>
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary: #EA5D0B;
+    --primary-light: #EE7D3B;
+    --primary-dark: #BB4A08;
+    --accent: #FFE14D;
+    --bg: #000;
+    --bg-card: #161616;
+    --bg-card-hover: #1f1f1f;
+    --bg-elev: #202020;
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.16);
+    --text: #F0F0F0;
+    --text-dim: #A0A0A0;
+    --text-muted: #707070;
+    --green: #22C55E;
+    --green-bg: rgba(34,197,94,0.12);
+    --red: #EF4444;
+    --red-bg: rgba(239,68,68,0.12);
+    --blue: #3B82F6;
+    --google: #4285F4;
+    --meta: #1877F2;
+    --linkedin: #0A66C2;
+    --tiktok: #FF0050;
+  }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 500;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(ellipse at 10% 0%, rgba(234, 93, 11, 0.10) 0, transparent 50%),
+      radial-gradient(ellipse at 90% 100%, rgba(255, 225, 77, 0.05) 0, transparent 50%);
+    background-attachment: fixed;
+  }
+
+  .demo-banner {
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    color: #fff;
+    padding: 9px 20px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .demo-banner a { color: var(--accent); text-decoration: none; }
+  .demo-banner a:hover { text-decoration: underline; }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 32px 24px 80px; }
+
+  /* Header */
+  header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    flex-wrap: wrap; gap: 18px;
+    padding-bottom: 24px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .head-left h1 {
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+  }
+  .head-left .client { color: var(--text-dim); font-size: 14px; margin-top: 2px; }
+  .head-left .live-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--green); margin-right: 6px; box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+  .head-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .pill {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .pill:hover { background: var(--bg-card-hover); border-color: var(--primary); }
+  .pill.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .pill .arrow { color: var(--text-muted); font-size: 11px; }
+  .pill.active .arrow { color: #fff; }
+
+  /* KPI mega-tiles */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+  .kpi {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 22px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s;
+  }
+  .kpi:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+  .kpi.hero {
+    background: linear-gradient(135deg, rgba(234,93,11,0.12) 0%, rgba(255,225,77,0.04) 100%);
+    border: 1px solid rgba(234,93,11,0.3);
+  }
+  .kpi-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+  .kpi-value { font-size: 30px; font-weight: 700; margin: 6px 0 4px; font-family: 'JetBrains Mono', monospace; letter-spacing: -0.5px; }
+  .kpi.hero .kpi-value {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .kpi-delta { font-size: 12px; font-weight: 600; }
+  .kpi-delta.up { color: var(--green); }
+  .kpi-delta.down { color: var(--red); }
+  .kpi-spark { position: absolute; right: 14px; top: 14px; opacity: 0.6; }
+
+  /* Section blocks */
+  .block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-bottom: 18px;
+  }
+  .block-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 18px; }
+  .block-head h2 { font-size: 16px; font-weight: 600; color: var(--text); }
+  .block-head .sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .legend { display: flex; gap: 16px; font-size: 12px; color: var(--text-dim); flex-wrap: wrap; }
+  .legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: middle; }
+
+  /* Two col layout */
+  .grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 18px; margin-bottom: 18px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+
+  /* SVG line chart */
+  .chart-wrap { width: 100%; }
+  .chart-wrap svg { width: 100%; height: 260px; display: block; }
+  .chart-tip { fill: var(--text-muted); font-size: 10px; font-family: 'JetBrains Mono', monospace; }
+  .grid-line { stroke: rgba(255,255,255,0.05); stroke-width: 1; }
+
+  /* Platform tiles */
+  .plat-stack { display: flex; flex-direction: column; gap: 10px; }
+  .plat-tile { background: var(--bg-elev); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .plat-tile .head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .plat-tile .name { font-weight: 600; display: flex; align-items: center; gap: 8px; font-size: 14px; }
+  .plat-tile .ic { width: 22px; height: 22px; border-radius: 5px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; }
+  .plat-tile .ic.g { background: var(--google); }
+  .plat-tile .ic.m { background: var(--meta); }
+  .plat-tile .ic.l { background: var(--linkedin); }
+  .plat-tile .ic.t { background: var(--tiktok); }
+  .plat-tile .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .plat-tile .stat .l { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
+  .plat-tile .stat .v { font-size: 14px; font-weight: 600; }
+
+  /* Bar / horizontal */
+  .h-bar { display: flex; flex-direction: column; gap: 12px; }
+  .h-bar-row { display: grid; grid-template-columns: 1fr 60px; gap: 8px; align-items: center; }
+  .h-bar-line { height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; margin: 4px 0 2px; }
+  .h-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--primary), var(--accent)); }
+  .h-bar-label { font-size: 13px; color: var(--text); display: flex; justify-content: space-between; align-items: center; }
+  .h-bar-label small { color: var(--text-muted); font-size: 11px; }
+  .h-bar-val { font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: right; color: var(--text-dim); }
+
+  /* Donut */
+  .donut-wrap { display: flex; align-items: center; gap: 24px; }
+  .donut { position: relative; width: 160px; height: 160px; flex-shrink: 0; }
+  .donut .inner-text { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .donut .inner-text .v { font-size: 20px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+  .donut .inner-text .l { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .donut-legend { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .donut-legend .row { display: grid; grid-template-columns: 16px 1fr 70px 50px; gap: 8px; align-items: center; font-size: 13px; }
+  .donut-legend .dot { width: 10px; height: 10px; border-radius: 3px; }
+  .donut-legend .v { font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: right; color: var(--text-dim); }
+  .donut-legend .pct { font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: right; color: var(--text-muted); }
+
+  /* Tables */
+  .tbl { width: 100%; border-collapse: collapse; }
+  .tbl thead th {
+    text-align: left;
+    padding: 10px 12px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--border);
+  }
+  .tbl tbody td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    vertical-align: middle;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .tbl tbody td.txt { font-family: 'Quicksand', sans-serif; }
+  .tbl tbody tr:last-child td { border-bottom: none; }
+  .tbl tbody tr:hover { background: rgba(255,255,255,0.02); }
+  .tbl .num { text-align: right; }
+  .tbl .center { text-align: center; }
+
+  .badge {
+    display: inline-flex; align-items: center;
+    padding: 2px 8px; border-radius: 12px;
+    font-size: 11px; font-weight: 600; line-height: 1.5;
+    font-family: 'Quicksand', sans-serif;
+  }
+  .badge-green { background: var(--green-bg); color: var(--green); }
+  .badge-red { background: var(--red-bg); color: var(--red); }
+  .badge-amber { background: rgba(217,119,6,0.15); color: #fcd34d; }
+
+  /* Funnel */
+  .funnel { display: flex; flex-direction: column; gap: 6px; }
+  .funnel .step { display: grid; grid-template-columns: 130px 1fr 100px 70px; gap: 12px; align-items: center; }
+  .funnel .step-name { font-size: 13px; color: var(--text-dim); }
+  .funnel .step-bar { background: rgba(255,255,255,0.04); border-radius: 6px; height: 32px; overflow: hidden; position: relative; }
+  .funnel .step-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    display: flex; align-items: center; padding-left: 12px;
+    color: #fff; font-weight: 600; font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .funnel .step-cr { font-size: 11px; color: var(--text-muted); text-align: right; font-family: 'JetBrains Mono', monospace; }
+  .funnel .step-pct { font-size: 12px; font-weight: 600; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; text-align: right; }
+  .funnel .arrow-step { font-size: 10px; color: var(--green); margin: 1px 0 1px 100px; }
+
+  /* Geographic */
+  .geo-list { display: flex; flex-direction: column; gap: 12px; }
+  .geo-row { display: grid; grid-template-columns: 30px 90px 1fr 80px 60px; gap: 10px; align-items: center; font-size: 13px; }
+  .geo-flag { font-size: 18px; }
+  .geo-bar { height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+  .geo-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 3px; }
+  .geo-val { font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: right; color: var(--text); }
+  .geo-roas { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-align: right; color: var(--text-muted); }
+
+  /* Creatives gallery */
+  .creatives { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .creative {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.2s;
+  }
+  .creative:hover { border-color: var(--primary); transform: translateY(-3px); }
+  .creative .thumb {
+    aspect-ratio: 1 / 1;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .creative .thumb::before { content: ''; position: absolute; inset: 0; background: var(--grad, linear-gradient(135deg, var(--primary), var(--accent))); opacity: 0.85; }
+  .creative .thumb-emoji { font-size: 48px; position: relative; z-index: 1; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4)); }
+  .creative .thumb-rank {
+    position: absolute; top: 8px; left: 8px;
+    background: rgba(0,0,0,0.7); color: var(--accent);
+    width: 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    z-index: 2; backdrop-filter: blur(6px);
+  }
+  .creative .thumb-plat {
+    position: absolute; top: 8px; right: 8px;
+    width: 22px; height: 22px; border-radius: 5px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: #fff;
+    z-index: 2;
+  }
+  .creative .thumb-plat.g { background: var(--google); }
+  .creative .thumb-plat.m { background: var(--meta); }
+  .creative .thumb-plat.l { background: var(--linkedin); }
+  .creative .thumb-plat.t { background: var(--tiktok); }
+  .creative .info { padding: 12px 14px; }
+  .creative .info-name { font-size: 12px; font-weight: 600; margin-bottom: 6px; line-height: 1.3; }
+  .creative .info-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); }
+  .creative .info-stats strong { color: var(--text); font-weight: 600; }
+
+  /* Insights cards */
+  .insights { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .insight {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--primary);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .insight.up { border-left-color: var(--green); }
+  .insight.down { border-left-color: var(--red); }
+  .insight.alert { border-left-color: var(--accent); }
+  .insight .ic { font-size: 18px; margin-bottom: 6px; }
+  .insight h4 { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .insight p { font-size: 12px; color: var(--text-dim); line-height: 1.55; }
+  .insight .impact { display: inline-block; margin-top: 8px; font-size: 11px; font-weight: 600; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+
+  /* Footer */
+  footer { margin-top: 50px; padding-top: 28px; border-top: 1px solid var(--border); text-align: center; color: var(--text-muted); font-size: 12px; line-height: 1.7; }
+  footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+  footer a:hover { color: var(--accent); }
+
+  @media (max-width: 1100px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .creatives { grid-template-columns: repeat(2, 1fr); }
+    .insights { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 580px) {
+    .kpi-grid { grid-template-columns: 1fr; }
+    .funnel .step { grid-template-columns: 90px 1fr 60px; }
+    .funnel .step-cr { display: none; }
+    .donut-wrap { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-banner">
+  📊 DEMO INTERATTIVA · Dati fittizi · Dashboard Performance Multi-Piattaforma · <a href="../index.html">← Torna a Value Content</a>
+</div>
+
+<div class="container">
+
+  <header>
+    <div class="head-left">
+      <h1>Performance Dashboard</h1>
+      <div class="client"><span class="live-dot"></span> Cliente: <strong>Acme Group</strong> · Last sync 7 mag 2026 · 08:32</div>
+    </div>
+    <div class="head-actions">
+      <button class="pill"><span>📅 Ultimi 30 gg</span><span class="arrow">▾</span></button>
+      <button class="pill">vs prev period <span class="arrow">▾</span></button>
+      <button class="pill">🌍 Tutti mercati <span class="arrow">▾</span></button>
+      <button class="pill active">↻ Aggiorna</button>
+      <button class="pill">⤓ Export PDF</button>
+    </div>
+  </header>
+
+  <!-- HERO KPI -->
+  <div class="kpi-grid">
+    <div class="kpi hero">
+      <div class="kpi-label">💰 Spend totale</div>
+      <div class="kpi-value">€87.420</div>
+      <div class="kpi-delta up">▲ +12,4% vs prev</div>
+    </div>
+    <div class="kpi hero">
+      <div class="kpi-label">📈 Revenue</div>
+      <div class="kpi-value">€412.850</div>
+      <div class="kpi-delta up">▲ +28,7% vs prev</div>
+    </div>
+    <div class="kpi hero">
+      <div class="kpi-label">🎯 ROAS blended</div>
+      <div class="kpi-value">4,72×</div>
+      <div class="kpi-delta up">▲ +0,58 vs prev</div>
+    </div>
+    <div class="kpi hero">
+      <div class="kpi-label">🛒 Conversioni</div>
+      <div class="kpi-value">2.184</div>
+      <div class="kpi-delta up">▲ +18,2% vs prev</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">👁 Impressions</div>
+      <div class="kpi-value">8,42M</div>
+      <div class="kpi-delta up">▲ +5,1%</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">🖱 Click</div>
+      <div class="kpi-value">142.380</div>
+      <div class="kpi-delta up">▲ +8,9%</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">📊 CTR medio</div>
+      <div class="kpi-value">1,69%</div>
+      <div class="kpi-delta up">▲ +0,18 pt</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">💸 CPA medio</div>
+      <div class="kpi-value">€40,03</div>
+      <div class="kpi-delta down">▼ -8,4% (meglio)</div>
+    </div>
+  </div>
+
+  <!-- INSIGHTS AUTO -->
+  <div class="insights" style="margin-bottom: 28px">
+    <div class="insight up">
+      <div class="ic">🚀</div>
+      <h4>Meta Advantage+ scala</h4>
+      <p>Campagna AAS Conversions ha incrementato spend +€8.400 mantenendo ROAS 5,2× sopra target 4,5×.</p>
+      <span class="impact">+€42K revenue incrementale</span>
+    </div>
+    <div class="insight alert">
+      <div class="ic">⚠️</div>
+      <h4>Google PMax saturazione</h4>
+      <p>Asset group "Acme Premium" CPC +34% in 7 gg, conversion rate stabile. Refresh creativi suggerito entro 5 gg.</p>
+      <span class="impact">Risk: -€6K efficiency</span>
+    </div>
+    <div class="insight down">
+      <div class="ic">📉</div>
+      <h4>LinkedIn Lead Gen sotto KPI</h4>
+      <p>CPL €82 vs target €55. Audience "Decision Makers IT" non converte. Test ICP più stretto in roadmap.</p>
+      <span class="impact">Action: pausa + retest</span>
+    </div>
+  </div>
+
+  <!-- TREND CHART -->
+  <div class="block">
+    <div class="block-head">
+      <div>
+        <h2>Spend vs Revenue · trend 30 giorni</h2>
+        <div class="sub">Confronto giornaliero · attribuzione data-driven</div>
+      </div>
+      <div class="legend">
+        <span><span class="legend-dot" style="background:var(--primary)"></span>Spend</span>
+        <span><span class="legend-dot" style="background:var(--accent)"></span>Revenue</span>
+        <span><span class="legend-dot" style="background:var(--green); border-radius:50%"></span>ROAS</span>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <svg id="trend-chart" viewBox="0 0 1200 280" preserveAspectRatio="none"></svg>
+    </div>
+  </div>
+
+  <!-- PLATFORM SPLIT -->
+  <div class="grid-2">
+    <div class="block">
+      <div class="block-head">
+        <div>
+          <h2>Performance per piattaforma</h2>
+          <div class="sub">Ripartizione spend, conversioni, ROAS</div>
+        </div>
+      </div>
+      <div class="plat-stack">
+        <div class="plat-tile">
+          <div class="head">
+            <div class="name"><span class="ic g">G</span>Google Ads <small style="color:var(--text-muted);font-weight:400;font-size:12px">· Search + PMax + YouTube</small></div>
+            <span class="badge badge-green">ROAS 5,18×</span>
+          </div>
+          <div class="stats">
+            <div class="stat"><div class="l">Spend</div><div class="v">€38.420</div></div>
+            <div class="stat"><div class="l">Revenue</div><div class="v">€198.940</div></div>
+            <div class="stat"><div class="l">Conv.</div><div class="v">1.087</div></div>
+            <div class="stat"><div class="l">CPA</div><div class="v">€35,35</div></div>
+          </div>
+        </div>
+        <div class="plat-tile">
+          <div class="head">
+            <div class="name"><span class="ic m">M</span>Meta Ads <small style="color:var(--text-muted);font-weight:400;font-size:12px">· Instagram + Facebook</small></div>
+            <span class="badge badge-green">ROAS 4,89×</span>
+          </div>
+          <div class="stats">
+            <div class="stat"><div class="l">Spend</div><div class="v">€31.180</div></div>
+            <div class="stat"><div class="l">Revenue</div><div class="v">€152.470</div></div>
+            <div class="stat"><div class="l">Conv.</div><div class="v">842</div></div>
+            <div class="stat"><div class="l">CPA</div><div class="v">€37,03</div></div>
+          </div>
+        </div>
+        <div class="plat-tile">
+          <div class="head">
+            <div class="name"><span class="ic t">T</span>TikTok Ads <small style="color:var(--text-muted);font-weight:400;font-size:12px">· Spark Ads + Shop</small></div>
+            <span class="badge badge-green">ROAS 3,82×</span>
+          </div>
+          <div class="stats">
+            <div class="stat"><div class="l">Spend</div><div class="v">€11.420</div></div>
+            <div class="stat"><div class="l">Revenue</div><div class="v">€43.620</div></div>
+            <div class="stat"><div class="l">Conv.</div><div class="v">218</div></div>
+            <div class="stat"><div class="l">CPA</div><div class="v">€52,38</div></div>
+          </div>
+        </div>
+        <div class="plat-tile">
+          <div class="head">
+            <div class="name"><span class="ic l">L</span>LinkedIn Ads <small style="color:var(--text-muted);font-weight:400;font-size:12px">· Lead Gen B2B</small></div>
+            <span class="badge badge-amber">CPL €82 ⚠</span>
+          </div>
+          <div class="stats">
+            <div class="stat"><div class="l">Spend</div><div class="v">€6.400</div></div>
+            <div class="stat"><div class="l">MQL</div><div class="v">78</div></div>
+            <div class="stat"><div class="l">CPL</div><div class="v">€82,05</div></div>
+            <div class="stat"><div class="l">SQL rate</div><div class="v">22%</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head">
+        <div>
+          <h2>Mix Spend</h2>
+          <div class="sub">Allocazione budget</div>
+        </div>
+      </div>
+      <div class="donut-wrap">
+        <div class="donut">
+          <svg viewBox="0 0 42 42" style="width:100%; height:100%; transform: rotate(-90deg)">
+            <circle cx="21" cy="21" r="15.91549" fill="transparent" stroke="rgba(255,255,255,0.06)" stroke-width="6"/>
+            <circle cx="21" cy="21" r="15.91549" fill="transparent" stroke="#4285F4" stroke-width="6" stroke-dasharray="44 56" stroke-dashoffset="0"/>
+            <circle cx="21" cy="21" r="15.91549" fill="transparent" stroke="#1877F2" stroke-width="6" stroke-dasharray="35.7 64.3" stroke-dashoffset="-44"/>
+            <circle cx="21" cy="21" r="15.91549" fill="transparent" stroke="#FF0050" stroke-width="6" stroke-dasharray="13.1 86.9" stroke-dashoffset="-79.7"/>
+            <circle cx="21" cy="21" r="15.91549" fill="transparent" stroke="#0A66C2" stroke-width="6" stroke-dasharray="7.3 92.7" stroke-dashoffset="-92.8"/>
+          </svg>
+          <div class="inner-text">
+            <div class="v">€87,4K</div>
+            <div class="l">Tot 30gg</div>
+          </div>
+        </div>
+        <div class="donut-legend">
+          <div class="row"><span class="dot" style="background:var(--google)"></span><span>Google</span><span class="v">€38.420</span><span class="pct">44,0%</span></div>
+          <div class="row"><span class="dot" style="background:var(--meta)"></span><span>Meta</span><span class="v">€31.180</span><span class="pct">35,7%</span></div>
+          <div class="row"><span class="dot" style="background:var(--tiktok)"></span><span>TikTok</span><span class="v">€11.420</span><span class="pct">13,1%</span></div>
+          <div class="row"><span class="dot" style="background:var(--linkedin)"></span><span>LinkedIn</span><span class="v">€6.400</span><span class="pct">7,3%</span></div>
+        </div>
+      </div>
+
+      <div style="margin-top:22px; padding-top:18px; border-top:1px solid var(--border)">
+        <div style="font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.08em; font-weight:600; margin-bottom:10px">Conversioni per device</div>
+        <div class="h-bar">
+          <div>
+            <div class="h-bar-label">📱 Mobile <small>· 1.428 conv</small></div>
+            <div class="h-bar-line"><div class="h-bar-fill" style="width:65%"></div></div>
+          </div>
+          <div>
+            <div class="h-bar-label">💻 Desktop <small>· 612 conv</small></div>
+            <div class="h-bar-line"><div class="h-bar-fill" style="width:28%"></div></div>
+          </div>
+          <div>
+            <div class="h-bar-label">📊 Tablet <small>· 144 conv</small></div>
+            <div class="h-bar-line"><div class="h-bar-fill" style="width:7%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUNNEL + GEO -->
+  <div class="grid-2">
+    <div class="block">
+      <div class="block-head">
+        <div>
+          <h2>Funnel di conversione</h2>
+          <div class="sub">Path utente · ultimi 30 giorni</div>
+        </div>
+      </div>
+      <div class="funnel">
+        <div class="step">
+          <div class="step-name">👁 Impressions</div>
+          <div class="step-bar"><div class="step-fill" style="width:100%">8.420.000</div></div>
+          <div class="step-cr">CTR 1,69%</div>
+          <div class="step-pct">100%</div>
+        </div>
+        <div class="arrow-step">↓ -98,3%</div>
+        <div class="step">
+          <div class="step-name">🖱 Click</div>
+          <div class="step-bar"><div class="step-fill" style="width:32%">142.380</div></div>
+          <div class="step-cr">CPC €0,61</div>
+          <div class="step-pct">1,69%</div>
+        </div>
+        <div class="arrow-step">↓ -68,2%</div>
+        <div class="step">
+          <div class="step-name">🌐 Sessioni</div>
+          <div class="step-bar"><div class="step-fill" style="width:25%">128.420</div></div>
+          <div class="step-cr">Bounce 42%</div>
+          <div class="step-pct">1,52%</div>
+        </div>
+        <div class="arrow-step">↓ -86,4%</div>
+        <div class="step">
+          <div class="step-name">🛒 Add to cart</div>
+          <div class="step-bar"><div class="step-fill" style="width:14%">17.480</div></div>
+          <div class="step-cr">€23,60 AOV</div>
+          <div class="step-pct">13,6%</div>
+        </div>
+        <div class="arrow-step">↓ -75,5%</div>
+        <div class="step">
+          <div class="step-name">💳 Checkout</div>
+          <div class="step-bar"><div class="step-fill" style="width:9%">4.280</div></div>
+          <div class="step-cr">Drop 24%</div>
+          <div class="step-pct">3,33%</div>
+        </div>
+        <div class="arrow-step">↓ -49,0%</div>
+        <div class="step">
+          <div class="step-name">✅ Acquisto</div>
+          <div class="step-bar"><div class="step-fill" style="width:6%; background:linear-gradient(90deg,var(--green),#4ade80)">2.184</div></div>
+          <div class="step-cr">€189 AOV</div>
+          <div class="step-pct">1,70%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head">
+        <div>
+          <h2>Top mercati geo</h2>
+          <div class="sub">Per revenue</div>
+        </div>
+      </div>
+      <div class="geo-list">
+        <div class="geo-row"><span class="geo-flag">🇮🇹</span><span>Italia</span><div class="geo-bar"><div class="geo-bar-fill" style="width:100%"></div></div><span class="geo-val">€186.4K</span><span class="geo-roas">5,42×</span></div>
+        <div class="geo-row"><span class="geo-flag">🇩🇪</span><span>Germania</span><div class="geo-bar"><div class="geo-bar-fill" style="width:48%"></div></div><span class="geo-val">€89.2K</span><span class="geo-roas">4,18×</span></div>
+        <div class="geo-row"><span class="geo-flag">🇫🇷</span><span>Francia</span><div class="geo-bar"><div class="geo-bar-fill" style="width:36%"></div></div><span class="geo-val">€67.8K</span><span class="geo-roas">3,92×</span></div>
+        <div class="geo-row"><span class="geo-flag">🇪🇸</span><span>Spagna</span><div class="geo-bar"><div class="geo-bar-fill" style="width:25%"></div></div><span class="geo-val">€42.6K</span><span class="geo-roas">4,01×</span></div>
+        <div class="geo-row"><span class="geo-flag">🇨🇭</span><span>Svizzera</span><div class="geo-bar"><div class="geo-bar-fill" style="width:14%"></div></div><span class="geo-val">€18.9K</span><span class="geo-roas">6,18×</span></div>
+        <div class="geo-row"><span class="geo-flag">🇬🇧</span><span>UK</span><div class="geo-bar"><div class="geo-bar-fill" style="width:8%"></div></div><span class="geo-val">€7.95K</span><span class="geo-roas">2,84×</span></div>
+      </div>
+
+      <div style="margin-top:22px; padding-top:18px; border-top:1px solid var(--border)">
+        <div style="font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.08em; font-weight:600; margin-bottom:10px">Insight geografico</div>
+        <p style="font-size:12px; color:var(--text-dim); line-height:1.6">🇨🇭 Svizzera ROAS 6,18× ma spend solo €3K · scaling test +50% budget allocato per next 14gg per validare elasticità.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOP CAMPAIGNS -->
+  <div class="block">
+    <div class="block-head">
+      <div>
+        <h2>Top 10 campagne per revenue</h2>
+        <div class="sub">Performance · ultimi 30 giorni · attribuzione data-driven</div>
+      </div>
+      <div class="legend">
+        <span class="badge badge-green" style="text-transform:none">Above target</span>
+        <span class="badge badge-amber" style="text-transform:none">Watch</span>
+        <span class="badge badge-red" style="text-transform:none">Below target</span>
+      </div>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="tbl" style="min-width:1000px">
+        <thead><tr>
+          <th>Campagna</th><th>Piattaforma</th><th class="num">Spend</th><th class="num">Imp.</th><th class="num">Click</th><th class="num">CTR</th><th class="num">Conv.</th><th class="num">CPA</th><th class="num">Revenue</th><th class="num">ROAS</th><th class="center">Status</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td class="txt"><strong>Acme Premium · PMax</strong><br><small style="color:var(--text-muted)">Performance Max · all-asset</small></td>
+            <td class="txt"><span class="badge" style="background:rgba(66,133,244,0.15);color:#4285F4">Google</span></td>
+            <td class="num">€12.840</td><td class="num">1,24M</td><td class="num">28.420</td><td class="num">2,29%</td><td class="num">418</td><td class="num">€30,72</td><td class="num"><strong>€78.920</strong></td><td class="num"><strong style="color:var(--green)">6,15×</strong></td>
+            <td class="center"><span class="badge badge-green">↑</span></td>
+          </tr>
+          <tr>
+            <td class="txt"><strong>Brand Search · Acme</strong><br><small style="color:var(--text-muted)">Search · brand defense</small></td>
+            <td class="txt"><span class="badge" style="background:rgba(66,133,244,0.15);color:#4285F4">Google</span></td>
+            <td class="num">€4.280</td><td class="num">142K</td><td class="num">18.620</td><td class="num">13,11%</td><td class="num">312</td><td class="num">€13,72</td><td class="num"><strong>€68.420</strong></td><td class="num"><strong style="color:var(--green)">15,98×</strong></td>
+            <td class="center"><span class="badge badge-green">↑</span></td>
+          </tr>
+          <tr>
+            <td class="txt"><strong>AAS · Conversions Italy</strong><br><small style="color:var(--text-muted)">Advantage+ Shopping</small></td>
+            <td class="txt"><span class="badge" style="background:rgba(24,119,242,0.15);color:#1877F2">Meta</span></td>
+            <td class="num">€11.620</td><td class="num">2,18M</td><td class="num">42.180</td><td class="num">1,93%</td><td class="num">298</td><td class="num">€38,99</td><td class="num"><strong>€60.380</strong></td><td class="num"><strong style="color:var(--green)">5,20×</strong></td>
+            <td class="center"><span class="badge badge-green">↑</span></td>
+          </tr>
+          <tr>
+            <td class="txt"><strong>Retargeting · 30d Buyers</strong><br><small style="color:var(--text-muted)">CAS · custom audience</small></td>
+            <td class="txt"><span class="badge" style="background:rgba(24,119,242,0.15);color:#1877F2">Meta</span></td>
+            <td class="num">€3.420</td><td class="num">580K</td><td class="num">14.280</td><td class="num">2,46%</td><td class="num">187</td><td class="num">€18,29</td><td class="num"><strong>€38.920</strong></td><td class="num"><strong style="color:var(--green)">11,38×</strong></td>
+            <td class="center"><span class="badge badge-green">↑</span></td>
+          </tr>
+          <tr>
+            <td class="txt"><strong>Search Generic · Categoria A</strong></td>
+            <td class="txt"><span class="badge" style="background:rgba(66,133,244,0.15);color:#4285F4">Google</span></td>
+            <td class="num">€8.120</td><td class="num">412K</td><td class="num">12.840</td><td class="num">3,11%</td><td class="num">142</td><td class="num">€57,18</td><td class="num"><strong>€28.420</strong></td><td class="num">3,50×</td>
+            <td class="center"><span class="badge badge-amber">→</span></td>
+          </tr>
+          <tr>
+            <td class="txt"><strong>YouTube Demand Gen</strong><br><small style="color:var(--text-muted)">Video conversions</small></td>
+            <td class="txt"><span class="badge" style="background:rgba(66,133,244,0.15);color:#4285F4">Google</span></td>
+            <td class="num">€5.820</td><td class="num">1,82M</td><td class="num">8.420</td><td class="num">0,46%</td><td class="num">98</td><td class="num">€59,39</td><td class="num"><strong>€22.180</strong></td><td class="num">3,81×</td>
+            <td class="center"><span class="badge badge-amber">→</span></td>
+          </tr>
+          <tr>
+            <td class="txt"><strong>Spark Ads · Creator Mix</strong></td>
+            <td class="txt"><span class="badge" style="background:rgba(255,0,80,0.15);color:#FF0050">TikTok</span></td>
+            <td class="num">€7.420</td><td class="num">1,42M</td><td class="num">22.180</td><td class="num">1,56%</td><td class="num">142</td><td class="num">€52,25</td><td class="num"><strong>€19.840</strong></td><td class="num">2,67×</td>
+            <td class="center"><span class="badge badge-amber">→</span></td>
+          </tr>
+          <tr>
+            <td class="txt"><strong>Prospecting · Lookalike 1%</strong></td>
+            <td class="txt"><span class="badge" style="background:rgba(24,119,242,0.15);color:#1877F2">Meta</span></td>
+            <td class="num">€8.220</td><td class="num">1,68M</td><td class="num">28.420</td><td class="num">1,69%</td><td class="num">142</td><td class="num">€57,89</td><td class="num"><strong>€18.420</strong></td><td class="num">2,24×</td>
+            <td class="center"><span class="badge badge-amber">→</span></td>
+          </tr>
+          <tr>
+            <td class="txt"><strong>Lead Gen · Decision Makers</strong><br><small style="color:var(--text-muted)">Single Image · sponsorizzata</small></td>
+            <td class="txt"><span class="badge" style="background:rgba(10,102,194,0.15);color:#0A66C2">LinkedIn</span></td>
+            <td class="num">€4.820</td><td class="num">82K</td><td class="num">1.420</td><td class="num">1,73%</td><td class="num">42</td><td class="num">€114,76</td><td class="num"><strong>€8.420</strong></td><td class="num" style="color:var(--red)">1,75×</td>
+            <td class="center"><span class="badge badge-red">↓</span></td>
+          </tr>
+          <tr>
+            <td class="txt"><strong>Display · Remarketing 7d</strong></td>
+            <td class="txt"><span class="badge" style="background:rgba(66,133,244,0.15);color:#4285F4">Google</span></td>
+            <td class="num">€2.180</td><td class="num">1,28M</td><td class="num">3.820</td><td class="num">0,30%</td><td class="num">28</td><td class="num">€77,86</td><td class="num"><strong>€4.820</strong></td><td class="num" style="color:var(--red)">2,21×</td>
+            <td class="center"><span class="badge badge-red">↓</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TOP CREATIVES -->
+  <div class="block">
+    <div class="block-head">
+      <div>
+        <h2>Top Creatives</h2>
+        <div class="sub">Asset più performanti per ROAS · 30 giorni</div>
+      </div>
+      <div class="legend">
+        <span style="font-size:12px;color:var(--text-muted)">Click sulla creatività per drill-down</span>
+      </div>
+    </div>
+    <div class="creatives">
+      <div class="creative">
+        <div class="thumb" style="--grad:linear-gradient(135deg,#FF6B6B,#FF8E53)">
+          <span class="thumb-rank">1</span>
+          <span class="thumb-plat m">M</span>
+          <span class="thumb-emoji">🛍️</span>
+        </div>
+        <div class="info">
+          <div class="info-name">UGC · Unboxing edizione limitata</div>
+          <div class="info-stats">
+            <div>ROAS <strong>8,42×</strong></div>
+            <div>CTR <strong>3,2%</strong></div>
+            <div>Spend €4.820</div>
+            <div>Rev €40.6K</div>
+          </div>
+        </div>
+      </div>
+      <div class="creative">
+        <div class="thumb" style="--grad:linear-gradient(135deg,#667EEA,#764BA2)">
+          <span class="thumb-rank">2</span>
+          <span class="thumb-plat g">G</span>
+          <span class="thumb-emoji">🎬</span>
+        </div>
+        <div class="info">
+          <div class="info-name">Video Hook · Before/After 15s</div>
+          <div class="info-stats">
+            <div>ROAS <strong>6,82×</strong></div>
+            <div>VTR <strong>62%</strong></div>
+            <div>Spend €3.640</div>
+            <div>Rev €24.8K</div>
+          </div>
+        </div>
+      </div>
+      <div class="creative">
+        <div class="thumb" style="--grad:linear-gradient(135deg,#11998E,#38EF7D)">
+          <span class="thumb-rank">3</span>
+          <span class="thumb-plat m">M</span>
+          <span class="thumb-emoji">⭐</span>
+        </div>
+        <div class="info">
+          <div class="info-name">Carosello · 4.8★ recensioni</div>
+          <div class="info-stats">
+            <div>ROAS <strong>5,94×</strong></div>
+            <div>CTR <strong>2,8%</strong></div>
+            <div>Spend €2.840</div>
+            <div>Rev €16.9K</div>
+          </div>
+        </div>
+      </div>
+      <div class="creative">
+        <div class="thumb" style="--grad:linear-gradient(135deg,#F093FB,#F5576C)">
+          <span class="thumb-rank">4</span>
+          <span class="thumb-plat t">T</span>
+          <span class="thumb-emoji">🎭</span>
+        </div>
+        <div class="info">
+          <div class="info-name">Spark Ad · Creator @miariv</div>
+          <div class="info-stats">
+            <div>ROAS <strong>5,18×</strong></div>
+            <div>VTR <strong>78%</strong></div>
+            <div>Spend €2.180</div>
+            <div>Rev €11.3K</div>
+          </div>
+        </div>
+      </div>
+      <div class="creative">
+        <div class="thumb" style="--grad:linear-gradient(135deg,#FA709A,#FEE140)">
+          <span class="thumb-rank">5</span>
+          <span class="thumb-plat g">G</span>
+          <span class="thumb-emoji">🏆</span>
+        </div>
+        <div class="info">
+          <div class="info-name">PMax Asset · Premium claim</div>
+          <div class="info-stats">
+            <div>ROAS <strong>4,82×</strong></div>
+            <div>CTR <strong>2,4%</strong></div>
+            <div>Spend €1.840</div>
+            <div>Rev €8.9K</div>
+          </div>
+        </div>
+      </div>
+      <div class="creative">
+        <div class="thumb" style="--grad:linear-gradient(135deg,#4FACFE,#00F2FE)">
+          <span class="thumb-rank">6</span>
+          <span class="thumb-plat m">M</span>
+          <span class="thumb-emoji">💸</span>
+        </div>
+        <div class="info">
+          <div class="info-name">Static · Black Friday teaser</div>
+          <div class="info-stats">
+            <div>ROAS <strong>4,42×</strong></div>
+            <div>CTR <strong>2,1%</strong></div>
+            <div>Spend €1.640</div>
+            <div>Rev €7.2K</div>
+          </div>
+        </div>
+      </div>
+      <div class="creative">
+        <div class="thumb" style="--grad:linear-gradient(135deg,#A8EDEA,#FED6E3)">
+          <span class="thumb-rank">7</span>
+          <span class="thumb-plat l">L</span>
+          <span class="thumb-emoji">📊</span>
+        </div>
+        <div class="info">
+          <div class="info-name">Whitepaper · ROI guide B2B</div>
+          <div class="info-stats">
+            <div>CPL <strong>€48</strong></div>
+            <div>SQL <strong>32%</strong></div>
+            <div>Spend €1.420</div>
+            <div>MQL 30</div>
+          </div>
+        </div>
+      </div>
+      <div class="creative">
+        <div class="thumb" style="--grad:linear-gradient(135deg,#FCB045,#FD1D1D)">
+          <span class="thumb-rank">8</span>
+          <span class="thumb-plat m">M</span>
+          <span class="thumb-emoji">🔥</span>
+        </div>
+        <div class="info">
+          <div class="info-name">Reels · Trending audio remix</div>
+          <div class="info-stats">
+            <div>ROAS <strong>3,98×</strong></div>
+            <div>VTR <strong>54%</strong></div>
+            <div>Spend €1.220</div>
+            <div>Rev €4.9K</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Dashboard powered by FIXUP · GA4 + Google Ads + Meta Ads + LinkedIn + TikTok via tracking server-side · sync ogni 60 min</p>
+    <p style="margin-top:6px"><a href="https://cal.com/max-pavesio/discovery-call">📅 Prenota call discovery</a> · <a href="mailto:info@fixup.agency">✉️ info@fixup.agency</a> · <a href="https://fixup.agency" target="_blank" rel="noopener">🌐 fixup.agency</a></p>
+  </footer>
+
+</div>
+
+<script>
+  // Build trend chart (Spend orange, Revenue yellow, ROAS green dot)
+  (function() {
+    const days = 30;
+    const W = 1200, H = 280, PAD_L = 50, PAD_R = 30, PAD_T = 20, PAD_B = 30;
+    const innerW = W - PAD_L - PAD_R;
+    const innerH = H - PAD_T - PAD_B;
+
+    const seed = (n) => Math.sin(n * 12.9898) * 43758.5453;
+    const rand = (i, base, amp) => base + (Math.abs(seed(i)) % 1 - 0.5) * 2 * amp;
+
+    const spend = [], revenue = [], roas = [];
+    for (let i = 0; i < days; i++) {
+      const trend = i / days;
+      const s = 1800 + trend * 1900 + rand(i, 0, 600);
+      const r = s * (4.0 + trend * 1.5 + rand(i + 100, 0, 0.8));
+      spend.push(Math.max(800, s));
+      revenue.push(Math.max(2000, r));
+      roas.push(r / s);
+    }
+
+    const maxV = Math.max(...spend, ...revenue);
+    const minR = Math.min(...roas), maxR = Math.max(...roas);
+
+    const xFor = (i) => PAD_L + (i / (days - 1)) * innerW;
+    const yFor = (v) => PAD_T + innerH - (v / maxV) * innerH;
+    const yForR = (v) => PAD_T + innerH - ((v - minR) / (maxR - minR)) * innerH * 0.8 - innerH * 0.1;
+
+    const path = (arr, smooth=true) => {
+      if (!smooth) return arr.map((v,i)=>`${i?'L':'M'}${xFor(i)},${yFor(v)}`).join(' ');
+      // Smooth curve (cubic Bézier)
+      let d = `M${xFor(0)},${yFor(arr[0])}`;
+      for (let i=1; i<arr.length; i++) {
+        const x0 = xFor(i-1), y0 = yFor(arr[i-1]);
+        const x1 = xFor(i),   y1 = yFor(arr[i]);
+        const cx = (x0+x1)/2;
+        d += ` C${cx},${y0} ${cx},${y1} ${x1},${y1}`;
+      }
+      return d;
+    };
+
+    const areaPath = (arr) => {
+      let d = `M${xFor(0)},${PAD_T+innerH}`;
+      for (let i=0; i<arr.length; i++) {
+        d += ` L${xFor(i)},${yFor(arr[i])}`;
+      }
+      d += ` L${xFor(arr.length-1)},${PAD_T+innerH} Z`;
+      return d;
+    };
+
+    let svg = '';
+    // Defs
+    svg += `<defs>
+      <linearGradient id="gradSpend" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0%" stop-color="#EA5D0B" stop-opacity="0.3"/>
+        <stop offset="100%" stop-color="#EA5D0B" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="gradRev" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0%" stop-color="#FFE14D" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="#FFE14D" stop-opacity="0"/>
+      </linearGradient>
+    </defs>`;
+
+    // Grid lines
+    for (let i = 0; i <= 4; i++) {
+      const y = PAD_T + (innerH / 4) * i;
+      svg += `<line class="grid-line" x1="${PAD_L}" y1="${y}" x2="${W-PAD_R}" y2="${y}"/>`;
+      const v = maxV * (1 - i/4);
+      svg += `<text class="chart-tip" x="${PAD_L-8}" y="${y+3}" text-anchor="end">€${(v/1000).toFixed(0)}K</text>`;
+    }
+    // X axis labels (every 5 days)
+    for (let i = 0; i < days; i += 5) {
+      svg += `<text class="chart-tip" x="${xFor(i)}" y="${H-8}" text-anchor="middle">D-${days-i}</text>`;
+    }
+
+    // Area fills
+    svg += `<path d="${areaPath(revenue)}" fill="url(#gradRev)" stroke="none"/>`;
+    svg += `<path d="${areaPath(spend)}" fill="url(#gradSpend)" stroke="none"/>`;
+
+    // Lines
+    svg += `<path d="${path(revenue)}" fill="none" stroke="#FFE14D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+    svg += `<path d="${path(spend)}" fill="none" stroke="#EA5D0B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+    // ROAS dots
+    for (let i = 0; i < days; i++) {
+      svg += `<circle cx="${xFor(i)}" cy="${yForR(roas[i])}" r="2.5" fill="#22C55E" opacity="0.7"/>`;
+    }
+
+    document.getElementById('trend-chart').innerHTML = svg;
+  })();
+</script>
+
+</body>
+</html>
