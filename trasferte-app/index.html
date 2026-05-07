@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIXUP · Gestione Trasferte (Demo)</title>
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary: #EA5D0B;
+    --accent: #FFE14D;
+    --bg: #fafafa;
+    --card: #ffffff;
+    --border: #e4e4e7;
+    --border-strong: #d4d4d8;
+    --text: #18181b;
+    --text-dim: #52525b;
+    --text-muted: #a1a1aa;
+    --zinc-100: #f4f4f5;
+    --zinc-50: #fafafa;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --red: #dc2626;
+    --red-bg: #fee2e2;
+    --amber: #d97706;
+    --amber-bg: #fef3c7;
+    --blue: #2563eb;
+    --blue-bg: #dbeafe;
+  }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .demo-banner {
+    background: linear-gradient(90deg, var(--primary), #EE7D3B);
+    color: #fff;
+    padding: 8px 20px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .demo-banner a { color: var(--accent); text-decoration: none; }
+  .demo-banner a:hover { text-decoration: underline; }
+
+  /* Top nav */
+  .top-nav {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 14px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .brand-logo {
+    background: var(--text);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  .brand-title { font-size: 14px; font-weight: 600; color: var(--text); }
+  .brand-title small { color: var(--text-muted); font-weight: 400; margin-left: 4px; }
+
+  .nav-tabs { display: flex; gap: 4px; }
+  .tab-btn {
+    background: none;
+    border: none;
+    padding: 8px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text-dim);
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .tab-btn:hover { background: var(--zinc-100); color: var(--text); }
+  .tab-btn.active { background: var(--text); color: #fff; }
+
+  .nav-user { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-dim); }
+  .avatar { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; }
+
+  /* Main */
+  main { max-width: 1180px; margin: 0 auto; padding: 28px 24px 60px; }
+  .page-header { margin-bottom: 24px; }
+  .page-header h1 { font-size: 26px; font-weight: 700; }
+  .page-header .sub { color: var(--text-dim); font-size: 14px; margin-top: 3px; }
+
+  .page { display: none; }
+  .page.active { display: block; animation: fadeIn 0.18s ease; }
+  @keyframes fadeIn { from { opacity:0; transform: translateY(4px); } to { opacity:1; transform: translateY(0); } }
+
+  /* Card / Form */
+  .card-block { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-bottom: 18px; }
+  .form-section { margin-bottom: 28px; }
+  .form-section h3 { font-size: 13px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .form-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 12px; font-weight: 600; color: var(--text-dim); }
+  .field label .req { color: var(--red); margin-left: 2px; }
+  .field input, .field select, .field textarea {
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    padding: 9px 11px;
+    font-size: 13px;
+    color: var(--text);
+    font-family: inherit;
+    background: #fff;
+    transition: border-color 0.15s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none; border-color: var(--text); box-shadow: 0 0 0 3px rgba(0,0,0,0.04);
+  }
+  .field .hint { font-size: 11px; color: var(--text-muted); }
+
+  .btn {
+    padding: 9px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border-strong);
+    background: #fff;
+    color: var(--text);
+    font-weight: 500;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .btn:hover { background: var(--zinc-100); }
+  .btn-primary { background: var(--text); color: #fff; border-color: var(--text); }
+  .btn-primary:hover { background: #27272a; }
+  .btn-orange { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .btn-orange:hover { background: #d65109; }
+  .btn-danger { background: #fff; color: var(--red); border-color: var(--red); }
+  .btn-danger:hover { background: var(--red-bg); }
+
+  .form-actions { display: flex; gap: 10px; justify-content: flex-end; padding-top: 20px; border-top: 1px solid var(--border); margin-top: 20px; }
+
+  /* Percorsi auto */
+  .percorso-row { display: grid; grid-template-columns: 1fr 1fr 110px 110px 40px; gap: 8px; align-items: end; padding: 10px; background: var(--zinc-50); border-radius: 8px; margin-bottom: 8px; }
+  .add-link { color: var(--primary); font-size: 13px; font-weight: 600; cursor: pointer; user-select: none; }
+  .add-link:hover { text-decoration: underline; }
+  .icon-btn { background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 4px; border-radius: 4px; font-size: 16px; }
+  .icon-btn:hover { background: var(--red-bg); color: var(--red); }
+
+  /* Spese tabs (azienda/dipendente) */
+  .spese-toggle { display: inline-flex; background: var(--zinc-100); border-radius: 8px; padding: 3px; gap: 2px; margin-bottom: 14px; }
+  .spese-toggle button { background: none; border: none; padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; color: var(--text-dim); cursor: pointer; font-family: inherit; }
+  .spese-toggle button.active { background: #fff; color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+
+  /* Riepilogo box */
+  .riepilogo {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 1px solid #fcd34d;
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 18px 0;
+  }
+  .riepilogo h4 { font-size: 12px; font-weight: 700; color: #78350f; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+  .riepilogo-rows { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; font-size: 13px; }
+  .riepilogo-rows .row { display: flex; justify-content: space-between; padding: 4px 0; }
+  .riepilogo-rows .row.total { border-top: 1px solid #fcd34d; padding-top: 8px; margin-top: 4px; font-weight: 700; font-size: 16px; color: #78350f; }
+  .riepilogo-rows strong { color: #1a1a1a; }
+
+  /* Tables */
+  .filter-bar { display: flex; gap: 10px; margin-bottom: 14px; align-items: center; flex-wrap: wrap; }
+  .filter-bar input, .filter-bar select { padding: 8px 11px; border-radius: 8px; border: 1px solid var(--border-strong); font-family: inherit; font-size: 13px; background: #fff; }
+  .filter-bar input { min-width: 220px; }
+
+  .table-wrap { background: #fff; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    background: var(--zinc-50);
+    text-align: left;
+    padding: 11px 14px;
+    font-size: 11px;
+    color: var(--text-dim);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 13px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    vertical-align: middle;
+  }
+  tbody tr:hover { background: var(--zinc-50); }
+  tbody tr:last-child td { border-bottom: none; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.center, th.center { text-align: center; }
+
+  .badge { display: inline-flex; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; line-height: 1.5; }
+  .badge-green { background: var(--green-bg); color: var(--green); }
+  .badge-red { background: var(--red-bg); color: var(--red); }
+  .badge-amber { background: var(--amber-bg); color: var(--amber); }
+  .badge-blue { background: var(--blue-bg); color: var(--blue); }
+  .badge-zinc { background: var(--zinc-100); color: var(--text-dim); }
+
+  .row-actions { display: flex; gap: 6px; justify-content: flex-end; }
+  .row-actions a { color: var(--text-dim); cursor: pointer; padding: 4px 6px; border-radius: 4px; }
+  .row-actions a:hover { background: var(--zinc-100); color: var(--text); }
+  .row-actions a.danger:hover { background: var(--red-bg); color: var(--red); }
+
+  /* Stats / Admin */
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+  .stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+  .stat-icon { font-size: 22px; margin-bottom: 6px; }
+  .stat-label { font-size: 12px; color: var(--text-dim); font-weight: 500; }
+  .stat-value { font-size: 24px; font-weight: 700; margin-top: 4px; }
+  .stat-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+  /* Charts */
+  .charts-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; margin-bottom: 18px; }
+  .h-bar-list { display: flex; flex-direction: column; gap: 10px; }
+  .h-bar-row { display: grid; grid-template-columns: 130px 1fr 90px; gap: 10px; align-items: center; }
+  .h-bar-label { font-size: 12px; color: var(--text-dim); }
+  .h-bar-bg { background: var(--zinc-100); border-radius: 4px; height: 20px; overflow: hidden; }
+  .h-bar-fill { background: linear-gradient(90deg, var(--primary), #EE7D3B); height: 100%; border-radius: 4px; }
+  .h-bar-val { font-size: 12px; font-weight: 600; text-align: right; }
+
+  @media (max-width: 900px) {
+    .form-grid, .form-grid.cols-3, .form-grid.cols-4 { grid-template-columns: 1fr 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .charts-grid { grid-template-columns: 1fr; }
+    .nav-tabs { gap: 0; }
+    .tab-btn { padding: 6px 10px; font-size: 12px; }
+    main { padding: 18px; }
+  }
+  @media (max-width: 580px) {
+    .form-grid, .form-grid.cols-3, .form-grid.cols-4 { grid-template-columns: 1fr; }
+    .percorso-row { grid-template-columns: 1fr 1fr; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .nav-brand .brand-title { display: none; }
+  }
+
+  .tab-bar-inner { display: inline-flex; background: var(--zinc-100); border-radius: 10px; padding: 3px; gap: 2px; margin-bottom: 16px; }
+  .tab-bar-inner button {
+    background: none; border: none; padding: 7px 16px;
+    font-family: inherit; font-size: 13px; font-weight: 500;
+    color: var(--text-dim); border-radius: 8px; cursor: pointer;
+  }
+  .tab-bar-inner button.active { background: #fff; color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+</style>
+</head>
+<body>
+
+<div class="demo-banner">
+  ✈️ DEMO INTERATTIVA · Dati fittizi · App reale FIXUP Gestione Trasferte · <a href="../index.html">← Torna a Value Content</a>
+</div>
+
+<header class="top-nav">
+  <div class="nav-brand">
+    <div class="brand-logo">FIXUP</div>
+    <div class="brand-title">Gestione Trasferte <small>v3</small></div>
+  </div>
+  <div class="nav-tabs">
+    <button class="tab-btn active" data-page="elenco">Elenco trasferte</button>
+    <button class="tab-btn" data-page="nuova">+ Nuova trasferta</button>
+    <button class="tab-btn" data-page="admin">Riepiloghi · Admin</button>
+  </div>
+  <div class="nav-user">
+    <span>Massimiliano Pavesio</span>
+    <div class="avatar">MP</div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ELENCO -->
+  <section class="page active" id="page-elenco">
+    <div class="page-header">
+      <h1>Le mie trasferte</h1>
+      <div class="sub">Storico note spese · rimborso chilometrico ACI · indennità giornaliera</div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat"><div class="stat-icon">✈️</div><div class="stat-label">Trasferte 2026</div><div class="stat-value">12</div><div class="stat-sub">3 in attesa rimborso</div></div>
+      <div class="stat"><div class="stat-icon">💶</div><div class="stat-label">Totale rimborsi</div><div class="stat-value">3.420 €</div><div class="stat-sub">YTD 2026</div></div>
+      <div class="stat"><div class="stat-icon">🚗</div><div class="stat-label">Km percorsi</div><div class="stat-value">4.180 km</div><div class="stat-sub">Tariffa media 0,46 €/km</div></div>
+      <div class="stat"><div class="stat-icon">📅</div><div class="stat-label">Giorni totali</div><div class="stat-value">28</div><div class="stat-sub">Indennità 46,48 €/gg</div></div>
+    </div>
+
+    <div class="filter-bar">
+      <input type="text" placeholder="🔍 Cerca destinazione, dipendente, motivo…">
+      <select><option>Tutti i mesi</option><option>Maggio 2026</option><option>Aprile 2026</option><option>Marzo 2026</option></select>
+      <select><option>Tutti i dipendenti</option><option>Massimiliano Pavesio</option><option>Giacomo Simioni</option></select>
+      <select><option>Tutti i mezzi</option><option>Auto</option><option>Treno</option><option>Aereo</option></select>
+      <button class="btn">Esporta CSV</button>
+      <button class="btn btn-orange" onclick="document.querySelector('[data-page=nuova]').click()">+ Nuova</button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Date</th><th>Dipendente</th><th>Destinazione</th><th>Motivo</th><th class="center">Mezzo</th>
+          <th class="num">Km</th><th class="num">Spese</th><th class="num">Indennità</th><th class="num">Totale</th><th class="center">Stato</th><th></th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>04 - 05 Mag</strong><br><span style="color:var(--text-muted);font-size:11px">2 gg</span></td>
+            <td>M. Pavesio</td>
+            <td>Roma</td>
+            <td>Digital 1to1 Spring 2026</td>
+            <td class="center">🚆 Treno</td>
+            <td class="num">—</td>
+            <td class="num">680,00 €</td>
+            <td class="num">92,96 €</td>
+            <td class="num"><strong>772,96 €</strong></td>
+            <td class="center"><span class="badge badge-amber">In approvazione</span></td>
+            <td class="row-actions"><a title="PDF">📄</a><a title="Modifica">✏️</a><a class="danger" title="Elimina">🗑</a></td>
+          </tr>
+          <tr>
+            <td><strong>22 Apr</strong><br><span style="color:var(--text-muted);font-size:11px">1 gg</span></td>
+            <td>G. Simioni</td>
+            <td>Milano</td>
+            <td>Pitch ING Italia</td>
+            <td class="center">🚗 Auto</td>
+            <td class="num">280</td>
+            <td class="num">42,00 €</td>
+            <td class="num">46,48 €</td>
+            <td class="num"><strong>217,28 €</strong></td>
+            <td class="center"><span class="badge badge-green">Rimborsata</span></td>
+            <td class="row-actions"><a title="PDF">📄</a><a title="Modifica">✏️</a><a class="danger" title="Elimina">🗑</a></td>
+          </tr>
+          <tr>
+            <td><strong>15 - 16 Apr</strong><br><span style="color:var(--text-muted);font-size:11px">2 gg</span></td>
+            <td>M. Pavesio</td>
+            <td>Bologna</td>
+            <td>Audit on-site Pirelli</td>
+            <td class="center">🚆 Treno</td>
+            <td class="num">—</td>
+            <td class="num">385,00 €</td>
+            <td class="num">92,96 €</td>
+            <td class="num"><strong>477,96 €</strong></td>
+            <td class="center"><span class="badge badge-green">Rimborsata</span></td>
+            <td class="row-actions"><a title="PDF">📄</a><a title="Modifica">✏️</a><a class="danger" title="Elimina">🗑</a></td>
+          </tr>
+          <tr>
+            <td><strong>03 Apr</strong><br><span style="color:var(--text-muted);font-size:11px">1 gg</span></td>
+            <td>M. Pavesio</td>
+            <td>Torino</td>
+            <td>Discovery call MTM Group</td>
+            <td class="center">🚗 Auto</td>
+            <td class="num">95</td>
+            <td class="num">28,00 €</td>
+            <td class="num">46,48 €</td>
+            <td class="num"><strong>117,98 €</strong></td>
+            <td class="center"><span class="badge badge-green">Rimborsata</span></td>
+            <td class="row-actions"><a title="PDF">📄</a><a title="Modifica">✏️</a><a class="danger" title="Elimina">🗑</a></td>
+          </tr>
+          <tr>
+            <td><strong>28 Mar</strong><br><span style="color:var(--text-muted);font-size:11px">1 gg</span></td>
+            <td>G. Simioni</td>
+            <td>Genova</td>
+            <td>Onboarding AirWaterTech</td>
+            <td class="center">🚗 Auto</td>
+            <td class="num">220</td>
+            <td class="num">35,00 €</td>
+            <td class="num">46,48 €</td>
+            <td class="num"><strong>182,68 €</strong></td>
+            <td class="center"><span class="badge badge-green">Rimborsata</span></td>
+            <td class="row-actions"><a title="PDF">📄</a><a title="Modifica">✏️</a><a class="danger" title="Elimina">🗑</a></td>
+          </tr>
+          <tr>
+            <td><strong>14 - 16 Mar</strong><br><span style="color:var(--text-muted);font-size:11px">3 gg</span></td>
+            <td>M. Pavesio</td>
+            <td>Berlino</td>
+            <td>QBR cliente DACH</td>
+            <td class="center">✈️ Aereo</td>
+            <td class="num">—</td>
+            <td class="num">1.245,00 €</td>
+            <td class="num">139,44 €</td>
+            <td class="num"><strong>1.384,44 €</strong></td>
+            <td class="center"><span class="badge badge-green">Rimborsata</span></td>
+            <td class="row-actions"><a title="PDF">📄</a><a title="Modifica">✏️</a><a class="danger" title="Elimina">🗑</a></td>
+          </tr>
+          <tr>
+            <td><strong>02 Mar</strong><br><span style="color:var(--text-muted);font-size:11px">1 gg</span></td>
+            <td>G. Simioni</td>
+            <td>Brescia</td>
+            <td>Audit Carrozzeria Tagliente</td>
+            <td class="center">🚗 Auto</td>
+            <td class="num">180</td>
+            <td class="num">22,00 €</td>
+            <td class="num">46,48 €</td>
+            <td class="num"><strong>151,28 €</strong></td>
+            <td class="center"><span class="badge badge-green">Rimborsata</span></td>
+            <td class="row-actions"><a title="PDF">📄</a><a title="Modifica">✏️</a><a class="danger" title="Elimina">🗑</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- NUOVA -->
+  <section class="page" id="page-nuova">
+    <div class="page-header">
+      <h1>Nuova trasferta</h1>
+      <div class="sub">Compila i dati per generare nota spese · indennità ACI calcolata in automatico</div>
+    </div>
+
+    <form class="card-block" onsubmit="event.preventDefault(); alert('Demo: in produzione la trasferta verrebbe salvata e generato il PDF.')">
+
+      <div class="form-section">
+        <h3>👤 Dipendente</h3>
+        <div class="form-grid">
+          <div class="field">
+            <label>Nome <span class="req">*</span></label>
+            <select required>
+              <option value="">Seleziona...</option>
+              <option selected>Massimiliano</option>
+              <option>Giacomo</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Cognome <span class="req">*</span></label>
+            <select required>
+              <option value="">Seleziona...</option>
+              <option selected>Pavesio</option>
+              <option>Simioni</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Codice Fiscale</label>
+            <input type="text" value="PVSMSM85R12L219K" maxlength="16">
+          </div>
+          <div class="field">
+            <label>Azienda</label>
+            <input type="text" value="FIXUP S.r.l." readonly>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>📅 Periodo e destinazione</h3>
+        <div class="form-grid cols-3">
+          <div class="field">
+            <label>Data partenza <span class="req">*</span></label>
+            <input type="date" id="dataPartenza" value="2026-05-04" required>
+          </div>
+          <div class="field">
+            <label>Data ritorno <span class="req">*</span></label>
+            <input type="date" id="dataRitorno" value="2026-05-05" required>
+          </div>
+          <div class="field">
+            <label>Giorni</label>
+            <input type="text" id="giorni" value="2" readonly>
+          </div>
+          <div class="field">
+            <label>Destinazione <span class="req">*</span></label>
+            <input type="text" value="Roma" required>
+          </div>
+          <div class="field" style="grid-column: span 2">
+            <label>Motivo della trasferta <span class="req">*</span></label>
+            <input type="text" value="Digital 1to1 Spring 2026 · 13 meeting con prospect" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>🚗 Mezzo di trasporto</h3>
+        <div class="form-grid">
+          <div class="field">
+            <label>Mezzo</label>
+            <select id="mezzo" onchange="toggleAuto()">
+              <option value="auto">Auto</option>
+              <option value="treno" selected>Treno</option>
+              <option value="aereo">Aereo</option>
+              <option value="altro">Altro</option>
+            </select>
+          </div>
+          <div class="field" id="modelloAutoField" style="display:none">
+            <label>Modello auto</label>
+            <select>
+              <option>Volkswagen Golf 2.0 TDI</option>
+              <option>Fiat 500 1.0 Hybrid</option>
+              <option>Tesla Model 3 LR</option>
+            </select>
+            <span class="hint">Auto registrate · tariffa ACI 2026 applicata automaticamente</span>
+          </div>
+        </div>
+
+        <div id="autoSection" style="display:none">
+          <h3 style="margin-top:18px">Percorsi · rimborso chilometrico</h3>
+          <div id="percorsi-list">
+            <div class="percorso-row">
+              <div class="field"><label>Partenza</label><input type="text" placeholder="Torino"></div>
+              <div class="field"><label>Destinazione</label><input type="text" placeholder="Milano"></div>
+              <div class="field"><label>Km</label><input type="number" min="0" value="0"></div>
+              <div class="field"><label>€/km</label><input type="number" step="0.01" value="0.46"></div>
+              <button type="button" class="icon-btn" title="Rimuovi">✕</button>
+            </div>
+          </div>
+          <div class="add-link" onclick="addPercorso()">+ Aggiungi percorso</div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>💶 Indennità giornaliera</h3>
+        <div class="form-grid cols-3">
+          <div class="field">
+            <label>Indennità giornaliera (€)</label>
+            <input type="number" step="0.01" id="indennita" value="46.48" oninput="aggiornaTotali()">
+            <span class="hint">Limite esente Italia 46,48 € · Estero 77,47 €</span>
+          </div>
+          <div class="field">
+            <label>Giorni</label>
+            <input type="text" value="2" id="giorniInd" readonly>
+          </div>
+          <div class="field">
+            <label>Totale indennità</label>
+            <input type="text" value="92,96 €" id="totIndennita" readonly style="font-weight:600">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>🧾 Spese sostenute</h3>
+        <div class="spese-toggle">
+          <button type="button" class="active" onclick="toggleSpese(this,0)">Pagate dal dipendente</button>
+          <button type="button" onclick="toggleSpese(this,1)">Pagate dall'azienda</button>
+        </div>
+
+        <div class="form-grid cols-4" id="spese-dipendente">
+          <div class="field"><label>Vitto / pasti</label><input type="number" step="0.01" value="120" oninput="aggiornaTotali()" data-key="vitto"></div>
+          <div class="field"><label>Alloggio</label><input type="number" step="0.01" value="380" oninput="aggiornaTotali()" data-key="alloggio"></div>
+          <div class="field"><label>Trasporto</label><input type="number" step="0.01" value="180" oninput="aggiornaTotali()" data-key="trasporto"></div>
+          <div class="field"><label>Altro</label><input type="number" step="0.01" value="0" oninput="aggiornaTotali()" data-key="altro"></div>
+        </div>
+
+        <div class="form-grid cols-4" id="spese-azienda" style="display:none">
+          <div class="field"><label>Vitto / pasti</label><input type="number" step="0.01" value="0"></div>
+          <div class="field"><label>Alloggio</label><input type="number" step="0.01" value="0"></div>
+          <div class="field"><label>Trasporto</label><input type="number" step="0.01" value="0"></div>
+          <div class="field"><label>Altro</label><input type="number" step="0.01" value="0"></div>
+        </div>
+      </div>
+
+      <div class="riepilogo">
+        <h4>📊 Riepilogo nota spese</h4>
+        <div class="riepilogo-rows">
+          <div class="row"><span>Spese dipendente</span><strong id="rSpese">680,00 €</strong></div>
+          <div class="row"><span>Indennità giornaliera</span><strong id="rIndennita">92,96 €</strong></div>
+          <div class="row"><span>Rimborso chilometrico</span><strong id="rKm">0,00 €</strong></div>
+          <div class="row"><span>Spese azienda</span><strong id="rAzienda">0,00 €</strong></div>
+          <div class="row total" style="grid-column: 1 / -1"><span>Totale rimborso al dipendente</span><strong id="rTotale">772,96 €</strong></div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="field">
+          <label>Note</label>
+          <textarea rows="3" placeholder="Eventuali note...">Trasferta networking B2B · 13 meeting prospect digital 1to1 · materiale Notion + organigramma Personal OS</textarea>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>📎 Allegati ricevute</h3>
+        <div style="background:var(--zinc-50); border: 2px dashed var(--border-strong); border-radius: 10px; padding: 28px; text-align: center; color: var(--text-muted);">
+          📤 Trascina qui le ricevute (PDF, JPG, PNG) o <a class="add-link">sfoglia file</a>
+          <div style="font-size:11px;margin-top:6px">Max 5 MB · max 10 file</div>
+        </div>
+        <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:8px">
+          <span class="badge badge-zinc">📎 hotel-roma.pdf · 240 KB</span>
+          <span class="badge badge-zinc">📎 ricevuta-treno-andata.pdf · 110 KB</span>
+          <span class="badge badge-zinc">📎 ricevuta-treno-ritorno.pdf · 108 KB</span>
+          <span class="badge badge-zinc">📎 ristorante-04mag.jpg · 1.2 MB</span>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn">Annulla</button>
+        <button type="button" class="btn">Salva bozza</button>
+        <button type="submit" class="btn btn-orange">Crea trasferta + PDF</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ADMIN -->
+  <section class="page" id="page-admin">
+    <div class="page-header">
+      <h1>Riepiloghi · Admin</h1>
+      <div class="sub">Vista amministratore · approvazione, esportazioni, riepiloghi annuali</div>
+    </div>
+
+    <div class="tab-bar-inner">
+      <button class="active">Mensile</button>
+      <button>Annuale</button>
+      <button>Per dipendente</button>
+      <button>Per cliente</button>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat"><div class="stat-icon">⏳</div><div class="stat-label">In approvazione</div><div class="stat-value">3</div><div class="stat-sub">1.220 € da approvare</div></div>
+      <div class="stat"><div class="stat-icon">💰</div><div class="stat-label">Totale rimborsato 2026</div><div class="stat-value">3.420 €</div><div class="stat-sub">Tot azienda 580 €</div></div>
+      <div class="stat"><div class="stat-icon">📍</div><div class="stat-label">Destinazioni uniche</div><div class="stat-value">9</div><div class="stat-sub">2 internazionali</div></div>
+      <div class="stat"><div class="stat-icon">📈</div><div class="stat-label">Trend YoY</div><div class="stat-value" style="color:var(--green)">+24%</div><div class="stat-sub">vs Mag 2025</div></div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="card-block">
+        <h3 style="font-size:14px;margin-bottom:14px">Spese per mese</h3>
+        <div class="h-bar-list">
+          <div class="h-bar-row"><span class="h-bar-label">Maggio 2026</span><div class="h-bar-bg"><div class="h-bar-fill" style="width:45%"></div></div><span class="h-bar-val">772,96 €</span></div>
+          <div class="h-bar-row"><span class="h-bar-label">Aprile 2026</span><div class="h-bar-bg"><div class="h-bar-fill" style="width:48%"></div></div><span class="h-bar-val">813,22 €</span></div>
+          <div class="h-bar-row"><span class="h-bar-label">Marzo 2026</span><div class="h-bar-bg"><div class="h-bar-fill" style="width:100%"></div></div><span class="h-bar-val">1.718,40 €</span></div>
+          <div class="h-bar-row"><span class="h-bar-label">Febbraio 2026</span><div class="h-bar-bg"><div class="h-bar-fill" style="width:8%"></div></div><span class="h-bar-val">142,00 €</span></div>
+          <div class="h-bar-row"><span class="h-bar-label">Gennaio 2026</span><div class="h-bar-bg"><div class="h-bar-fill" style="width:0%"></div></div><span class="h-bar-val">0 €</span></div>
+        </div>
+      </div>
+      <div class="card-block">
+        <h3 style="font-size:14px;margin-bottom:14px">Per dipendente</h3>
+        <div class="h-bar-list">
+          <div class="h-bar-row"><span class="h-bar-label">M. Pavesio</span><div class="h-bar-bg"><div class="h-bar-fill" style="width:100%"></div></div><span class="h-bar-val">2.752,40 €</span></div>
+          <div class="h-bar-row"><span class="h-bar-label">G. Simioni</span><div class="h-bar-bg"><div class="h-bar-fill" style="width:24%"></div></div><span class="h-bar-val">668,24 €</span></div>
+        </div>
+        <h3 style="font-size:14px;margin:22px 0 14px">Per mezzo</h3>
+        <div class="h-bar-list">
+          <div class="h-bar-row"><span class="h-bar-label">✈️ Aereo</span><div class="h-bar-bg"><div class="h-bar-fill" style="width:80%"></div></div><span class="h-bar-val">1.384 €</span></div>
+          <div class="h-bar-row"><span class="h-bar-label">🚆 Treno</span><div class="h-bar-bg"><div class="h-bar-fill" style="width:73%"></div></div><span class="h-bar-val">1.250 €</span></div>
+          <div class="h-bar-row"><span class="h-bar-label">🚗 Auto</span><div class="h-bar-bg"><div class="h-bar-fill" style="width:45%"></div></div><span class="h-bar-val">786 €</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-block">
+      <h3 style="font-size:14px;margin-bottom:14px">Trasferte in attesa di approvazione</h3>
+      <div class="table-wrap" style="border:none;margin:0">
+        <table>
+          <thead><tr>
+            <th>Dipendente</th><th>Date</th><th>Destinazione</th><th>Motivo</th><th class="num">Totale</th><th class="center">Allegati</th><th class="center">Azione</th>
+          </tr></thead>
+          <tbody>
+            <tr><td>M. Pavesio</td><td>04-05 Mag</td><td>Roma</td><td>Digital 1to1 Spring</td><td class="num"><strong>772,96 €</strong></td><td class="center">4</td><td class="center"><button class="btn btn-orange" style="padding:5px 10px;font-size:12px">Approva</button> <button class="btn btn-danger" style="padding:5px 10px;font-size:12px">Rifiuta</button></td></tr>
+            <tr><td>G. Simioni</td><td>30 Apr</td><td>Verona</td><td>Audit on-site Salaris</td><td class="num"><strong>284,50 €</strong></td><td class="center">3</td><td class="center"><button class="btn btn-orange" style="padding:5px 10px;font-size:12px">Approva</button> <button class="btn btn-danger" style="padding:5px 10px;font-size:12px">Rifiuta</button></td></tr>
+            <tr><td>M. Pavesio</td><td>26 Apr</td><td>Como</td><td>Pitch Studio Borzi</td><td class="num"><strong>162,80 €</strong></td><td class="center">2</td><td class="center"><button class="btn btn-orange" style="padding:5px 10px;font-size:12px">Approva</button> <button class="btn btn-danger" style="padding:5px 10px;font-size:12px">Rifiuta</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+  // Tab navigation
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-page');
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + target).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    });
+  });
+
+  // Toggle auto section
+  function toggleAuto() {
+    const m = document.getElementById('mezzo').value;
+    document.getElementById('autoSection').style.display = m === 'auto' ? 'block' : 'none';
+    document.getElementById('modelloAutoField').style.display = m === 'auto' ? 'flex' : 'none';
+  }
+
+  // Toggle spese
+  function toggleSpese(btn, idx) {
+    btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('spese-dipendente').style.display = idx === 0 ? 'grid' : 'none';
+    document.getElementById('spese-azienda').style.display = idx === 1 ? 'grid' : 'none';
+  }
+
+  // Add percorso
+  function addPercorso() {
+    const list = document.getElementById('percorsi-list');
+    const row = document.createElement('div');
+    row.className = 'percorso-row';
+    row.innerHTML = `
+      <div class="field"><label>Partenza</label><input type="text"></div>
+      <div class="field"><label>Destinazione</label><input type="text"></div>
+      <div class="field"><label>Km</label><input type="number" min="0" value="0"></div>
+      <div class="field"><label>€/km</label><input type="number" step="0.01" value="0.46"></div>
+      <button type="button" class="icon-btn" title="Rimuovi" onclick="this.parentElement.remove()">✕</button>`;
+    list.appendChild(row);
+  }
+
+  // Live calculation
+  function calcGiorni() {
+    const a = new Date(document.getElementById('dataPartenza').value);
+    const b = new Date(document.getElementById('dataRitorno').value);
+    const ms = b - a;
+    const g = Math.max(1, Math.round(ms / 86400000) + 1);
+    document.getElementById('giorni').value = g;
+    document.getElementById('giorniInd').value = g;
+    return g;
+  }
+  function aggiornaTotali() {
+    const g = calcGiorni();
+    const ind = parseFloat(document.getElementById('indennita').value) || 0;
+    const totInd = g * ind;
+    document.getElementById('totIndennita').value = totInd.toLocaleString('it-IT', { style:'currency', currency:'EUR' });
+
+    const spese = ['vitto','alloggio','trasporto','altro'].reduce((sum, k) => {
+      const el = document.querySelector(`#spese-dipendente input[data-key=${k}]`);
+      return sum + (parseFloat(el.value) || 0);
+    }, 0);
+
+    document.getElementById('rSpese').textContent = spese.toLocaleString('it-IT', {style:'currency', currency:'EUR'});
+    document.getElementById('rIndennita').textContent = totInd.toLocaleString('it-IT', {style:'currency', currency:'EUR'});
+    const tot = spese + totInd;
+    document.getElementById('rTotale').textContent = tot.toLocaleString('it-IT', {style:'currency', currency:'EUR'});
+  }
+  document.getElementById('dataPartenza').addEventListener('input', aggiornaTotali);
+  document.getElementById('dataRitorno').addEventListener('input', aggiornaTotali);
+  aggiornaTotali();
+</script>
+
+</body>
+</html>
