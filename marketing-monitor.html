@@ -329,12 +329,12 @@
     <p><strong>Esecuzione:</strong> 100% cloud · indipendente da PC del PM · log auditabile su GitHub · email recapitate ai destinatari giusti per ogni cliente</p>
   </div>
 
-  <blockquote><strong>Use case interno FIXUP.</strong> 11 account adv monitorati ogni giorno (8 brand Michael Vittori + 3 fixup). Le anomalie arrivano in inbox <em>prima</em> della prima riunione del mattino, non a fine settimana quando il danno è già fatto.</blockquote>
+  <blockquote><strong>Use case agenzia.</strong> 50 account adv monitorati ogni giorno su 4 gruppi cliente (ecommerce multi-country + lead-gen B2B). Le anomalie arrivano in inbox <em>prima</em> della prima riunione del mattino, non a fine settimana quando il danno è già fatto.</blockquote>
 
   <div class="hero-stat">
     <div class="label">Tempo controllo manuale evitato</div>
-    <div class="big">~6h/sett</div>
-    <p style="color: var(--text-dim); margin: 0;">11 account × 5min check + correlazione vs benchmark = 1h/giorno PM senior, sostituiti da run automatico</p>
+    <div class="big">~12h/sett</div>
+    <p style="color: var(--text-dim); margin: 0;">50 account × 3min check + correlazione vs benchmark = 2,5h/giorno PM senior, sostituiti da run automatico</p>
   </div>
 
   <h2>📊 Cosa monitora</h2>
@@ -400,12 +400,13 @@
   <p>Punto chiave: ogni stakeholder riceve <strong>solo gli account di sua competenza</strong>. Il bucketing è automatico — un account marcato con <code>extra_recipients</code> genera email separata per quei destinatari, senza esporre il resto del portafoglio.</p>
 
   <div class="email-mock">
-    <div class="em-row"><span class="em-from">From:</span> Marketing Monitor &lt;max.pavesio@fixup.agency&gt;</div>
-    <div class="em-row"><span class="em-from">To:</span> marco.stazi@fixup.agency</div>
-    <div class="em-subject">📊 Daily Adv Report — Fixup · 8 mag 2026</div>
-    <div class="em-row">→ Gentilini · <span class="kpi-light light-green"></span> Ecom · ROAS 3.2 (+8% WoW)</div>
-    <div class="em-row">→ Il Burchiello Antoniana · <span class="kpi-light light-yellow"></span> Ecom · ROAS 1.4 (-15% WoW)</div>
-    <div class="em-row" style="margin-top:10px; color: var(--text-muted); font-size: 12px;">⚠️ <em>Marco riceve solo i 2 account di sua competenza, non tutti gli 11.</em></div>
+    <div class="em-row"><span class="em-from">From:</span> Marketing Monitor &lt;reports@agenzia.example&gt;</div>
+    <div class="em-row"><span class="em-from">To:</span> brand.manager@aurora-fashion.example</div>
+    <div class="em-subject">📊 Daily Adv Report — Aurora Fashion · 8 mag 2026</div>
+    <div class="em-row">→ Aurora Fashion IT · <span class="kpi-light light-green"></span> Ecom · ROAS 3.2 (+8% WoW)</div>
+    <div class="em-row">→ Aurora Fashion FR · <span class="kpi-light light-yellow"></span> Ecom · ROAS 1.4 (-15% WoW)</div>
+    <div class="em-row">→ Aurora Fashion ES · <span class="kpi-light light-green"></span> Ecom · ROAS 2.8 (stabile)</div>
+    <div class="em-row" style="margin-top:10px; color: var(--text-muted); font-size: 12px;">⚠️ <em>Il brand manager riceve solo i 3 account del suo brand, non tutti i 50.</em></div>
   </div>
 
   <h3>Mapping completo gruppi · destinatari · account</h3>
@@ -413,49 +414,64 @@
     <thead><tr><th>Email bucket</th><th>Destinatari</th><th>Account inclusi</th></tr></thead>
     <tbody>
       <tr>
-        <td><strong>michael_vittori</strong></td>
-        <td>max.pavesio@fixup.agency<br>info@michaelvittori.it</td>
-        <td>Gadgetzone · smshosting · postpickr · Eco della Stampa · MTM IT/FR/ES/DE <em>(8)</em></td>
+        <td><strong>aurora_holding</strong></td>
+        <td>pm.holding@aurora.example<br>founder@aurora.example</td>
+        <td>Aurora Retail (5 country) · Aurora Fashion (5) · Helios Commerce (4) · Vega Wines (3) · Lyra Beauty (3) <em>(20)</em></td>
       </tr>
       <tr>
-        <td><strong>fixup</strong></td>
-        <td>max.pavesio@fixup.agency<br>giacomo.simioni@fixup.agency</td>
-        <td>Parutto · Gentilini · Burchiello Antoniana <em>(3)</em></td>
+        <td><strong>polaris_network</strong></td>
+        <td>pm.polaris@example.com<br>head.media@polaris.example</td>
+        <td>Polaris Gadgets · Orion Distribuzione · Sirius Beauty · Nova Foods · Phoenix Mobility · Atlas Industrial · +9 brand <em>(15)</em></td>
       </tr>
       <tr>
-        <td><strong>extra · marco.stazi</strong></td>
-        <td>marco.stazi@fixup.agency</td>
-        <td>Gentilini · Il Burchiello Antoniana <em>(2)</em></td>
+        <td><strong>titan_consortium</strong></td>
+        <td>marketing@titan.example<br>ceo@titan.example</td>
+        <td>Titan Industrial · Nebula Tech · Zenith Pharma · Cygnus Sports · Andromeda Travel · +5 brand <em>(10)</em></td>
       </tr>
       <tr>
-        <td><strong>extra · giulia.quarta</strong></td>
-        <td>giulia.quarta@fixup.agency</td>
-        <td>Gentilini <em>(1)</em></td>
+        <td><strong>pulsar_leadgen</strong></td>
+        <td>lead@pulsar.example</td>
+        <td>Pulsar B2B · Quasar SaaS · Magnetar Finance · Nebula Insurance · Centauri Legal <em>(5)</em></td>
+      </tr>
+      <tr>
+        <td><strong>extra · brand manager</strong></td>
+        <td>brand.manager@aurora-fashion.example</td>
+        <td>Aurora Fashion IT · FR · ES <em>(3)</em></td>
+      </tr>
+      <tr>
+        <td><strong>extra · analyst polaris</strong></td>
+        <td>analyst@polaris.example</td>
+        <td>Sirius Beauty · Nova Foods <em>(2)</em></td>
+      </tr>
+      <tr>
+        <td><strong>extra · account titan</strong></td>
+        <td>account@titan.example</td>
+        <td>Quasar SaaS <em>(1)</em></td>
       </tr>
     </tbody>
   </table>
 
-  <p style="font-size:13px; color: var(--text-muted);">Output run reale: <strong>4 email/giorno</strong> recapitate a 6 stakeholder distinti, ognuna scoped al suo perimetro.</p>
+  <p style="font-size:13px; color: var(--text-muted);">Output run reale: <strong>7 email/giorno</strong> recapitate a 11 stakeholder distinti, ognuna scoped al suo perimetro.</p>
 
   <hr>
 
   <h2>🎯 Logica account-aware</h2>
 
   <div class="phase-box">
-    <h3>Account ecommerce <span class="badge-tag">default</span></h3>
+    <h3>Account ecommerce <span class="badge-tag">default · 45 acct</span></h3>
     <p><strong>Core KPI:</strong> Fatturato, ROAS, Leads</p>
     <p><strong>Warning specifici:</strong> ROAS &lt;1, drop CTR &gt;50%, frequenza Meta &gt;3.5, pacing budget</p>
-    <p><strong>Esempi:</strong> Gadgetzone, smshosting, MTM (4 country), Parutto, Gentilini, Il Burchiello Antoniana</p>
+    <p><strong>Esempi:</strong> Aurora Retail, Aurora Fashion (multi-country), Polaris Gadgets, Helios Commerce, Vega Wines, Sirius Beauty, Nova Foods</p>
   </div>
 
   <div class="phase-box">
-    <h3>Account lead-gen <span class="badge-tag badge-warn">flag dedicato</span></h3>
+    <h3>Account lead-gen <span class="badge-tag badge-warn">flag dedicato · 5 acct</span></h3>
     <p><strong>Core KPI:</strong> Leads, Cost per Lead</p>
     <p><strong>Comportamento:</strong> Fatturato e ROAS mascherati ("n/d" in tabella) · warning ROAS&lt;1 <em>soppresso</em> (non avrebbe senso) · soglia <code>lead_zero_min_spend</code> attiva (alert se spesa &gt;100€/sett senza un solo lead)</p>
-    <p><strong>Esempi:</strong> postpickr, Eco della Stampa</p>
+    <p><strong>Esempi:</strong> Pulsar B2B, Quasar SaaS, Magnetar Finance, Centauri Legal</p>
   </div>
 
-  <blockquote>Senza questa distinzione, postpickr ed Eco Stampa apparivano <span class="kpi-light light-red"></span> rossi ogni mattina (perché conversione = lead, non revenue). Falso allarme costante = email ignorata.</blockquote>
+  <blockquote>Senza questa distinzione, gli account lead-gen apparirebbero <span class="kpi-light light-red"></span> rossi ogni mattina (perché conversione = lead, non revenue). Falso allarme costante = email ignorata.</blockquote>
 
   <hr>
 
@@ -509,17 +525,17 @@
   <div class="phase-box">
     <h3>Aggiungere un nuovo cliente</h3>
     <p>Edit <code>config/accounts.yml</code> → aggiungi blocco account sotto il gruppo giusto → commit. La run successiva (08:23) lo include automaticamente.</p>
-    <pre><code>- name: Nuovo Cliente
-  slug: nuovo-cliente
+    <pre><code>- name: Nuovo Brand
+  slug: nuovo-brand
   platforms: [google, meta]
-  google_customer_id: "123-456-7890"
-  google_login_customer_id: "554-173-2711"
-  meta_account_id: "act_999888777"
+  google_customer_id: "XXX-XXX-XXXX"
+  google_login_customer_id: "YYY-YYY-YYYY"   # MCC agenzia
+  meta_account_id: "act_XXXXXXXXX"
   budget_monthly_eur:
     google: 3000
     meta: 2000
   extra_recipients:
-    - account.manager@cliente.com</code></pre>
+    - account.manager@brand.example</code></pre>
   </div>
 
   <div class="phase-box">
@@ -541,12 +557,12 @@
 
   <h2>⚡ Numeri attuali</h2>
   <div class="stat-grid">
-    <div class="stat-mini"><div class="num">11</div><div class="lbl">Account monitorati</div></div>
+    <div class="stat-mini"><div class="num">50</div><div class="lbl">Account monitorati</div></div>
     <div class="stat-mini"><div class="num">2</div><div class="lbl">Piattaforme</div></div>
     <div class="stat-mini"><div class="num">11</div><div class="lbl">KPI per account</div></div>
     <div class="stat-mini"><div class="num">5</div><div class="lbl">Finestre temporali</div></div>
-    <div class="stat-mini"><div class="num">4</div><div class="lbl">Email/giorno</div></div>
-    <div class="stat-mini"><div class="num">6</div><div class="lbl">Stakeholder</div></div>
+    <div class="stat-mini"><div class="num">7</div><div class="lbl">Email/giorno</div></div>
+    <div class="stat-mini"><div class="num">11</div><div class="lbl">Stakeholder</div></div>
     <div class="stat-mini"><div class="num">08:23</div><div class="lbl">Run schedulato</div></div>
     <div class="stat-mini"><div class="num">365</div><div class="lbl">Run/anno autonomi</div></div>
   </div>

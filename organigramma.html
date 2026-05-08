@@ -812,9 +812,9 @@
         <ul class="item-list">
           <li><code>00_clienti/</code> · cartelle cliente (2 liv)</li>
           <li><code>01_strumenti/</code> · google-ads-manager, tool</li>
-          <li><code>02_app/</code> · amministrazione · casa-malez · trasferte
+          <li><code>02_app/</code> · admin · trasferte · marketing-monitor
             <div class="pills" style="margin-top:6px;">
-              <span class="pill pill-success">fixup-marketing-monitor</span>
+              <span class="pill pill-success">marketing-monitor</span>
               <span class="status-badge status-on" style="margin-left:4px;">LIVE</span>
             </div>
           </li>
@@ -847,7 +847,7 @@
           <div class="card-title"><span class="icon">📡</span> Marketing Monitor</div>
           <span class="status-badge status-on">LIVE</span>
         </div>
-        <p class="item-dim" style="margin-bottom:12px;">Daily AI watchdog · 11 account adv · zero touch · cron 08:23</p>
+        <p class="item-dim" style="margin-bottom:12px;">Daily AI watchdog · 50 account adv · zero touch · cron 08:23</p>
 
         <div class="section-title">DATA FLOW</div>
         <ul class="item-list">
@@ -855,7 +855,7 @@
           <li><code>Google Ads API v20</code> + <code>Meta API v23</code> → metriche</li>
           <li>11 KPI × 5 finestre (W/MTD/MoM/YoY)</li>
           <li>Logica semaforo · core KPI account-aware</li>
-          <li><code>Gmail SMTP</code> → 4 email scoped/giorno</li>
+          <li><code>Gmail SMTP</code> → 7 email scoped/giorno</li>
           <li><code>reports/YYYY-MM-DD/</code> archive in repo</li>
         </ul>
 
@@ -871,7 +871,7 @@
 
         <div class="section-title">CONFIG</div>
         <ul class="item-list">
-          <li><code>02_app/fixup-marketing-monitor/</code></li>
+          <li><code>02_app/marketing-monitor/</code></li>
           <li><code>config/accounts.yml</code> · self-service GitHub UI</li>
           <li class="item-dim">8 GitHub Secrets cifrati · rotation 60d-6m</li>
         </ul>
@@ -881,32 +881,45 @@
       <div class="card" style="border-color: var(--primary); background: linear-gradient(180deg, rgba(234,93,11,0.06) 0%, var(--bg-card) 100%);">
         <div class="card-header">
           <div class="card-title"><span class="icon">📧</span> Distribution Layer</div>
-          <span class="count-badge">4 buckets</span>
+          <span class="count-badge">7 buckets</span>
         </div>
         <p class="item-dim" style="margin-bottom:12px;">Per-recipient bucketing · ognuno vede solo i suoi account</p>
 
-        <div class="section-title">GROUP · MICHAEL VITTORI (8 acct)</div>
+        <div class="section-title">GROUP · AURORA HOLDING (20 acct)</div>
         <ul class="item-list">
-          <li>max.pavesio · info@michaelvittori.it</li>
-          <li class="item-dim">Gadgetzone · smshosting · postpickr · Eco Stampa · MTM IT/FR/ES/DE</li>
+          <li>pm.holding · founder@aurora.example</li>
+          <li class="item-dim">Aurora Retail · Aurora Fashion · Helios Commerce · Vega Wines · Lyra Beauty (multi-country)</li>
         </ul>
 
-        <div class="section-title">GROUP · FIXUP (3 acct)</div>
+        <div class="section-title">GROUP · POLARIS NETWORK (15 acct)</div>
         <ul class="item-list">
-          <li>max.pavesio · giacomo.simioni</li>
-          <li class="item-dim">Parutto · Gentilini · Burchiello Antoniana</li>
+          <li>pm.polaris · head.media@polaris.example</li>
+          <li class="item-dim">Polaris Gadgets · Orion · Sirius · Nova Foods · Phoenix Mobility · Atlas · …</li>
+        </ul>
+
+        <div class="section-title">GROUP · TITAN CONSORTIUM (10 acct)</div>
+        <ul class="item-list">
+          <li>marketing · ceo@titan.example</li>
+          <li class="item-dim">Titan Industrial · Nebula Tech · Zenith Pharma · Cygnus · Andromeda · …</li>
+        </ul>
+
+        <div class="section-title">GROUP · PULSAR LEAD-GEN (5 acct)</div>
+        <ul class="item-list">
+          <li>lead@pulsar.example</li>
+          <li class="item-dim">Pulsar B2B · Quasar SaaS · Magnetar · Nebula Insurance · Centauri Legal</li>
         </ul>
 
         <div class="section-title">EXTRA · SCOPED</div>
         <ul class="item-list">
-          <li><code>marco.stazi</code> → Gentilini + Burchiello (2)</li>
-          <li><code>giulia.quarta</code> → Gentilini (1)</li>
+          <li><code>brand.manager</code> → Aurora Fashion IT/FR/ES (3)</li>
+          <li><code>analyst</code> → Sirius + Nova Foods (2)</li>
+          <li><code>account</code> → Quasar SaaS (1)</li>
         </ul>
 
         <div class="section-title">ACCOUNT TYPE LOGIC</div>
         <div class="pills">
-          <span class="pill pill-success">ecommerce · core: revenue/ROAS/leads</span>
-          <span class="pill">lead_gen · core: leads/CPL · ROAS masked</span>
+          <span class="pill pill-success">ecommerce · 45 acct · core: revenue/ROAS/leads</span>
+          <span class="pill">lead_gen · 5 acct · core: leads/CPL · ROAS masked</span>
         </div>
       </div>
 
@@ -972,7 +985,7 @@
       <div class="stat-label">Skills project</div>
     </div>
     <div class="stat">
-      <div class="stat-value">11</div>
+      <div class="stat-value">50</div>
       <div class="stat-label">Account adv live</div>
     </div>
     <div class="stat">
