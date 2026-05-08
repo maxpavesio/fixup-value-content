@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIXUP · Marketing Monitor — Daily AI Watchdog Adv</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #EA5D0B;
+    --primary-light: #EE7D3B;
+    --primary-dark: #BB4A08;
+    --accent: #FFE14D;
+    --bg: #000000;
+    --bg-card: #202020;
+    --bg-code: #181818;
+    --border: rgba(255, 255, 255, 0.10);
+    --border-strong: rgba(255, 255, 255, 0.18);
+    --text: #F0F0F0;
+    --text-dim: #B0B0B0;
+    --text-muted: #808080;
+    --success: #4ADE80;
+    --warning: #FFE14D;
+    --danger: #F87171;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 500;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    padding: 60px 24px;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(ellipse at 20% 5%, rgba(234, 93, 11, 0.10) 0, transparent 55%),
+      radial-gradient(ellipse at 80% 95%, rgba(255, 225, 77, 0.05) 0, transparent 55%);
+  }
+  .container { max-width: 920px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 48px; }
+  .logo { max-width: 200px; width: 100%; height: auto; margin: 0 auto 18px; display: block; }
+  .claim { color: var(--accent); font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 28px; }
+  h1 {
+    font-size: 38px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    padding: 4px 0;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .meta-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 32px 0;
+    text-align: left;
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+  .meta-block strong { color: var(--text); }
+  h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-top: 56px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-strong);
+  }
+  h3 { font-size: 20px; font-weight: 600; color: var(--text); margin-top: 32px; margin-bottom: 12px; }
+  h4 { font-size: 16px; font-weight: 600; color: var(--accent); margin-top: 22px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  p { margin-bottom: 14px; color: var(--text-dim); }
+  strong { color: var(--text); font-weight: 600; }
+  ul, ol { margin: 0 0 16px 24px; color: var(--text-dim); }
+  li { margin-bottom: 6px; }
+  blockquote {
+    background: rgba(234, 93, 11, 0.08);
+    border-left: 3px solid var(--primary);
+    padding: 16px 22px;
+    border-radius: 0 8px 8px 0;
+    margin: 24px 0;
+    color: var(--text-dim);
+  }
+  blockquote strong { color: var(--accent); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 14px;
+  }
+  th {
+    background: rgba(234, 93, 11, 0.12);
+    color: var(--accent);
+    text-align: left;
+    padding: 12px 14px;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border-strong);
+  }
+  td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-dim);
+    vertical-align: top;
+  }
+  td strong { color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255, 255, 255, 0.03); }
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg-code);
+    color: var(--accent);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 13px;
+    border: 1px solid var(--border);
+  }
+  pre {
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    overflow-x: auto;
+    margin: 20px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: var(--text);
+  }
+  hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+  .hero-stat {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(234, 93, 11, 0.15) 0%, rgba(255, 225, 77, 0.08) 100%);
+    border: 1px solid var(--primary);
+    border-radius: 16px;
+    padding: 32px;
+    margin: 32px 0;
+  }
+  .hero-stat .big {
+    font-size: 56px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    line-height: 1;
+    margin: 8px 0;
+  }
+  .hero-stat .label { color: var(--text-dim); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+  .phase-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin: 20px 0;
+  }
+  .phase-box h3 { color: var(--primary); margin-top: 0; }
+  .badge-tag {
+    display: inline-block;
+    background: rgba(74, 222, 128, 0.15);
+    color: var(--success);
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-left: 8px;
+  }
+  .badge-warn {
+    background: rgba(255, 225, 77, 0.15);
+    color: var(--warning);
+  }
+  .badge-info {
+    background: rgba(96, 165, 250, 0.15);
+    color: #60A5FA;
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .stat-mini {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+  }
+  .stat-mini .num {
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-mini .lbl {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+  .kpi-light {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .light-green { background: var(--success); box-shadow: 0 0 10px rgba(74, 222, 128, 0.5); }
+  .light-yellow { background: var(--warning); box-shadow: 0 0 10px rgba(255, 225, 77, 0.5); }
+  .light-red { background: var(--danger); box-shadow: 0 0 10px rgba(248, 113, 113, 0.5); }
+  .arch-stack {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0;
+  }
+  .arch-stack-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--border);
+  }
+  .arch-stack-row:last-child { border-bottom: none; }
+  .arch-stack-label {
+    flex: 0 0 130px;
+    font-size: 12px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    padding-top: 4px;
+  }
+  .arch-stack-value {
+    flex: 1;
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .arch-stack-value code { font-size: 12px; }
+  .cta-box {
+    background: linear-gradient(135deg, rgba(234, 93, 11, 0.15) 0%, rgba(255, 225, 77, 0.08) 100%);
+    border: 1px solid var(--primary);
+    border-radius: 16px;
+    padding: 36px;
+    text-align: center;
+    margin: 56px 0;
+  }
+  .cta-box h3 { color: var(--text); margin-top: 0; font-size: 22px; }
+  .cta-button {
+    display: inline-block;
+    background: var(--primary);
+    color: var(--bg);
+    padding: 14px 28px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    margin-top: 16px;
+    transition: all 0.2s ease;
+    font-size: 15px;
+  }
+  .cta-button:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(234, 93, 11, 0.3); }
+  footer {
+    text-align: center;
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.8;
+  }
+  footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+  footer a:hover { color: var(--accent); }
+  .badges { display: flex; justify-content: center; align-items: center; gap: 22px; margin-top: 18px; flex-wrap: wrap; }
+  .badges img { max-height: 52px; width: auto; opacity: 0.78; transition: opacity 0.2s ease; }
+  .badges img:hover { opacity: 1; }
+  .back-link { display: inline-block; margin-bottom: 32px; color: var(--text-muted); text-decoration: none; font-size: 14px; }
+  .back-link:hover { color: var(--primary); }
+  .email-mock {
+    background: var(--bg-code);
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 24px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text-dim);
+  }
+  .email-mock .em-from { color: var(--accent); font-weight: 600; margin-bottom: 4px; }
+  .email-mock .em-subject { color: var(--text); font-size: 15px; font-weight: 700; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .email-mock .em-row { padding: 4px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="index.html" class="back-link">← Torna a Value Content</a>
+
+  <header>
+    <img src="loghi/fixup-logo-bianco.png" alt="FIXUP Agency" class="logo">
+    <p class="claim">Consulenza · Formazione · Performance · Business AI</p>
+    <h1>Marketing Monitor</h1>
+    <p style="color: var(--text-dim); font-size: 17px; font-weight: 500;">Daily AI watchdog account pubblicitari · Google Ads + Meta · zero touch</p>
+  </header>
+
+  <div class="meta-block">
+    <p><strong>Cosa è:</strong> sistema autonomo che ogni mattina alle 08:23 controlla i conti pubblicitari attivi, calcola KPI vs settimana/mese/anno precedente, applica logica semaforo e invia un report email per gruppo cliente.</p>
+    <p><strong>Stack:</strong> GitHub Actions cron · Python 3.12 · Google Ads API v20 · Meta Marketing API v23 · Gmail SMTP · YAML config self-service</p>
+    <p><strong>Esecuzione:</strong> 100% cloud · indipendente da PC del PM · log auditabile su GitHub · email recapitate ai destinatari giusti per ogni cliente</p>
+  </div>
+
+  <blockquote><strong>Use case interno FIXUP.</strong> 11 account adv monitorati ogni giorno (8 brand Michael Vittori + 3 fixup). Le anomalie arrivano in inbox <em>prima</em> della prima riunione del mattino, non a fine settimana quando il danno è già fatto.</blockquote>
+
+  <div class="hero-stat">
+    <div class="label">Tempo controllo manuale evitato</div>
+    <div class="big">~6h/sett</div>
+    <p style="color: var(--text-dim); margin: 0;">11 account × 5min check + correlazione vs benchmark = 1h/giorno PM senior, sostituiti da run automatico</p>
+  </div>
+
+  <h2>📊 Cosa monitora</h2>
+  <p>Per ogni account vengono calcolati <strong>11 KPI</strong> su 5 finestre temporali (settimana corrente, settimana precedente, MTD, mese precedente, anno precedente) e confrontati WoW / MoM / YoY.</p>
+  <table>
+    <thead><tr><th>KPI</th><th>Cosa indica</th><th>Soglia attenzione</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Spesa</strong></td><td>Budget consumato</td><td>Pacing &lt;80% o &gt;110% mensile</td></tr>
+      <tr><td><strong>Fatturato</strong></td><td>Conversion value</td><td>Variazione critica WoW &gt;20%</td></tr>
+      <tr><td><strong>ROAS</strong></td><td>Return on Ad Spend</td><td><span class="kpi-light light-red"></span> ROAS &lt; 1.0 settimanale</td></tr>
+      <tr><td><strong>Lead</strong></td><td>Conversioni lead-gen</td><td><span class="kpi-light light-red"></span> 0 lead con spesa &gt;100€/sett</td></tr>
+      <tr><td><strong>CPL</strong></td><td>Cost per Lead</td><td>Variazione MoM &gt;20%</td></tr>
+      <tr><td><strong>CPC medio</strong></td><td>Costo per click</td><td>Drift inflattivo vs anno</td></tr>
+      <tr><td><strong>CPM</strong></td><td>Costo mille impression</td><td>Comparativo Meta</td></tr>
+      <tr><td><strong>CTR</strong></td><td>Click-through rate</td><td><span class="kpi-light light-red"></span> Drop &gt;50% vs mese</td></tr>
+      <tr><td><strong>Frequenza</strong></td><td>Impression / utente unico (Meta)</td><td><span class="kpi-light light-red"></span> &gt;3.5</td></tr>
+      <tr><td><strong>Impression</strong></td><td>Volume reach</td><td>Confronto trend</td></tr>
+      <tr><td><strong>Click</strong></td><td>Volume traffico</td><td>Confronto trend</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Sistema semaforo</h3>
+  <p>Ogni KPI ottiene uno stato <span class="kpi-light light-green"></span><strong>verde</strong>, <span class="kpi-light light-yellow"></span><strong>giallo</strong> o <span class="kpi-light light-red"></span><strong>rosso</strong> in base a soglie configurate. Lo stato dell'account è calcolato sui <strong>core KPI</strong> (revenue/ROAS/leads per ecom; leads/CPL per lead-gen) — un singolo CPC drogato non rende l'account rosso.</p>
+
+  <hr>
+
+  <h2>🏗️ Architettura</h2>
+
+  <div class="arch-stack">
+    <div class="arch-stack-row">
+      <div class="arch-stack-label">Scheduler</div>
+      <div class="arch-stack-value">GitHub Actions · cron <code>23 6 * * *</code> UTC = <strong>08:23 Europe/Rome</strong> · trigger manuale via workflow_dispatch · timeout 15min</div>
+    </div>
+    <div class="arch-stack-row">
+      <div class="arch-stack-label">Runtime</div>
+      <div class="arch-stack-value">Ubuntu 24.04 · Python 3.12 · venv hash-pinned · <code>pip install --require-hashes</code></div>
+    </div>
+    <div class="arch-stack-row">
+      <div class="arch-stack-label">Data sources</div>
+      <div class="arch-stack-value">Google Ads API v20 (<code>google-ads</code> 30.1.0 + GAQL aggregato multi-customer) · Meta Marketing API v23 (Graph <code>/insights</code> diretto, no MCP)</div>
+    </div>
+    <div class="arch-stack-row">
+      <div class="arch-stack-label">Auth</div>
+      <div class="arch-stack-value">Google: OAuth refresh token (scope <code>adwords</code>, login_customer_id MCC) · Meta: System User long-lived token (scope <code>ads_read</code>, non scade)</div>
+    </div>
+    <div class="arch-stack-row">
+      <div class="arch-stack-label">Config</div>
+      <div class="arch-stack-value">Singolo file <code>accounts.yml</code> · gruppi → destinatari, account → customer_id + budget + tipo (ecom/lead-gen) + extra_recipients · self-service via GitHub web UI</div>
+    </div>
+    <div class="arch-stack-row">
+      <div class="arch-stack-label">Output</div>
+      <div class="arch-stack-value">Email HTML+text via Gmail SMTP (port 465 SSL, app password) · markdown report archiviato in repo <code>reports/YYYY-MM-DD/</code> · audit log workflow artifact</div>
+    </div>
+    <div class="arch-stack-row">
+      <div class="arch-stack-label">Secrets</div>
+      <div class="arch-stack-value">GitHub Secrets (encrypted) · 8 totali · zero credenziali nel codice · rotation procedure documentata in <code>SECURITY.md</code></div>
+    </div>
+  </div>
+
+  <hr>
+
+  <h2>📧 Distribuzione email per destinatario</h2>
+  <p>Punto chiave: ogni stakeholder riceve <strong>solo gli account di sua competenza</strong>. Il bucketing è automatico — un account marcato con <code>extra_recipients</code> genera email separata per quei destinatari, senza esporre il resto del portafoglio.</p>
+
+  <div class="email-mock">
+    <div class="em-row"><span class="em-from">From:</span> Marketing Monitor &lt;max.pavesio@fixup.agency&gt;</div>
+    <div class="em-row"><span class="em-from">To:</span> marco.stazi@fixup.agency</div>
+    <div class="em-subject">📊 Daily Adv Report — Fixup · 8 mag 2026</div>
+    <div class="em-row">→ Gentilini · <span class="kpi-light light-green"></span> Ecom · ROAS 3.2 (+8% WoW)</div>
+    <div class="em-row">→ Il Burchiello Antoniana · <span class="kpi-light light-yellow"></span> Ecom · ROAS 1.4 (-15% WoW)</div>
+    <div class="em-row" style="margin-top:10px; color: var(--text-muted); font-size: 12px;">⚠️ <em>Marco riceve solo i 2 account di sua competenza, non tutti gli 11.</em></div>
+  </div>
+
+  <h3>Mapping completo gruppi · destinatari · account</h3>
+  <table>
+    <thead><tr><th>Email bucket</th><th>Destinatari</th><th>Account inclusi</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>michael_vittori</strong></td>
+        <td>max.pavesio@fixup.agency<br>info@michaelvittori.it</td>
+        <td>Gadgetzone · smshosting · postpickr · Eco della Stampa · MTM IT/FR/ES/DE <em>(8)</em></td>
+      </tr>
+      <tr>
+        <td><strong>fixup</strong></td>
+        <td>max.pavesio@fixup.agency<br>giacomo.simioni@fixup.agency</td>
+        <td>Parutto · Gentilini · Burchiello Antoniana <em>(3)</em></td>
+      </tr>
+      <tr>
+        <td><strong>extra · marco.stazi</strong></td>
+        <td>marco.stazi@fixup.agency</td>
+        <td>Gentilini · Il Burchiello Antoniana <em>(2)</em></td>
+      </tr>
+      <tr>
+        <td><strong>extra · giulia.quarta</strong></td>
+        <td>giulia.quarta@fixup.agency</td>
+        <td>Gentilini <em>(1)</em></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="font-size:13px; color: var(--text-muted);">Output run reale: <strong>4 email/giorno</strong> recapitate a 6 stakeholder distinti, ognuna scoped al suo perimetro.</p>
+
+  <hr>
+
+  <h2>🎯 Logica account-aware</h2>
+
+  <div class="phase-box">
+    <h3>Account ecommerce <span class="badge-tag">default</span></h3>
+    <p><strong>Core KPI:</strong> Fatturato, ROAS, Leads</p>
+    <p><strong>Warning specifici:</strong> ROAS &lt;1, drop CTR &gt;50%, frequenza Meta &gt;3.5, pacing budget</p>
+    <p><strong>Esempi:</strong> Gadgetzone, smshosting, MTM (4 country), Parutto, Gentilini, Il Burchiello Antoniana</p>
+  </div>
+
+  <div class="phase-box">
+    <h3>Account lead-gen <span class="badge-tag badge-warn">flag dedicato</span></h3>
+    <p><strong>Core KPI:</strong> Leads, Cost per Lead</p>
+    <p><strong>Comportamento:</strong> Fatturato e ROAS mascherati ("n/d" in tabella) · warning ROAS&lt;1 <em>soppresso</em> (non avrebbe senso) · soglia <code>lead_zero_min_spend</code> attiva (alert se spesa &gt;100€/sett senza un solo lead)</p>
+    <p><strong>Esempi:</strong> postpickr, Eco della Stampa</p>
+  </div>
+
+  <blockquote>Senza questa distinzione, postpickr ed Eco Stampa apparivano <span class="kpi-light light-red"></span> rossi ogni mattina (perché conversione = lead, non revenue). Falso allarme costante = email ignorata.</blockquote>
+
+  <hr>
+
+  <h2>🛡️ Sicurezza</h2>
+  <p>Sistema progettato con threat model esplicito — adv account = surface critica (token = accesso a budget pubblicitari).</p>
+
+  <div class="stat-grid">
+    <div class="stat-mini">
+      <div class="num">8</div>
+      <div class="lbl">Secrets cifrati</div>
+    </div>
+    <div class="stat-mini">
+      <div class="num">100%</div>
+      <div class="lbl">Deps hash-pinned</div>
+    </div>
+    <div class="stat-mini">
+      <div class="num">SHA</div>
+      <div class="lbl">Actions pinned</div>
+    </div>
+    <div class="stat-mini">
+      <div class="num">4</div>
+      <div class="lbl">Scanner CI/CD</div>
+    </div>
+  </div>
+
+  <table>
+    <thead><tr><th>Layer</th><th>Tool</th><th>Cosa fa</th></tr></thead>
+    <tbody>
+      <tr><td>Static analysis</td><td><code>bandit</code> 1.7.10</td><td>Scan codice Python per vulnerabilità note (eval, shell injection, ecc.)</td></tr>
+      <tr><td>CVE check</td><td><code>pip-audit</code> 2.7.3</td><td>Verifica advisory PyPI ad ogni push + schedule settimanale</td></tr>
+      <tr><td>Secret detection</td><td><code>gitleaks</code></td><td>Blocca commit con token/key esposti — alternativa free a GHAS</td></tr>
+      <tr><td>Dependency update</td><td><code>dependabot</code></td><td>PR settimanali raggruppate · ignora bump major (review manuale)</td></tr>
+      <tr><td>Supply chain</td><td>SHA-pinned actions</td><td>Ogni <code>uses:</code> punta a SHA esatto, non a tag mutabile</td></tr>
+      <tr><td>Permission scope</td><td>Workflow YAML</td><td><code>contents: write</code> solo dove serve · tutto il resto a <code>none</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Rotation schedule</h3>
+  <ul>
+    <li><strong>Meta token</strong> → 60 giorni (System User long-lived)</li>
+    <li><strong>Google refresh token</strong> → 6 mesi</li>
+    <li><strong>Gmail app password</strong> → 6 mesi</li>
+    <li><strong>Incident response</strong> → procedura documentata in <code>SECURITY.md</code> con kill switch + revoke + comm protocol</li>
+  </ul>
+
+  <hr>
+
+  <h2>🔄 Manutenzione self-service</h2>
+  <p>Tutta la configurazione vive in un unico file YAML versionato. Modifiche tramite GitHub web UI — <strong>zero terminale, zero deploy manuale</strong>.</p>
+
+  <div class="phase-box">
+    <h3>Aggiungere un nuovo cliente</h3>
+    <p>Edit <code>config/accounts.yml</code> → aggiungi blocco account sotto il gruppo giusto → commit. La run successiva (08:23) lo include automaticamente.</p>
+    <pre><code>- name: Nuovo Cliente
+  slug: nuovo-cliente
+  platforms: [google, meta]
+  google_customer_id: "123-456-7890"
+  google_login_customer_id: "554-173-2711"
+  meta_account_id: "act_999888777"
+  budget_monthly_eur:
+    google: 3000
+    meta: 2000
+  extra_recipients:
+    - account.manager@cliente.com</code></pre>
+  </div>
+
+  <div class="phase-box">
+    <h3>Modificare destinatari</h3>
+    <p>Aggiungi/rimuovi email sotto <code>recipients:</code> del gruppo (visibilità totale) o sotto <code>extra_recipients:</code> dell'account (visibilità scoped). Il bucketing si ricalcola al run successivo.</p>
+  </div>
+
+  <div class="phase-box">
+    <h3>Cambiare tipo account o soglie</h3>
+    <p>Setta <code>account_type: lead_gen</code> per disattivare warning revenue/ROAS. Per modificare soglie globali edita la sezione <code>thresholds:</code> in fondo al file.</p>
+  </div>
+
+  <div class="phase-box">
+    <h3>Trigger manuale immediato</h3>
+    <p>Tab <strong>Actions</strong> → workflow <em>Daily Marketing Monitor</em> → <em>Run workflow</em> → opzionale <code>dry_run: true</code> per testare senza inviare email.</p>
+  </div>
+
+  <hr>
+
+  <h2>⚡ Numeri attuali</h2>
+  <div class="stat-grid">
+    <div class="stat-mini"><div class="num">11</div><div class="lbl">Account monitorati</div></div>
+    <div class="stat-mini"><div class="num">2</div><div class="lbl">Piattaforme</div></div>
+    <div class="stat-mini"><div class="num">11</div><div class="lbl">KPI per account</div></div>
+    <div class="stat-mini"><div class="num">5</div><div class="lbl">Finestre temporali</div></div>
+    <div class="stat-mini"><div class="num">4</div><div class="lbl">Email/giorno</div></div>
+    <div class="stat-mini"><div class="num">6</div><div class="lbl">Stakeholder</div></div>
+    <div class="stat-mini"><div class="num">08:23</div><div class="lbl">Run schedulato</div></div>
+    <div class="stat-mini"><div class="num">365</div><div class="lbl">Run/anno autonomi</div></div>
+  </div>
+
+  <hr>
+
+  <h2>🎁 Cosa porta a un cliente</h2>
+  <ul>
+    <li><strong>Daily situational awareness</strong> · arrivi in ufficio sapendo già se ieri qualcosa è andato storto, non lo scopri venerdì pomeriggio</li>
+    <li><strong>Distribuzione granulare</strong> · client lead riceve i suoi account, brand manager riceve il suo brand, founder riceve l'aggregato — senza che nessuno gestisca CC list manualmente</li>
+    <li><strong>Threshold personalizzate</strong> · soglie tarate sul tipo di account (ecom vs lead-gen), non KPI generici</li>
+    <li><strong>Indipendenza operativa</strong> · funziona se sei in vacanza, in volo, in malattia — il cron non si ammala</li>
+    <li><strong>Storico auditabile</strong> · ogni report è committato in repo, recuperabile come time series per analisi trend</li>
+    <li><strong>Estensibile</strong> · aggiungere TikTok Ads, LinkedIn Ads, Klaviyo o qualsiasi API è una skill in più dello stesso pattern</li>
+  </ul>
+
+  <div class="cta-box">
+    <h3>Vuoi un Marketing Monitor sui tuoi account?</h3>
+    <p style="color: var(--text-dim);">Setup tipico 1-2 giorni · adattabile a Google Ads · Meta · TikTok · LinkedIn · Microsoft Ads · Amazon Ads · setup data warehouse opzionale.</p>
+    <a href="https://cal.com/max-pavesio/discovery-call" class="cta-button">📅 Prenota call discovery</a>
+  </div>
+
+  <footer>
+    <p>© 2026 FIXUP Agency · Google Premier Partner Top 3% Italia · ADworld Experience Winning Case Story 2023</p>
+    <p><a href="https://cal.com/max-pavesio/discovery-call">📅 Prenota call discovery</a> · <a href="mailto:info@fixup.agency">✉️ info@fixup.agency</a> · <a href="https://fixup.agency" target="_blank" rel="noopener">🌐 Visita fixup.agency</a></p>
+    <div class="badges">
+      <img src="loghi/google-premier-partner.png" alt="Google Premier Partner Top 3% Italia">
+    </div>
+  </footer>
+</div>
+</body>
+</html>

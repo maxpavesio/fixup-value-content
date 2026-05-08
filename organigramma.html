@@ -406,7 +406,7 @@
     <h1>Organigramma Personal-OS</h1>
     <p class="subtitle">Architettura sistema FIXUP Agency · Marketing · Sales · Ads · Operations</p>
     <div class="meta">
-      <div class="meta-item">📅 Last update <strong>3 Mag 2026</strong></div>
+      <div class="meta-item">📅 Last update <strong>8 Mag 2026</strong></div>
       <div class="meta-item">👤 <strong>info@fixup.agency</strong></div>
       <div class="meta-item">⚡ <strong>Claude Code · Opus 4.7 (1M)</strong></div>
     </div>
@@ -812,7 +812,12 @@
         <ul class="item-list">
           <li><code>00_clienti/</code> · cartelle cliente (2 liv)</li>
           <li><code>01_strumenti/</code> · google-ads-manager, tool</li>
-          <li><code>02_app/</code> · amministrazione, casa-malez, trasferte</li>
+          <li><code>02_app/</code> · amministrazione · casa-malez · trasferte
+            <div class="pills" style="margin-top:6px;">
+              <span class="pill pill-success">fixup-marketing-monitor</span>
+              <span class="status-badge status-on" style="margin-left:4px;">LIVE</span>
+            </div>
+          </li>
           <li><code>03_contratti/</code> · output /contratti:genera</li>
           <li><code>99_archivio/</code> · storico</li>
           <li><code>Marketing ADV/</code> <span class="status-badge status-on">NEW</span>
@@ -827,6 +832,82 @@
           <li><code>workspace/</code> · .code-workspace (3)</li>
           <li><code>.claude/</code> · config progetto</li>
         </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LEVEL 4.5 — PRODUCTION AI FLOWS -->
+  <div class="tree-level">
+    <div class="grid-2">
+
+      <!-- Marketing Monitor -->
+      <div class="card" style="border-color: var(--primary); background: linear-gradient(180deg, rgba(234,93,11,0.06) 0%, var(--bg-card) 100%);">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">📡</span> Marketing Monitor</div>
+          <span class="status-badge status-on">LIVE</span>
+        </div>
+        <p class="item-dim" style="margin-bottom:12px;">Daily AI watchdog · 11 account adv · zero touch · cron 08:23</p>
+
+        <div class="section-title">DATA FLOW</div>
+        <ul class="item-list">
+          <li><code>GitHub Actions</code> cron 23 6 * * * UTC</li>
+          <li><code>Google Ads API v20</code> + <code>Meta API v23</code> → metriche</li>
+          <li>11 KPI × 5 finestre (W/MTD/MoM/YoY)</li>
+          <li>Logica semaforo · core KPI account-aware</li>
+          <li><code>Gmail SMTP</code> → 4 email scoped/giorno</li>
+          <li><code>reports/YYYY-MM-DD/</code> archive in repo</li>
+        </ul>
+
+        <div class="section-title">SECURITY HARDENING</div>
+        <div class="pills">
+          <span class="pill pill-success">bandit</span>
+          <span class="pill pill-success">pip-audit</span>
+          <span class="pill pill-success">gitleaks</span>
+          <span class="pill pill-success">dependabot</span>
+          <span class="pill">SHA-pinned</span>
+          <span class="pill">hash-pinned</span>
+        </div>
+
+        <div class="section-title">CONFIG</div>
+        <ul class="item-list">
+          <li><code>02_app/fixup-marketing-monitor/</code></li>
+          <li><code>config/accounts.yml</code> · self-service GitHub UI</li>
+          <li class="item-dim">8 GitHub Secrets cifrati · rotation 60d-6m</li>
+        </ul>
+      </div>
+
+      <!-- Distribution -->
+      <div class="card" style="border-color: var(--primary); background: linear-gradient(180deg, rgba(234,93,11,0.06) 0%, var(--bg-card) 100%);">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">📧</span> Distribution Layer</div>
+          <span class="count-badge">4 buckets</span>
+        </div>
+        <p class="item-dim" style="margin-bottom:12px;">Per-recipient bucketing · ognuno vede solo i suoi account</p>
+
+        <div class="section-title">GROUP · MICHAEL VITTORI (8 acct)</div>
+        <ul class="item-list">
+          <li>max.pavesio · info@michaelvittori.it</li>
+          <li class="item-dim">Gadgetzone · smshosting · postpickr · Eco Stampa · MTM IT/FR/ES/DE</li>
+        </ul>
+
+        <div class="section-title">GROUP · FIXUP (3 acct)</div>
+        <ul class="item-list">
+          <li>max.pavesio · giacomo.simioni</li>
+          <li class="item-dim">Parutto · Gentilini · Burchiello Antoniana</li>
+        </ul>
+
+        <div class="section-title">EXTRA · SCOPED</div>
+        <ul class="item-list">
+          <li><code>marco.stazi</code> → Gentilini + Burchiello (2)</li>
+          <li><code>giulia.quarta</code> → Gentilini (1)</li>
+        </ul>
+
+        <div class="section-title">ACCOUNT TYPE LOGIC</div>
+        <div class="pills">
+          <span class="pill pill-success">ecommerce · core: revenue/ROAS/leads</span>
+          <span class="pill">lead_gen · core: leads/CPL · ROAS masked</span>
+        </div>
       </div>
 
     </div>
@@ -865,7 +946,7 @@
         <ul class="item-list">
           <li><code>Supabase</code> · amministrazione-app DB</li>
           <li><code>Vercel</code> · amministrazione.vercel.app</li>
-          <li><code>GitHub</code> · repo + Actions</li>
+          <li><code>GitHub</code> · repo + Actions (cron live)</li>
         </ul>
       </div>
 
@@ -877,10 +958,6 @@
     <div class="stat">
       <div class="stat-value">8</div>
       <div class="stat-label">MCP servers</div>
-    </div>
-    <div class="stat">
-      <div class="stat-value">4</div>
-      <div class="stat-label">Plugin attivi</div>
     </div>
     <div class="stat">
       <div class="stat-value">24</div>
@@ -895,8 +972,12 @@
       <div class="stat-label">Skills project</div>
     </div>
     <div class="stat">
-      <div class="stat-value">16</div>
-      <div class="stat-label">Memory nodes</div>
+      <div class="stat-value">11</div>
+      <div class="stat-label">Account adv live</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">365</div>
+      <div class="stat-label">Run automatici/anno</div>
     </div>
   </div>
 
