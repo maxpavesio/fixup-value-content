@@ -381,6 +381,35 @@
   footer strong { color: var(--accent); }
   .back-link { display: inline-block; margin-bottom: 24px; color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 0.15s; }
   .back-link:hover { color: var(--primary); }
+  .site-cta {
+    margin-top: 56px;
+    padding: 40px 28px;
+    background: linear-gradient(135deg, rgba(234, 93, 11, 0.15) 0%, rgba(255, 225, 77, 0.08) 100%);
+    border: 1px solid var(--primary);
+    border-radius: 18px;
+    text-align: center;
+  }
+  .site-cta h3 {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 14px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .site-cta p { color: var(--text-dim); margin: 0 0 24px; font-size: 15px; line-height: 1.65; }
+  .site-cta strong { color: var(--text); }
+  .site-cta .cta-button {
+    display: inline-block;
+    background: var(--primary);
+    color: var(--bg);
+    padding: 14px 28px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    transition: all 0.2s ease;
+  }
+  .site-cta .cta-button:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(234, 93, 11, 0.3); }
   .brand-footer-logo { display: block; margin: 0 auto 16px; max-width: 160px; height: auto; opacity: 0.85; }
   .badges { display: flex; justify-content: center; align-items: center; gap: 22px; margin-top: 18px; flex-wrap: wrap; }
   .badges img { max-height: 52px; width: auto; opacity: 0.78; transition: opacity 0.2s ease; }
@@ -995,6 +1024,12 @@
       <div class="stat-value">365</div>
       <div class="stat-label">Run automatici/anno</div>
     </div>
+  </div>
+
+  <div class="site-cta">
+    <h3>Sei pronto a trasformare il tuo Business?</h3>
+    <p>Quello che vedi è l'architettura del Personal-OS che orchestriamo internamente. <strong>FIXUP non vende software:</strong> ti affianca con <strong>consulenza strategica</strong> e <strong>percorsi formativi</strong> per progettare un sistema simile dentro il tuo team marketing, sales e operations.</p>
+    <a href="https://cal.com/max-pavesio/discovery-call" class="cta-button">📅 Prenota call discovery</a>
   </div>
 
   <footer>
