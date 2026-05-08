@@ -227,37 +227,148 @@
   .light-green { background: var(--success); box-shadow: 0 0 10px rgba(74, 222, 128, 0.5); }
   .light-yellow { background: var(--warning); box-shadow: 0 0 10px rgba(255, 225, 77, 0.5); }
   .light-red { background: var(--danger); box-shadow: 0 0 10px rgba(248, 113, 113, 0.5); }
-  .arch-stack {
+  .flow-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+    margin: 28px 0;
+    counter-reset: flow;
+  }
+  .flow-step {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
-    margin: 20px 0;
+    border-radius: 14px;
+    padding: 24px 20px;
+    text-align: center;
+    position: relative;
+    transition: all 0.2s ease;
+    counter-increment: flow;
   }
-  .arch-stack-row {
+  .flow-step::before {
+    content: counter(flow);
+    position: absolute;
+    top: 12px;
+    left: 14px;
+    width: 26px;
+    height: 26px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border-radius: 50%;
     display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    padding: 12px 0;
-    border-bottom: 1px dashed var(--border);
-  }
-  .arch-stack-row:last-child { border-bottom: none; }
-  .arch-stack-label {
-    flex: 0 0 130px;
-    font-size: 12px;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+    align-items: center;
+    justify-content: center;
     font-weight: 700;
-    padding-top: 4px;
+    font-size: 12px;
   }
-  .arch-stack-value {
-    flex: 1;
+  .flow-step:hover {
+    border-color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(234, 93, 11, 0.18);
+  }
+  .flow-emoji {
+    font-size: 44px;
+    margin: 8px 0 14px;
+    line-height: 1;
+  }
+  .flow-title {
+    color: var(--text);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .flow-desc {
+    color: var(--text-dim);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .shield-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin: 28px 0;
+  }
+  .shield-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 24px;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .shield-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+  }
+  .shield-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(234, 93, 11, 0.18);
+  }
+  .shield-emoji {
+    font-size: 40px;
+    line-height: 1;
+    margin-bottom: 14px;
+  }
+  .shield-title {
+    color: var(--accent);
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .shield-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     color: var(--text-dim);
     font-size: 14px;
-    line-height: 1.6;
   }
-  .arch-stack-value code { font-size: 12px; }
+  .shield-list li {
+    padding: 6px 0;
+    padding-left: 22px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .shield-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--success);
+    font-weight: 700;
+  }
+  .trust-row {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin: 28px 0 8px;
+    padding: 24px;
+    background: linear-gradient(135deg, rgba(74, 222, 128, 0.06) 0%, rgba(234, 93, 11, 0.04) 100%);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+  .trust-item {
+    text-align: center;
+  }
+  .trust-num {
+    font-size: 30px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--success), var(--accent));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .trust-lbl {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+  }
   .cta-box {
     background: linear-gradient(135deg, rgba(234, 93, 11, 0.15) 0%, rgba(255, 225, 77, 0.08) 100%);
     border: 1px solid var(--primary);
@@ -361,38 +472,43 @@
 
   <hr>
 
-  <h2>🏗️ Architettura</h2>
+  <h2>🏗️ Come funziona</h2>
+  <p>Sei step automatici, ogni mattina, in pochi minuti — senza che nessuno tocchi nulla.</p>
 
-  <div class="arch-stack">
-    <div class="arch-stack-row">
-      <div class="arch-stack-label">Scheduler</div>
-      <div class="arch-stack-value">GitHub Actions · cron <code>23 6 * * *</code> UTC = <strong>08:23 Europe/Rome</strong> · trigger manuale via workflow_dispatch · timeout 15min</div>
+  <div class="flow-grid">
+    <div class="flow-step">
+      <div class="flow-emoji">⏰</div>
+      <div class="flow-title">Si sveglia da solo</div>
+      <div class="flow-desc">Ogni mattina alle 08:23, weekend e festivi inclusi.</div>
     </div>
-    <div class="arch-stack-row">
-      <div class="arch-stack-label">Runtime</div>
-      <div class="arch-stack-value">Ubuntu 24.04 · Python 3.12 · venv hash-pinned · <code>pip install --require-hashes</code></div>
+    <div class="flow-step">
+      <div class="flow-emoji">📥</div>
+      <div class="flow-title">Pesca i dati live</div>
+      <div class="flow-desc">Si collega a Google Ads e Meta in pochi secondi.</div>
     </div>
-    <div class="arch-stack-row">
-      <div class="arch-stack-label">Data sources</div>
-      <div class="arch-stack-value">Google Ads API v20 (<code>google-ads</code> 30.1.0 + GAQL aggregato multi-customer) · Meta Marketing API v23 (Graph <code>/insights</code> diretto, no MCP)</div>
+    <div class="flow-step">
+      <div class="flow-emoji">🧮</div>
+      <div class="flow-title">Calcola e confronta</div>
+      <div class="flow-desc">11 KPI per account, comparati con settimana, mese e anno precedente.</div>
     </div>
-    <div class="arch-stack-row">
-      <div class="arch-stack-label">Auth</div>
-      <div class="arch-stack-value">Google: OAuth refresh token (scope <code>adwords</code>, login_customer_id MCC) · Meta: System User long-lived token (scope <code>ads_read</code>, non scade)</div>
+    <div class="flow-step">
+      <div class="flow-emoji">🚦</div>
+      <div class="flow-title">Accende il semaforo</div>
+      <div class="flow-desc">Verde, giallo o rosso. Le anomalie saltano subito all'occhio.</div>
     </div>
-    <div class="arch-stack-row">
-      <div class="arch-stack-label">Config</div>
-      <div class="arch-stack-value">Singolo file <code>accounts.yml</code> · gruppi → destinatari, account → customer_id + budget + tipo (ecom/lead-gen) + extra_recipients · self-service via GitHub web UI</div>
+    <div class="flow-step">
+      <div class="flow-emoji">📧</div>
+      <div class="flow-title">Manda il report giusto</div>
+      <div class="flow-desc">Ogni stakeholder riceve solo gli account di sua competenza.</div>
     </div>
-    <div class="arch-stack-row">
-      <div class="arch-stack-label">Output</div>
-      <div class="arch-stack-value">Email HTML+text via Gmail SMTP (port 465 SSL, app password) · markdown report archiviato in repo <code>reports/YYYY-MM-DD/</code> · audit log workflow artifact</div>
-    </div>
-    <div class="arch-stack-row">
-      <div class="arch-stack-label">Secrets</div>
-      <div class="arch-stack-value">GitHub Secrets (encrypted) · 8 totali · zero credenziali nel codice · rotation procedure documentata in <code>SECURITY.md</code></div>
+    <div class="flow-step">
+      <div class="flow-emoji">💾</div>
+      <div class="flow-title">Archivia tutto</div>
+      <div class="flow-desc">Storico consultabile per analisi trend e audit nel tempo.</div>
     </div>
   </div>
+
+  <blockquote>Il tutto gira sul cloud, indipendente dal computer del PM. Funziona quando sei in vacanza, in volo, in malattia. <strong>Il cron non si ammala mai.</strong></blockquote>
 
   <hr>
 
@@ -475,82 +591,61 @@
 
   <hr>
 
-  <h2>🛡️ Sicurezza</h2>
-  <p>Sistema progettato con threat model esplicito — adv account = surface critica (token = accesso a budget pubblicitari).</p>
+  <h2>🛡️ Sicurezza by design</h2>
+  <p>Gli account adv sono dati sensibili: token compromessi = budget pubblicitari a rischio. Il sistema è progettato a strati, ognuno indipendente dall'altro.</p>
 
-  <div class="stat-grid">
-    <div class="stat-mini">
-      <div class="num">8</div>
-      <div class="lbl">Secrets cifrati</div>
+  <div class="shield-grid">
+    <div class="shield-card">
+      <div class="shield-emoji">🔐</div>
+      <div class="shield-title">Credenziali blindate</div>
+      <ul class="shield-list">
+        <li>Token e password mai nel codice sorgente</li>
+        <li>Tutto cifrato in cassaforte cloud</li>
+        <li>Rotazione periodica programmata</li>
+        <li>Revoca immediata in caso di sospetto</li>
+      </ul>
     </div>
-    <div class="stat-mini">
-      <div class="num">100%</div>
-      <div class="lbl">Deps hash-pinned</div>
+
+    <div class="shield-card">
+      <div class="shield-emoji">🛡️</div>
+      <div class="shield-title">Codice sotto controllo</div>
+      <ul class="shield-list">
+        <li>Ogni modifica scansionata automaticamente</li>
+        <li>Vulnerabilità note bloccate sul nascere</li>
+        <li>Aggiornamento librerie settimanale</li>
+        <li>Nessun segreto può finire pubblicato per errore</li>
+      </ul>
     </div>
-    <div class="stat-mini">
-      <div class="num">SHA</div>
-      <div class="lbl">Actions pinned</div>
-    </div>
-    <div class="stat-mini">
-      <div class="num">4</div>
-      <div class="lbl">Scanner CI/CD</div>
+
+    <div class="shield-card">
+      <div class="shield-emoji">🎯</div>
+      <div class="shield-title">Permessi minimi</div>
+      <ul class="shield-list">
+        <li>Accesso limitato allo stretto indispensabile</li>
+        <li>Audit log di ogni esecuzione</li>
+        <li>Threat model documentato</li>
+        <li>Procedura di emergenza pronta</li>
+      </ul>
     </div>
   </div>
 
-  <table>
-    <thead><tr><th>Layer</th><th>Tool</th><th>Cosa fa</th></tr></thead>
-    <tbody>
-      <tr><td>Static analysis</td><td><code>bandit</code> 1.7.10</td><td>Scan codice Python per vulnerabilità note (eval, shell injection, ecc.)</td></tr>
-      <tr><td>CVE check</td><td><code>pip-audit</code> 2.7.3</td><td>Verifica advisory PyPI ad ogni push + schedule settimanale</td></tr>
-      <tr><td>Secret detection</td><td><code>gitleaks</code></td><td>Blocca commit con token/key esposti — alternativa free a GHAS</td></tr>
-      <tr><td>Dependency update</td><td><code>dependabot</code></td><td>PR settimanali raggruppate · ignora bump major (review manuale)</td></tr>
-      <tr><td>Supply chain</td><td>SHA-pinned actions</td><td>Ogni <code>uses:</code> punta a SHA esatto, non a tag mutabile</td></tr>
-      <tr><td>Permission scope</td><td>Workflow YAML</td><td><code>contents: write</code> solo dove serve · tutto il resto a <code>none</code></td></tr>
-    </tbody>
-  </table>
-
-  <h3>Rotation schedule</h3>
-  <ul>
-    <li><strong>Meta token</strong> → 60 giorni (System User long-lived)</li>
-    <li><strong>Google refresh token</strong> → 6 mesi</li>
-    <li><strong>Gmail app password</strong> → 6 mesi</li>
-    <li><strong>Incident response</strong> → procedura documentata in <code>SECURITY.md</code> con kill switch + revoke + comm protocol</li>
-  </ul>
-
-  <hr>
-
-  <h2>🔄 Manutenzione self-service</h2>
-  <p>Tutta la configurazione vive in un unico file YAML versionato. Modifiche tramite GitHub web UI — <strong>zero terminale, zero deploy manuale</strong>.</p>
-
-  <div class="phase-box">
-    <h3>Aggiungere un nuovo cliente</h3>
-    <p>Edit <code>config/accounts.yml</code> → aggiungi blocco account sotto il gruppo giusto → commit. La run successiva (08:23) lo include automaticamente.</p>
-    <pre><code>- name: Nuovo Brand
-  slug: nuovo-brand
-  platforms: [google, meta]
-  google_customer_id: "XXX-XXX-XXXX"
-  google_login_customer_id: "YYY-YYY-YYYY"   # MCC agenzia
-  meta_account_id: "act_XXXXXXXXX"
-  budget_monthly_eur:
-    google: 3000
-    meta: 2000
-  extra_recipients:
-    - account.manager@brand.example</code></pre>
-  </div>
-
-  <div class="phase-box">
-    <h3>Modificare destinatari</h3>
-    <p>Aggiungi/rimuovi email sotto <code>recipients:</code> del gruppo (visibilità totale) o sotto <code>extra_recipients:</code> dell'account (visibilità scoped). Il bucketing si ricalcola al run successivo.</p>
-  </div>
-
-  <div class="phase-box">
-    <h3>Cambiare tipo account o soglie</h3>
-    <p>Setta <code>account_type: lead_gen</code> per disattivare warning revenue/ROAS. Per modificare soglie globali edita la sezione <code>thresholds:</code> in fondo al file.</p>
-  </div>
-
-  <div class="phase-box">
-    <h3>Trigger manuale immediato</h3>
-    <p>Tab <strong>Actions</strong> → workflow <em>Daily Marketing Monitor</em> → <em>Run workflow</em> → opzionale <code>dry_run: true</code> per testare senza inviare email.</p>
+  <div class="trust-row">
+    <div class="trust-item">
+      <div class="trust-num">0</div>
+      <div class="trust-lbl">Incidenti dal go-live</div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-num">100%</div>
+      <div class="trust-lbl">Run auditabili</div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-num">3</div>
+      <div class="trust-lbl">Layer di protezione</div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-num">24/7</div>
+      <div class="trust-lbl">Monitoraggio attivo</div>
+    </div>
   </div>
 
   <hr>
@@ -580,8 +675,8 @@
   </ul>
 
   <div class="cta-box">
-    <h3>Vuoi un Marketing Monitor sui tuoi account?</h3>
-    <p style="color: var(--text-dim);">Setup tipico 1-2 giorni · adattabile a Google Ads · Meta · TikTok · LinkedIn · Microsoft Ads · Amazon Ads · setup data warehouse opzionale.</p>
+    <h3>Sei pronto a trasformare il tuo Business?</h3>
+    <p style="color: var(--text-dim);">Marketing Monitor è solo uno dei flussi AI che FIXUP costruisce su misura. Adattabile a Google Ads · Meta · TikTok · LinkedIn · Microsoft · Amazon · oltre i Paid Ads.</p>
     <a href="https://cal.com/max-pavesio/discovery-call" class="cta-button">📅 Prenota call discovery</a>
   </div>
 
