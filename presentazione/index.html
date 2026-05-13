@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business AI in azione · FIXUP</title>
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #EA5D0B;
+  --primary-dark: #BB4A08;
+  --primary-light: #EE7D3B;
+  --accent: #FFE14D;
+  --bg: #0A0A0C;
+  --bg-2: #14141A;
+  --bg-card: #1A1A22;
+  --border: rgba(255,255,255,0.10);
+  --border-strong: rgba(255,255,255,0.20);
+  --text: #F5F5F7;
+  --text-dim: #9B9BA3;
+  --text-muted: #6A6A75;
+  --success: #4ADE80;
+  --purple: #c084fc;
+  --blue: #60a5fa;
+  --grad-brand: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+
+body {
+  font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 500;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== DECK FRAME ===== */
+.deck {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s var(--ease), transform 0.7s var(--ease);
+  transform: translateY(20px) scale(0.985);
+  padding: clamp(32px, 5vw, 72px) clamp(28px, 5vw, 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+.slide.prev {
+  transform: translateY(-20px) scale(0.985);
+}
+
+/* Reveal-on-enter */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.slide.active .reveal { opacity: 1; transform: translateY(0); }
+.slide.active .reveal.d1 { transition-delay: 0.10s; }
+.slide.active .reveal.d2 { transition-delay: 0.20s; }
+.slide.active .reveal.d3 { transition-delay: 0.30s; }
+.slide.active .reveal.d4 { transition-delay: 0.40s; }
+.slide.active .reveal.d5 { transition-delay: 0.50s; }
+.slide.active .reveal.d6 { transition-delay: 0.60s; }
+.slide.active .reveal.d7 { transition-delay: 0.70s; }
+
+/* ===== HUD / NAVIGATION ===== */
+.hud {
+  position: fixed;
+  inset: auto 0 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px clamp(20px, 4vw, 40px);
+  pointer-events: none;
+  z-index: 100;
+}
+.hud-brand {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hud-brand-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 12px var(--primary);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(0.78); }
+}
+.hud-counter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+.hud-counter strong { color: var(--accent); font-weight: 600; }
+
+/* Progress bar */
+.progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: var(--grad-brand);
+  width: 0%;
+  transition: width 0.5s var(--ease);
+  z-index: 101;
+  box-shadow: 0 0 12px rgba(234, 93, 11, 0.6);
+}
+
+/* Slide nav arrows (subtle) */
+.arrow-nav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: rgba(20, 20, 26, 0.7);
+  color: var(--text-dim);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100;
+  transition: all 0.2s;
+  backdrop-filter: blur(8px);
+  pointer-events: auto;
+}
+.arrow-nav:hover { color: var(--accent); border-color: var(--primary); background: rgba(234, 93, 11, 0.1); }
+.arrow-nav.prev { left: 16px; }
+.arrow-nav.next { right: 16px; }
+
+/* ===== TYPOGRAPHY ===== */
+.eyebrow {
+  display: inline-block;
+  font-size: clamp(10px, 0.9vw, 12px);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 6px 14px;
+  border: 1px solid rgba(255, 225, 77, 0.35);
+  border-radius: 999px;
+  background: rgba(255, 225, 77, 0.06);
+  margin-bottom: clamp(14px, 1.6vw, 22px);
+}
+.eyebrow.orange {
+  color: var(--primary-light);
+  background: rgba(234, 93, 11, 0.08);
+  border-color: rgba(234, 93, 11, 0.35);
+}
+
+h1.mega {
+  font-size: clamp(48px, 8vw, 120px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding: 4px 0;
+}
+h1.big {
+  font-size: clamp(38px, 5.5vw, 80px);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding: 4px 0;
+}
+h2.title {
+  font-size: clamp(28px, 4vw, 56px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin-bottom: clamp(14px, 1.6vw, 24px);
+}
+h2.title em {
+  font-style: normal;
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.lede {
+  font-size: clamp(16px, 1.6vw, 22px);
+  color: var(--text-dim);
+  line-height: 1.55;
+  max-width: 880px;
+}
+.lede strong { color: var(--accent); font-weight: 700; }
+
+/* ===== UI ELEMENTS ===== */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: clamp(16px, 1.8vw, 24px);
+  transition: all 0.3s var(--ease);
+}
+.card:hover {
+  border-color: rgba(234, 93, 11, 0.45);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(234, 93, 11, 0.12);
+}
+.card-title {
+  font-size: clamp(14px, 1.3vw, 18px);
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.card-body {
+  font-size: clamp(12px, 1vw, 14px);
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+.card-body strong { color: var(--text); }
+
+.tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.tag-vision { background: rgba(234,93,11,0.18); color: var(--primary-light); border: 1px solid rgba(234,93,11,0.3); }
+.tag-live { background: rgba(74,222,128,0.12); color: var(--success); border: 1px solid rgba(74,222,128,0.25); }
+.tag-output { background: rgba(96,165,250,0.12); color: var(--blue); border: 1px solid rgba(96,165,250,0.25); }
+.tag-demo { background: rgba(255,225,77,0.10); color: var(--accent); border: 1px solid rgba(255,225,77,0.25); }
+.tag-arch { background: rgba(168,85,247,0.12); color: var(--purple); border: 1px solid rgba(168,85,247,0.25); }
+
+/* ===== BG EFFECTS ===== */
+.bg-grad-radial {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 18% 12%, rgba(234, 93, 11, 0.18) 0, transparent 55%),
+    radial-gradient(ellipse at 82% 88%, rgba(255, 225, 77, 0.10) 0, transparent 55%);
+}
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+}
+.bg-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.5;
+  animation: floaty 14s ease-in-out infinite alternate;
+}
+@keyframes floaty {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(40px, -30px) scale(1.1); }
+}
+.bg-blob.orange { background: var(--primary); width: 480px; height: 480px; top: -120px; left: -180px; }
+.bg-blob.yellow { background: var(--accent); width: 380px; height: 380px; bottom: -100px; right: -120px; opacity: 0.22; animation-direction: alternate-reverse; }
+
+/* ===== SLIDE 1: HERO ===== */
+.s-hero {
+  align-items: flex-start;
+  justify-content: center;
+}
+.s-hero .logo-row {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: clamp(20px, 3vw, 38px);
+}
+.s-hero .logo-row img { height: clamp(28px, 3vw, 36px); }
+.s-hero .meta {
+  margin-top: clamp(28px, 3vw, 44px);
+  display: flex; gap: 14px; flex-wrap: wrap;
+  font-size: 12px; color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+.s-hero .meta span {
+  padding: 6px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+.s-hero .meta strong { color: var(--accent); }
+
+/* ===== SLIDE 2: PROBLEMA — Caos di tool ===== */
+.tool-cloud {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin-top: clamp(20px, 2vw, 32px);
+  max-width: 1100px;
+}
+.tool-chip {
+  text-align: center;
+  padding: clamp(10px, 1.2vw, 16px) 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: clamp(11px, 1vw, 14px);
+  color: var(--text-dim);
+  font-weight: 600;
+  transition: all 0.3s var(--ease);
+}
+.tool-chip:hover {
+  background: rgba(234, 93, 11, 0.08);
+  border-color: rgba(234, 93, 11, 0.3);
+  color: var(--text);
+}
+.problem-q {
+  margin-top: clamp(24px, 3vw, 40px);
+  padding: clamp(18px, 2vw, 28px) clamp(20px, 2.4vw, 36px);
+  background: linear-gradient(135deg, rgba(234, 93, 11, 0.10), rgba(255, 225, 77, 0.04));
+  border: 1px solid rgba(234, 93, 11, 0.3);
+  border-radius: 14px;
+  font-size: clamp(16px, 1.8vw, 24px);
+  font-weight: 600;
+  color: var(--text);
+  max-width: 900px;
+}
+.problem-q em { font-style: normal; color: var(--accent); }
+
+/* ===== SLIDE 3: BEFORE/AFTER ===== */
+.ba-grid {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  gap: clamp(14px, 1.5vw, 24px);
+  align-items: stretch;
+  margin-top: clamp(20px, 2.4vw, 32px);
+  max-width: 1200px;
+}
+.ba-col {
+  padding: clamp(20px, 2.2vw, 30px);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+}
+.ba-before {
+  background: linear-gradient(180deg, rgba(155,155,163,0.06) 0%, var(--bg-card) 100%);
+}
+.ba-after {
+  background: linear-gradient(180deg, rgba(234,93,11,0.10) 0%, rgba(255,225,77,0.04) 100%);
+  border-color: var(--primary);
+  box-shadow: 0 12px 36px rgba(234, 93, 11, 0.15);
+}
+.ba-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.ba-before .ba-tag { background: rgba(155,155,163,0.15); color: var(--text-dim); border: 1px solid var(--border-strong); }
+.ba-after .ba-tag { background: rgba(234, 93, 11, 0.20); color: var(--primary-light); border: 1px solid var(--primary); }
+.ba-heading {
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 700;
+  margin-bottom: clamp(12px, 1.4vw, 20px);
+  letter-spacing: -0.02em;
+}
+.ba-before .ba-heading { color: var(--text-dim); }
+.ba-after .ba-heading {
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.ba-rows { display: flex; flex-direction: column; gap: 8px; }
+.ba-row {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.02);
+  align-items: center;
+  font-size: clamp(11px, 1vw, 14px);
+}
+.ba-after .ba-row { background: rgba(234, 93, 11, 0.05); }
+.ba-row-label { color: var(--text-muted); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.ba-row-value { font-weight: 600; }
+.ba-before .ba-row-value { color: var(--text-dim); text-decoration: line-through; text-decoration-color: rgba(248,113,113,0.45); }
+.ba-after .ba-row-value { color: var(--text); }
+.ba-after .ba-row-value strong { color: var(--accent); }
+.ba-arrow {
+  display: flex; align-items: center; justify-content: center;
+  font-size: clamp(24px, 3vw, 40px);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* ===== SLIDE 4: ARCHITETTURA STACK ===== */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.2vw, 16px);
+  max-width: 1000px;
+  margin-top: clamp(20px, 2vw, 32px);
+}
+.stack-layer {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: clamp(14px, 1.6vw, 22px);
+  align-items: center;
+  padding: clamp(14px, 1.6vw, 22px) clamp(18px, 2vw, 28px);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  transition: all 0.3s var(--ease);
+}
+.stack-layer:hover {
+  border-color: rgba(234, 93, 11, 0.4);
+  transform: translateX(6px);
+}
+.stack-num {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  display: flex; align-items: center; justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: clamp(14px, 1.4vw, 18px);
+  box-shadow: 0 6px 16px rgba(234, 93, 11, 0.3);
+}
+.stack-layer.human {
+  background: linear-gradient(135deg, rgba(255,225,77,0.10), rgba(234,93,11,0.06));
+  border-color: var(--accent);
+}
+.stack-layer.human .stack-num {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: var(--bg);
+}
+.stack-layer.output {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  border-color: var(--accent);
+  box-shadow: 0 12px 32px rgba(234,93,11,0.30);
+}
+.stack-layer.output .stack-num {
+  background: white;
+  color: var(--primary-dark);
+}
+.stack-title {
+  font-size: clamp(15px, 1.4vw, 19px);
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+}
+.stack-layer.output .stack-title { color: white; font-size: clamp(17px, 1.6vw, 22px); }
+.stack-desc {
+  font-size: clamp(11px, 1vw, 13px);
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+.stack-layer.output .stack-desc { color: rgba(255,255,255,0.88); }
+.stack-stat {
+  font-size: clamp(20px, 2.2vw, 30px);
+  font-weight: 700;
+  color: var(--primary-light);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.stack-layer.output .stack-stat { color: var(--accent); font-size: clamp(24px, 2.6vw, 34px); }
+.stack-stat-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-top: 2px;
+  text-align: right;
+}
+.stack-layer.output .stack-stat-label { color: rgba(255,255,255,0.75); }
+
+/* ===== SLIDE 5-9: USE CASE — Generic layout ===== */
+.uc {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: clamp(28px, 4vw, 60px);
+  align-items: center;
+  max-width: 1280px;
+}
+.uc-text { display: flex; flex-direction: column; gap: clamp(10px, 1.2vw, 18px); }
+.uc-visual {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: clamp(20px, 2.4vw, 32px);
+  position: relative;
+  overflow: hidden;
+}
+.uc-visual::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(234,93,11,0.06), transparent);
+  pointer-events: none;
+}
+.uc-points {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+.uc-points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: clamp(13px, 1.1vw, 16px);
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+.uc-points li::before {
+  content: '→';
+  color: var(--primary);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.uc-points li strong { color: var(--text); }
+.uc-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: clamp(12px, 1.4vw, 20px);
+}
+.uc-stat {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: clamp(10px, 1.2vw, 16px);
+  text-align: center;
+}
+.uc-stat-num {
+  font-size: clamp(22px, 2.4vw, 32px);
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.uc-stat-label {
+  font-size: clamp(9px, 0.8vw, 11px);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+/* Marketing Monitor visual */
+.mm-clock {
+  text-align: center;
+  padding: clamp(20px, 2.4vw, 36px) 0;
+}
+.mm-clock-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(42px, 6vw, 88px);
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.mm-clock-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  margin-top: 8px;
+}
+.mm-bars {
+  display: flex; gap: 6px; justify-content: center;
+  margin-top: clamp(16px, 2vw, 28px);
+  align-items: flex-end;
+  height: clamp(60px, 8vw, 100px);
+}
+.mm-bar {
+  width: 14px;
+  background: var(--grad-brand);
+  border-radius: 4px 4px 0 0;
+  animation: barRise 1.4s var(--ease) backwards;
+}
+@keyframes barRise {
+  from { height: 0 !important; opacity: 0; }
+}
+.mm-status {
+  display: flex; gap: 8px; justify-content: center;
+  margin-top: clamp(14px, 1.6vw, 22px);
+  flex-wrap: wrap;
+}
+.mm-dot {
+  display: inline-flex;
+  align-items: center; gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid;
+}
+.mm-dot .d {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+}
+.mm-dot.ok { background: rgba(74,222,128,0.10); color: var(--success); border-color: rgba(74,222,128,0.3); }
+.mm-dot.ok .d { background: var(--success); box-shadow: 0 0 8px var(--success); }
+.mm-dot.warn { background: rgba(255,225,77,0.10); color: var(--accent); border-color: rgba(255,225,77,0.3); }
+.mm-dot.warn .d { background: var(--accent); }
+.mm-dot.crit { background: rgba(248,113,113,0.10); color: #F87171; border-color: rgba(248,113,113,0.3); }
+.mm-dot.crit .d { background: #F87171; }
+
+/* Dashboard visual */
+.dash-mock {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.dash-kpi {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: clamp(10px, 1.2vw, 14px);
+}
+.dash-kpi-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+.dash-kpi-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(15px, 1.6vw, 20px);
+  font-weight: 700;
+  color: var(--accent);
+  margin-top: 4px;
+}
+.dash-kpi-trend {
+  font-size: 10px;
+  color: var(--success);
+  font-weight: 600;
+  margin-top: 2px;
+}
+.dash-kpi-trend.down { color: #F87171; }
+.dash-chart {
+  grid-column: 1 / -1;
+  height: clamp(80px, 10vw, 130px);
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-top: 6px;
+  padding: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.dash-chart svg { width: 100%; height: 100%; }
+.dash-domain-bar {
+  margin-top: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--primary-light);
+  display: flex; align-items: center; gap: 8px;
+}
+.dash-domain-bar::before {
+  content: '🔒';
+  font-size: 12px;
+}
+
+/* Report mock */
+.rep-mock {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.rep-section {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 12px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: clamp(11px, 1vw, 13px);
+}
+.rep-num {
+  font-family: 'JetBrains Mono', monospace;
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  background: rgba(234, 93, 11, 0.15);
+  color: var(--primary-light);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+}
+.rep-label { color: var(--text); font-weight: 600; }
+.rep-meta { color: var(--text-muted); font-size: 10px; margin-left: auto; }
+
+/* Workflow visual */
+.wf-mock {
+  display: flex; flex-direction: column; gap: 10px;
+}
+.wf-phase {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.wf-num {
+  font-family: 'JetBrains Mono', monospace;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--grad-brand);
+  color: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+}
+.wf-label { font-size: clamp(11px, 1vw, 13px); color: var(--text); font-weight: 600; }
+.wf-time { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--success); font-weight: 700; }
+
+/* Back-office visual */
+.bo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.bo-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: clamp(12px, 1.4vw, 18px);
+  text-align: center;
+}
+.bo-icon { font-size: clamp(26px, 3vw, 38px); margin-bottom: 6px; }
+.bo-title { font-size: clamp(12px, 1.1vw, 15px); font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+.bo-desc { font-size: clamp(10px, 0.9vw, 12px); color: var(--text-dim); line-height: 1.45; }
+
+/* ===== SLIDE 10: BIG NUMBERS ===== */
+.nums {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(14px, 2vw, 28px);
+  margin-top: clamp(20px, 3vw, 40px);
+  max-width: 1280px;
+}
+.num {
+  text-align: center;
+  padding: clamp(20px, 2.4vw, 36px) clamp(12px, 1.4vw, 20px);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  transition: all 0.3s var(--ease);
+}
+.num:hover {
+  background: var(--bg-2);
+  border-color: var(--primary);
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(234,93,11,0.15);
+}
+.num-val {
+  font-size: clamp(48px, 7vw, 110px);
+  font-weight: 700;
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.num-label {
+  font-size: clamp(11px, 1vw, 13px);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  font-weight: 700;
+  margin-top: clamp(8px, 1vw, 14px);
+}
+.num-context {
+  font-size: clamp(10px, 0.9vw, 12px);
+  color: var(--text-muted);
+  margin-top: 4px;
+  font-style: italic;
+}
+
+/* ===== SLIDE 11: OFFERTA ===== */
+.offer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 2vw, 28px);
+  margin-top: clamp(20px, 2.4vw, 32px);
+  max-width: 1280px;
+}
+.offer-card {
+  padding: clamp(22px, 2.4vw, 36px);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  transition: all 0.3s var(--ease);
+}
+.offer-card:hover {
+  background: var(--bg-2);
+  border-color: var(--primary);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(234,93,11,0.15);
+}
+.offer-icon {
+  font-size: clamp(32px, 3.5vw, 48px);
+  margin-bottom: clamp(10px, 1.2vw, 16px);
+}
+.offer-title {
+  font-size: clamp(20px, 2vw, 28px);
+  font-weight: 700;
+  margin-bottom: clamp(10px, 1.2vw, 14px);
+  letter-spacing: -0.02em;
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.offer-desc {
+  font-size: clamp(13px, 1.1vw, 16px);
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+.offer-desc strong { color: var(--text); }
+
+/* ===== SLIDE 12: CTA FINALE ===== */
+.s-cta {
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+.s-cta h1 {
+  font-size: clamp(46px, 7vw, 110px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding: 4px 0;
+  max-width: 1100px;
+}
+.s-cta .lede { font-size: clamp(18px, 1.8vw, 24px); max-width: 760px; margin: clamp(16px, 2vw, 28px) auto; }
+.cta-btn {
+  display: inline-block;
+  margin-top: clamp(24px, 3vw, 40px);
+  padding: clamp(16px, 1.8vw, 22px) clamp(28px, 3vw, 44px);
+  background: var(--grad-brand);
+  color: var(--bg);
+  font-weight: 700;
+  font-size: clamp(15px, 1.4vw, 18px);
+  text-decoration: none;
+  border-radius: 12px;
+  letter-spacing: 0.02em;
+  box-shadow: 0 16px 40px rgba(234, 93, 11, 0.4);
+  transition: all 0.3s var(--ease);
+}
+.cta-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 50px rgba(234, 93, 11, 0.55);
+}
+.s-cta .contact {
+  margin-top: clamp(20px, 2vw, 32px);
+  display: flex; gap: 22px; justify-content: center;
+  font-size: 13px;
+  color: var(--text-dim);
+  flex-wrap: wrap;
+}
+.s-cta .contact a {
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.s-cta .contact a:hover { color: var(--accent); }
+.s-cta .contact .sep { color: var(--text-muted); }
+
+/* ===== HINT ===== */
+.hint {
+  position: fixed;
+  bottom: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s;
+  z-index: 99;
+}
+.hint.show { opacity: 0.8; }
+.hint kbd {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin: 0 2px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent);
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .slide { transform: none; }
+  .bg-blob { animation: none; }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .tool-cloud { grid-template-columns: repeat(3, 1fr); }
+  .ba-grid { grid-template-columns: 1fr; }
+  .ba-arrow { transform: rotate(90deg); padding: 10px 0; }
+  .uc { grid-template-columns: 1fr; gap: 24px; }
+  .nums { grid-template-columns: repeat(2, 1fr); }
+  .offer-grid { grid-template-columns: 1fr; }
+  .dash-mock { grid-template-columns: repeat(2, 1fr); }
+  .arrow-nav { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<div class="deck" id="deck">
+
+  <!-- ============================= -->
+  <!-- SLIDE 1 · HERO -->
+  <!-- ============================= -->
+  <section class="slide s-hero active" data-slide="1">
+    <div class="bg-grad-radial"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-blob orange"></div>
+    <div class="bg-blob yellow"></div>
+
+    <div class="logo-row reveal">
+      <img src="../loghi/fixup-logo-bianco.png" alt="FIXUP">
+    </div>
+
+    <div class="reveal d1">
+      <span class="eyebrow">Una presentazione · 12 slide · 5 minuti</span>
+    </div>
+
+    <h1 class="mega reveal d2">Business AI<br>in azione.</h1>
+
+    <p class="lede reveal d3" style="margin-top:clamp(18px, 2vw, 28px); max-width:780px;">
+      Cosa si può davvero <strong>fare oggi</strong> con un sistema AI orchestrato nel marketing, sales e operations di un'agency o azienda. Niente slide astratte: <strong>asset reali, in produzione.</strong>
+    </p>
+
+    <div class="meta reveal d4">
+      <span>📅 <strong>13 maggio 2026</strong></span>
+      <span>⚡ <strong>Claude Code · Opus 4.7</strong></span>
+      <span>🎯 <strong>FIXUP Agency</strong></span>
+    </div>
+  </section>
+
+  <!-- ============================= -->
+  <!-- SLIDE 2 · IL PROBLEMA -->
+  <!-- ============================= -->
+  <section class="slide" data-slide="2">
+    <div class="bg-grad-radial"></div>
+
+    <span class="eyebrow orange reveal">Il problema · 2020-2025</span>
+    <h2 class="title reveal d1">Sei <em>il collante</em> di tutto.</h2>
+    <p class="lede reveal d2">Tu sei l'esperto · ma il tuo lavoro è diventato <strong>gestione del caos tra tool</strong>. Notion, Sheets, Ads Manager, CRM, AI chat sparse, Slack, Looker, Canva. Tutto richiede di passarci attraverso. Tu sei il collo di bottiglia.</p>
+
+    <div class="tool-cloud reveal d3">
+      <div class="tool-chip">Google Ads</div>
+      <div class="tool-chip">Meta Ads</div>
+      <div class="tool-chip">Looker Studio</div>
+      <div class="tool-chip">GA4</div>
+      <div class="tool-chip">Notion</div>
+      <div class="tool-chip">Sheets</div>
+      <div class="tool-chip">Slack</div>
+      <div class="tool-chip">CRM</div>
+      <div class="tool-chip">ChatGPT</div>
+      <div class="tool-chip">Canva</div>
+      <div class="tool-chip">LinkedIn</div>
+      <div class="tool-chip">Gmail</div>
+    </div>
+
+    <div class="problem-q reveal d4">
+      Quante ore al giorno passi <em>davvero</em> a fare strategia · invece di muovere dati tra schede?
+    </div>
+  </section>
+
+  <!-- ============================= -->
+  <!-- SLIDE 3 · LO SWITCH (BEFORE/AFTER) -->
+  <!-- ============================= -->
+  <section class="slide" data-slide="3">
+    <div class="bg-grad-radial"></div>
+
+    <span class="eyebrow reveal">Lo switch</span>
+    <h2 class="title reveal d1">Da team grande a <em>1 strategist + AI</em>.</h2>
+    <p class="lede reveal d2">Lo stesso lavoro · oggi gestito da una persona + un sistema di agenti AI specializzati che eseguono in parallelo.</p>
+
+    <div class="ba-grid reveal d3">
+      <div class="ba-col ba-before">
+        <span class="ba-tag">2020 · Manuale</span>
+        <div class="ba-heading">Agency tradizionale</div>
+        <div class="ba-rows">
+          <div class="ba-row"><div class="ba-row-label">Team</div><div class="ba-row-value">15+ persone</div></div>
+          <div class="ba-row"><div class="ba-row-label">Audit</div><div class="ba-row-value">2 settimane uomo</div></div>
+          <div class="ba-row"><div class="ba-row-label">Report</div><div class="ba-row-value">3 giorni di lavoro</div></div>
+          <div class="ba-row"><div class="ba-row-label">Monitoring</div><div class="ba-row-value">manuale 2x/sett</div></div>
+          <div class="ba-row"><div class="ba-row-label">Onboarding</div><div class="ba-row-value">1 cliente = 1 PM</div></div>
+        </div>
+      </div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-col ba-after">
+        <span class="ba-tag">2026 · AI-Augmented</span>
+        <div class="ba-heading">Agency AI-augmented</div>
+        <div class="ba-rows">
+          <div class="ba-row"><div class="ba-row-label">Team</div><div class="ba-row-value"><strong>3 strategist</strong> + 24 agenti</div></div>
+          <div class="ba-row"><div class="ba-row-label">Audit</div><div class="ba-row-value"><strong>2 ore</strong> con slash command</div></div>
+          <div class="ba-row"><div class="ba-row-label">Report</div><div class="ba-row-value"><strong>30 minuti</strong> zero-touch</div></div>
+          <div class="ba-row"><div class="ba-row-label">Monitoring</div><div class="ba-row-value">auto <strong>24/7</strong> · cron 08:23</div></div>
+          <div class="ba-row"><div class="ba-row-label">Onboarding</div><div class="ba-row-value">1 strategist = <strong>10+ clienti</strong></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= -->
+  <!-- SLIDE 4 · ARCHITETTURA / STACK -->
+  <!-- ============================= -->
+  <section class="slide" data-slide="4">
+    <div class="bg-grad-radial"></div>
+
+    <span class="eyebrow reveal">L'architettura</span>
+    <h2 class="title reveal d1">Lo <em>stack di leverage</em>.</h2>
+    <p class="lede reveal d2">5 layer · 1 strategist umano controlla un'orchestrazione di 24 agenti specializzati che usano 636 skill collegate a 8 server MCP.</p>
+
+    <div class="stack">
+      <div class="stack-layer human reveal d3">
+        <div class="stack-num">1</div>
+        <div>
+          <div class="stack-title">STRATEGIST · umano</div>
+          <div class="stack-desc">Decide cosa serve · valida output · prende decisioni di business</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="stack-stat">1</div>
+          <div class="stack-stat-label">persona</div>
+        </div>
+      </div>
+      <div class="stack-layer reveal d4">
+        <div class="stack-num">2</div>
+        <div>
+          <div class="stack-title">ORCHESTRATOR · Claude Code</div>
+          <div class="stack-desc">Capisce · scompone · delega in parallelo · ricompone</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="stack-stat">1</div>
+          <div class="stack-stat-label">brain</div>
+        </div>
+      </div>
+      <div class="stack-layer reveal d5">
+        <div class="stack-num">3</div>
+        <div>
+          <div class="stack-title">AGENTS · specialisti AI</div>
+          <div class="stack-desc">Sales · Paid · SEO · Creative · Growth · Ops · 19 project + 5 global</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="stack-stat">24</div>
+          <div class="stack-stat-label">agenti</div>
+        </div>
+      </div>
+      <div class="stack-layer reveal d6">
+        <div class="stack-num">4</div>
+        <div>
+          <div class="stack-title">SKILLS + MCP · esecuzione</div>
+          <div class="stack-desc">617 skill standalone · 8 MCP (Google Ads, Meta, Drive, Gmail, Notion, Slack…)</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="stack-stat">644</div>
+          <div class="stack-stat-label">capability</div>
+        </div>
+      </div>
+      <div class="stack-layer output reveal d7">
+        <div class="stack-num">→</div>
+        <div>
+          <div class="stack-title">OUTPUT · multi-canale 24/7</div>
+          <div class="stack-desc">Report · campagne · contenuti · email · dashboard · contratti · monitoring</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="stack-stat">10-20×</div>
+          <div class="stack-stat-label">leverage</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= -->
+  <!-- SLIDE 5 · MARKETING MONITOR -->
+  <!-- ============================= -->
+  <section class="slide" data-slide="5">
+    <div class="bg-grad-radial"></div>
+
+    <div style="margin-bottom: clamp(16px, 2vw, 28px);" class="reveal">
+      <span class="tag tag-live" style="margin-right:8px;">🟢 Live in produzione</span>
+      <span class="eyebrow" style="margin:0;">Use case · 01</span>
+    </div>
+
+    <div class="uc">
+      <div class="uc-text">
+        <h2 class="title reveal d1">Marketing Monitor.<br><em>Daily AI watchdog</em>.</h2>
+        <p class="lede reveal d2">Ogni mattina <strong>alle 08:23</strong>: <strong>50 account adv</strong> Google + Meta vengono controllati in autonomia. 11 KPI calcolati, semaforo per account, email scoped agli stakeholder giusti. <strong>Zero touch.</strong></p>
+
+        <ul class="uc-points reveal d3">
+          <li><strong>Cron GitHub Actions</strong> · 365 run automatici/anno</li>
+          <li>Google Ads API v20 + Meta API v23 → metriche WoW/MoM/YoY</li>
+          <li><strong>7 email scoped/giorno</strong>: ognuno vede solo i suoi account</li>
+          <li>Hardened: bandit · pip-audit · gitleaks · dependabot</li>
+        </ul>
+      </div>
+
+      <div class="uc-visual reveal d4">
+        <div class="mm-clock">
+          <div class="mm-clock-time">08:23</div>
+          <div class="mm-clock-label">cron · ogni mattina · UTC</div>
+        </div>
+        <div class="mm-bars">
+          <div class="mm-bar" style="height:60%; animation-delay:0.0s;"></div>
+          <div class="mm-bar" style="height:75%; animation-delay:0.08s;"></div>
+          <div class="mm-bar" style="height:45%; animation-delay:0.16s;"></div>
+          <div class="mm-bar" style="height:90%; animation-delay:0.24s;"></div>
+          <div class="mm-bar" style="height:55%; animation-delay:0.32s;"></div>
+          <div class="mm-bar" style="height:80%; animation-delay:0.40s;"></div>
+          <div class="mm-bar" style="height:65%; animation-delay:0.48s;"></div>
+          <div class="mm-bar" style="height:95%; animation-delay:0.56s;"></div>
+          <div class="mm-bar" style="height:50%; animation-delay:0.64s;"></div>
+          <div class="mm-bar" style="height:72%; animation-delay:0.72s;"></div>
+        </div>
+        <div class="mm-status">
+          <span class="mm-dot ok"><span class="d"></span> 42 OK</span>
+          <span class="mm-dot warn"><span class="d"></span> 6 ATTENZIONE</span>
+          <span class="mm-dot crit"><span class="d"></span> 2 ALERT</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= -->
+  <!-- SLIDE 6 · DASHBOARD CLIENTE -->
+  <!-- ============================= -->
+  <section class="slide" data-slide="6">
+    <div class="bg-grad-radial"></div>
+
+    <div style="margin-bottom: clamp(16px, 2vw, 28px);" class="reveal">
+      <span class="tag tag-demo" style="margin-right:8px;">💻 Demo</span>
+      <span class="eyebrow" style="margin:0;">Use case · 02</span>
+    </div>
+
+    <div class="uc">
+      <div class="uc-text">
+        <h2 class="title reveal d1">Dashboard cliente.<br><em>Subdomain dedicato</em>.</h2>
+        <p class="lede reveal d2">Ogni cliente ha un suo <strong>subdomain isolato</strong> <code style="font-family:'JetBrains Mono',monospace;font-size:0.9em;color:var(--primary-light);">{cliente}.fixup.agency</code> · dati real-time da MCP · token URL univoco · cookie 30gg. Onboarding nuovo cliente: <strong>~5 minuti</strong>.</p>
+
+        <ul class="uc-points reveal d3">
+          <li><code style="font-family:'JetBrains Mono',monospace;color:var(--primary-light);">/dashboard:sync {cliente}</code> → MCP estrae KPI</li>
+          <li><strong>Cloudflare Pages</strong> + Worker auth + cookie persistente</li>
+          <li>Single repo · multi custom domain · isolamento totale</li>
+          <li>Pilot live: <strong>Parutto</strong> (Google Ads + Meta)</li>
+        </ul>
+      </div>
+
+      <div class="uc-visual reveal d4">
+        <div class="dash-domain-bar">parutto.fixup.agency</div>
+        <div class="dash-mock" style="margin-top:12px;">
+          <div class="dash-kpi"><div class="dash-kpi-label">Spend</div><div class="dash-kpi-val">€18.4k</div><div class="dash-kpi-trend">↑ 12%</div></div>
+          <div class="dash-kpi"><div class="dash-kpi-label">Revenue</div><div class="dash-kpi-val">€74.2k</div><div class="dash-kpi-trend">↑ 18%</div></div>
+          <div class="dash-kpi"><div class="dash-kpi-label">ROAS</div><div class="dash-kpi-val">4.03</div><div class="dash-kpi-trend">↑ 0.5</div></div>
+          <div class="dash-kpi"><div class="dash-kpi-label">CPA</div><div class="dash-kpi-val">€21</div><div class="dash-kpi-trend down">↓ €3</div></div>
+          <div class="dash-chart">
+            <svg viewBox="0 0 400 100" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#EA5D0B" stop-opacity="0.5"/>
+                  <stop offset="1" stop-color="#EA5D0B" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,70 L40,55 L80,60 L120,40 L160,45 L200,30 L240,35 L280,20 L320,25 L360,15 L400,10 L400,100 L0,100 Z" fill="url(#g)"/>
+              <path d="M0,70 L40,55 L80,60 L120,40 L160,45 L200,30 L240,35 L280,20 L320,25 L360,15 L400,10" stroke="#FFE14D" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= -->
+  <!-- SLIDE 7 · AUDIT GOOGLE ADS -->
+  <!-- ============================= -->
+  <section class="slide" data-slide="7">
+    <div class="bg-grad-radial"></div>
+
+    <div style="margin-bottom: clamp(16px, 2vw, 28px);" class="reveal">
+      <span class="tag tag-output" style="margin-right:8px;">📊 Output</span>
+      <span class="eyebrow" style="margin:0;">Use case · 03</span>
+    </div>
+
+    <div class="uc">
+      <div class="uc-text">
+        <h2 class="title reveal d1">Audit Google Ads.<br><em>2h invece di 2 settimane</em>.</h2>
+        <p class="lede reveal d2">Caso multi-brand · <strong>28 sezioni</strong> · 6 capitoli operativi. Sintesi KPI, struttura account, audit keyword, liste negative, keyword set finali, <strong>copy RSA + PMax pronti all'upload</strong>.</p>
+
+        <ul class="uc-points reveal d3">
+          <li>Avviato con <code style="font-family:'JetBrains Mono',monospace;color:var(--primary-light);">/marketing-adv:report</code></li>
+          <li>Agenti: <strong>auditor</strong> + <strong>ppc-strategist</strong> + <strong>search-query-analyst</strong></li>
+          <li>HTML brandizzato FIXUP · PDF · MD pronto a delivery</li>
+          <li>Output equivalente a <strong>2 settimane di senior consultant</strong></li>
+        </ul>
+      </div>
+
+      <div class="uc-visual reveal d4">
+        <div class="rep-mock">
+          <div class="rep-section"><div class="rep-num">01</div><div class="rep-label">Executive summary</div><div class="rep-meta">3 pg</div></div>
+          <div class="rep-section"><div class="rep-num">02</div><div class="rep-label">Struttura account</div><div class="rep-meta">5 pg</div></div>
+          <div class="rep-section"><div class="rep-num">03</div><div class="rep-label">KPI deep-dive WoW/MoM/YoY</div><div class="rep-meta">8 pg</div></div>
+          <div class="rep-section"><div class="rep-num">04</div><div class="rep-label">Audit keyword + match-type</div><div class="rep-meta">12 pg</div></div>
+          <div class="rep-section"><div class="rep-num">05</div><div class="rep-label">Liste negative + budget</div><div class="rep-meta">6 pg</div></div>
+          <div class="rep-section"><div class="rep-num">06</div><div class="rep-label">Copy RSA + PMax · ready</div><div class="rep-meta">14 pg</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= -->
+  <!-- SLIDE 8 · WORKFLOW EVENTO B2B -->
+  <!-- ============================= -->
+  <section class="slide" data-slide="8">
+    <div class="bg-grad-radial"></div>
+
+    <div style="margin-bottom: clamp(16px, 2vw, 28px);" class="reveal">
+      <span class="tag tag-output" style="margin-right:8px;">📊 Output</span>
+      <span class="eyebrow" style="margin:0;">Use case · 04</span>
+    </div>
+
+    <div class="uc">
+      <div class="uc-text">
+        <h2 class="title reveal d1">Workflow evento B2B.<br><em>12 ore vs 80 ore</em>.</h2>
+        <p class="lede reveal d2">Preparazione end-to-end evento networking · <strong>13 meeting</strong> one-to-one · 6 fasi orchestrate. <strong>-85% tempo prep</strong> · 15 deliverable finali · conversion meeting→call <strong>2-3× sopra benchmark</strong>.</p>
+
+        <ul class="uc-points reveal d3">
+          <li>78 profili analizzati (vs 13 a campione) · ranking sistematico</li>
+          <li>13 dossier intel deep · LinkedIn + Instagram + ads + stampa</li>
+          <li>Recap post-meeting in <strong>5-8 min</strong> (era 30-45 min)</li>
+          <li>13 follow-up unici · quote letterali · CTA call diretta</li>
+        </ul>
+      </div>
+
+      <div class="uc-visual reveal d4">
+        <div class="wf-mock">
+          <div class="wf-phase"><div class="wf-num">1</div><div class="wf-label">Targeting intelligente</div><div class="wf-time">2h · era 12h</div></div>
+          <div class="wf-phase"><div class="wf-num">2</div><div class="wf-label">Intelligence pre-meeting</div><div class="wf-time">3h · era 25h</div></div>
+          <div class="wf-phase"><div class="wf-num">3</div><div class="wf-label">Toolkit operativo</div><div class="wf-time">2h · era 8h</div></div>
+          <div class="wf-phase"><div class="wf-num">4</div><div class="wf-label">Esecuzione + dashboard live</div><div class="wf-time">durante</div></div>
+          <div class="wf-phase"><div class="wf-num">5</div><div class="wf-label">Triage post-meeting</div><div class="wf-time">3h · era 15h</div></div>
+          <div class="wf-phase"><div class="wf-num">6</div><div class="wf-label">Follow-up personalizzati</div><div class="wf-time">2h · era 20h</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= -->
+  <!-- SLIDE 9 · BACK-OFFICE / APP INTERNE -->
+  <!-- ============================= -->
+  <section class="slide" data-slide="9">
+    <div class="bg-grad-radial"></div>
+
+    <div style="margin-bottom: clamp(16px, 2vw, 28px);" class="reveal">
+      <span class="tag tag-arch" style="margin-right:8px;">🏗️ Sviluppo in-house</span>
+      <span class="eyebrow" style="margin:0;">Use case · 05</span>
+    </div>
+
+    <div class="uc">
+      <div class="uc-text">
+        <h2 class="title reveal d1">App interne.<br><em>Back-office in-house</em>.</h2>
+        <p class="lede reveal d2">Software amministrazione completo + app trasferte. <strong>Sviluppati in-house</strong> con Next.js + Supabase, integrati con Notion. Niente SaaS · niente lock-in · 100% on-brand.</p>
+
+        <ul class="uc-points reveal d3">
+          <li>Dashboard finanziaria · clienti · fornitori · fatture · SaaS · listini</li>
+          <li>Nota spese trasferta · calcolo ACI · approvazione admin · PDF/CSV</li>
+          <li><strong>Business AI · dev mode</strong>: codice scritto dagli agenti, validato umano</li>
+          <li>Pattern replicabile su qualunque processo aziendale ripetibile</li>
+        </ul>
+      </div>
+
+      <div class="uc-visual reveal d4">
+        <div class="bo-grid">
+          <div class="bo-card">
+            <div class="bo-icon">📁</div>
+            <div class="bo-title">App Amministrazione</div>
+            <div class="bo-desc">Clienti · fornitori · fatture · costi SaaS · listini · dashboard finanziaria</div>
+          </div>
+          <div class="bo-card">
+            <div class="bo-icon">✈️</div>
+            <div class="bo-title">App Trasferte</div>
+            <div class="bo-desc">Form spese · calcolo ACI auto · allegati · admin approve · export PDF</div>
+          </div>
+          <div class="bo-card" style="grid-column: 1 / -1;">
+            <div class="bo-icon">⚙️</div>
+            <div class="bo-title">Pattern riutilizzabile</div>
+            <div class="bo-desc"><strong>Next.js + Supabase + Notion</strong> · 1 settimana per nuovo modulo · brand FIXUP coerente</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= -->
+  <!-- SLIDE 10 · I NUMERI -->
+  <!-- ============================= -->
+  <section class="slide" data-slide="10">
+    <div class="bg-grad-radial"></div>
+
+    <span class="eyebrow reveal">I numeri che contano</span>
+    <h2 class="title reveal d1">Quattro numeri · <em>una sola tesi</em>.</h2>
+    <p class="lede reveal d2">Stessa qualità del lavoro. Tempi che si comprimono di un ordine di grandezza. Margine struttura che si moltiplica.</p>
+
+    <div class="nums">
+      <div class="num reveal d3">
+        <div class="num-val">2h</div>
+        <div class="num-label">Audit completo</div>
+        <div class="num-context">era: 2 settimane uomo</div>
+      </div>
+      <div class="num reveal d4">
+        <div class="num-val">30'</div>
+        <div class="num-label">Report mensile</div>
+        <div class="num-context">era: 3 giorni</div>
+      </div>
+      <div class="num reveal d5">
+        <div class="num-val">24/7</div>
+        <div class="num-label">Monitoring auto</div>
+        <div class="num-context">50 account · zero touch</div>
+      </div>
+      <div class="num reveal d6">
+        <div class="num-val">10-20×</div>
+        <div class="num-label">Leverage</div>
+        <div class="num-context">vs metodo 2020</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= -->
+  <!-- SLIDE 11 · OFFERTA FIXUP -->
+  <!-- ============================= -->
+  <section class="slide" data-slide="11">
+    <div class="bg-grad-radial"></div>
+
+    <span class="eyebrow reveal">Cosa offriamo</span>
+    <h2 class="title reveal d1">Non un software. <em>Un metodo</em>.</h2>
+    <p class="lede reveal d2">Quello che hai visto non è un prodotto in vendita. È <strong>il modo in cui lavoriamo noi</strong> · te lo trasferiamo cucito sul tuo contesto, agency o azienda.</p>
+
+    <div class="offer-grid">
+      <div class="offer-card reveal d3">
+        <div class="offer-icon">🧭</div>
+        <div class="offer-title">Consulenza strategica</div>
+        <div class="offer-desc">Mappiamo i tuoi processi ripetibili e individuiamo i <strong>candidati n.1 da orchestrare</strong>. Output: roadmap concreta + ROI atteso.</div>
+      </div>
+      <div class="offer-card reveal d4">
+        <div class="offer-icon">🎓</div>
+        <div class="offer-title">Formazione team</div>
+        <div class="offer-desc">Il tuo team impara a <strong>orchestrare l'AI come strumento operativo</strong>, non come chatbot. Percorsi tarati per ruolo.</div>
+      </div>
+      <div class="offer-card reveal d5">
+        <div class="offer-icon">🛠️</div>
+        <div class="offer-title">Implementazione</div>
+        <div class="offer-desc">Affianchiamo il tuo team nell'implementazione del sistema. Output: <strong>sistema in produzione + governance</strong>, tu sei autonomo.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= -->
+  <!-- SLIDE 12 · CTA FINALE -->
+  <!-- ============================= -->
+  <section class="slide s-cta" data-slide="12">
+    <div class="bg-grad-radial"></div>
+    <div class="bg-blob orange" style="top: -150px; right: -150px; left: auto;"></div>
+    <div class="bg-blob yellow" style="bottom: -100px; left: -120px; right: auto;"></div>
+
+    <span class="eyebrow reveal">Prossimo passo</span>
+    <h1 class="reveal d1">Sei pronto a <br>trasformare il tuo business?</h1>
+    <p class="lede reveal d2"><strong>Call discovery di 30 minuti</strong>: mappiamo insieme il tuo processo ad alto consumo di tempo, ipotesi di ore consulenza e ROI atteso. Zero impegno, zero costo.</p>
+
+    <a href="https://cal.com/max-pavesio/discovery-call" class="cta-btn reveal d3">📅 Prenota call discovery</a>
+
+    <div class="contact reveal d4">
+      <a href="mailto:info@fixup.agency">✉️ info@fixup.agency</a>
+      <span class="sep">·</span>
+      <a href="https://fixup.agency" target="_blank" rel="noopener">🌐 fixup.agency</a>
+      <span class="sep">·</span>
+      <span>© 2026 FIXUP · Google Premier Partner Top 3% Italia</span>
+    </div>
+    <div class="contact reveal d5" style="margin-top:10px;font-size:11px;color:var(--text-muted);">
+      <span>FIXUP AGENCY SRL · P.IVA 05008520230 · REA 463212</span>
+    </div>
+  </section>
+
+</div>
+
+<!-- HUD -->
+<div class="hud">
+  <div class="hud-brand"><span class="hud-brand-dot"></span> FIXUP Agency</div>
+  <div class="hud-counter"><strong id="curN">01</strong> / <span id="totN">12</span></div>
+</div>
+
+<!-- Arrows -->
+<button class="arrow-nav prev" id="prevBtn" aria-label="Slide precedente">◀</button>
+<button class="arrow-nav next" id="nextBtn" aria-label="Slide successivo">▶</button>
+
+<!-- Hint -->
+<div class="hint" id="hint"><kbd>→</kbd> <kbd>Space</kbd> avanti · <kbd>←</kbd> indietro</div>
+
+<script>
+(() => {
+  'use strict';
+
+  class Deck {
+    constructor() {
+      this.slides = Array.from(document.querySelectorAll('.slide'));
+      this.total = this.slides.length;
+      this.current = 0;
+      this.locked = false;
+
+      this.progress = document.getElementById('progress');
+      this.curN = document.getElementById('curN');
+      this.totN = document.getElementById('totN');
+      this.totN.textContent = String(this.total).padStart(2, '0');
+
+      this.hint = document.getElementById('hint');
+      this.hintTimer = null;
+
+      this.bindEvents();
+      this.update();
+      this.showHint();
+    }
+
+    bindEvents() {
+      // Keyboard
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+          e.preventDefault();
+          this.next();
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+          e.preventDefault();
+          this.prev();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          this.goto(0);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          this.goto(this.total - 1);
+        } else if (/^[0-9]$/.test(e.key)) {
+          const idx = e.key === '0' ? 9 : parseInt(e.key, 10) - 1;
+          if (idx < this.total) this.goto(idx);
+        }
+      });
+
+      // Wheel
+      let wheelTimer = null;
+      document.addEventListener('wheel', (e) => {
+        if (this.locked) return;
+        if (Math.abs(e.deltaY) < 30) return;
+        if (wheelTimer) return;
+        wheelTimer = setTimeout(() => { wheelTimer = null; }, 700);
+        if (e.deltaY > 0) this.next(); else this.prev();
+      }, { passive: true });
+
+      // Touch swipe
+      let touchStartX = 0, touchStartY = 0;
+      document.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }, { passive: true });
+      document.addEventListener('touchend', (e) => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+          if (dx < 0) this.next(); else this.prev();
+        }
+      }, { passive: true });
+
+      // Buttons
+      document.getElementById('prevBtn').addEventListener('click', () => this.prev());
+      document.getElementById('nextBtn').addEventListener('click', () => this.next());
+    }
+
+    showHint() {
+      this.hint.classList.add('show');
+      clearTimeout(this.hintTimer);
+      this.hintTimer = setTimeout(() => this.hint.classList.remove('show'), 3500);
+    }
+
+    next() { if (this.current < this.total - 1) this.goto(this.current + 1); }
+    prev() { if (this.current > 0) this.goto(this.current - 1); }
+
+    goto(idx) {
+      if (this.locked || idx === this.current) return;
+      this.locked = true;
+      this.slides[this.current].classList.remove('active');
+      this.slides[this.current].classList.add('prev');
+      this.current = idx;
+      this.slides[idx].classList.remove('prev');
+      this.slides[idx].classList.add('active');
+      // Clear .prev on non-current after transition
+      setTimeout(() => {
+        this.slides.forEach((s, i) => { if (i !== this.current) s.classList.remove('prev'); });
+        this.locked = false;
+      }, 700);
+      this.update();
+    }
+
+    update() {
+      const pct = ((this.current + 1) / this.total) * 100;
+      this.progress.style.width = pct + '%';
+      this.curN.textContent = String(this.current + 1).padStart(2, '0');
+      document.title = `Slide ${this.current + 1}/${this.total} · Business AI · FIXUP`;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => new Deck());
+})();
+</script>
+</body>
+</html>
