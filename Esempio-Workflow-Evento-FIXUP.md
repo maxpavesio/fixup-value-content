@@ -1,7 +1,7 @@
 # FIXUP · Esempio Workflow Evento Networking B2B
 
 **Caso anonimizzato:** preparazione end-to-end di un evento vendor-buyer enterprise · 2 giornate · 13 meeting one-to-one da 15 minuti
-**Stack:** Personal OS FIXUP (18 agenti AI specializzati + MCP integrati + automazioni)
+**Stack:** Business AI FIXUP (18 agenti AI specializzati + MCP integrati + automazioni)
 **Comparativa:** workflow potenziato vs metodo tradizionale agenzia/in-house
 
 > Versione anonimizzata di un caso reale FIXUP. Nomi prospect, aziende, contatti e dati sensibili sostituiti con placeholder. L'obiettivo è mostrare cosa cambia quando un'agenzia smette di "preparare manualmente" e inizia a "orchestrare con AI".
@@ -10,7 +10,7 @@
 
 ## ⚡ RISULTATO IN UN COLPO D'OCCHIO
 
-| KPI evento | Metodo tradizionale | Personal OS FIXUP | Risparmio |
+| KPI evento | Metodo tradizionale | Business AI FIXUP | Risparmio |
 |---|---|---|---|
 | Tempo prep totale | ~80 ore | **~12 ore** | **-85%** |
 | Profili evento analizzati | 13 (su 78 disponibili) | **78/78** + ranking automatico | +500% copertura |
@@ -37,13 +37,13 @@ In agenzie tradizionali questo lavoro consuma **2 persone × 1 settimana** o vie
 
 ---
 
-## 🔄 IL WORKFLOW POTENZIATO PERSONAL OS
+## 🔄 IL WORKFLOW POTENZIATO BUSINESS AI
 
 ### Fase 1 · Selezione targeting intelligente (2h vs 12h)
 
 **Input:** lista 78 profili buyer evento (nome, azienda, ruolo, settore, fatturato indicativo)
 
-**Personal OS attiva:**
+**Business AI attiva:**
 - Agente `account-strategist` → analisi automatica fit potenziale per ognuno dei 78
 - Agente `pipeline-analyst` → scoring multi-criterio (size deal · urgenza pain · proximity decision · settore expertise FIXUP)
 - Output: shortlist 25 prospect ranked, top 13 selezionati con motivazione esplicita
@@ -54,7 +54,7 @@ In agenzie tradizionali questo lavoro consuma **2 persone × 1 settimana** o vie
 
 **Input:** 13 prospect selezionati
 
-**Personal OS attiva (in parallelo):**
+**Business AI attiva (in parallelo):**
 - 13 dossier social-intel automatizzati (LinkedIn · Instagram · ads attive · sito · comunicati stampa) via skill ScrapeCreators + Brightdata MCP
 - Agente `discovery-coach` → estrazione 5 pain points probabili per ognuno
 - Agente `competitor-analysis` → mapping competitor diretti del prospect + posizionamento attuale FIXUP
@@ -71,7 +71,7 @@ Generato in parallelo durante la Fase 2:
 |---|---|---|
 | Agenda definitiva | Mappa cronologica 13 meeting + prep sheet di 1 pagina cad. | 13 schede |
 | Cheat-sheet armi+numeri | 1 pagina con i 6 case study FIXUP + numeri memorizzabili | 1 pagina |
-| Demo Personal OS 90 sec | Script verbale + fallback se demo tecnica non parte | 1 documento |
+| Demo Business AI 90 sec | Script verbale + fallback se demo tecnica non parte | 1 documento |
 | Objection handling | 12 obiezioni tipiche + risposta calibrata | 1 playbook |
 | Template follow-up | 13 template pre-segmentati (HOT/WARM/COLD) | 13 bozze |
 | Recap pre-compilati | 13 file Markdown con sezioni vuote da riempire post-meeting | 13 template |
@@ -80,7 +80,7 @@ Generato in parallelo durante la Fase 2:
 
 ### Fase 4 · Esecuzione + dashboard live (durante evento)
 
-**Personal OS attiva:**
+**Business AI attiva:**
 - Dashboard HTML interattiva di governance evento: agenda · stato meeting · intel quick-access · checklist follow-up
 - Bot Telegram personale → comandi vocali per aggiornare stato meeting tra una sessione e l'altra senza aprire laptop
 - Audio recording automatico Plaud → trascrizione asincrona post-meeting (no note manuali = attenzione 100% sul prospect)
@@ -91,7 +91,7 @@ Generato in parallelo durante la Fase 2:
 
 **Input:** 13 trascrizioni Plaud audio reali
 
-**Personal OS attiva:**
+**Business AI attiva:**
 - Agente `meeting-intelligence` → estrazione automatica pain dichiarati · obiettivi · stack tech menzionato · obiezioni · timeline prospect
 - 13 recap strutturati in formato standard (sintesi · highlights · azioni) compilati semi-automaticamente
 - Re-scoring HOT/WARM/COLD post-meeting basato su segnali reali emersi
@@ -103,7 +103,7 @@ Generato in parallelo durante la Fase 2:
 
 **Input:** 13 recap strutturati + intel pre-meeting + asset demo mostrate
 
-**Personal OS attiva:**
+**Business AI attiva:**
 - Agente `outbound-strategist` → drafting 13 email follow-up uniche, ognuna che cita:
   - Quote letterali del prospect dalla trascrizione (no "spero stia bene" generici)
   - Asset specifico mostrato in meeting (organigramma · case study · demo applicativo)
@@ -117,7 +117,7 @@ Generato in parallelo durante la Fase 2:
 
 ## 📦 OUTPUT DELIVERABLE COMPLESSIVO
 
-In **~12 ore di lavoro** orchestrate con Personal OS, i deliverable prodotti sono:
+In **~12 ore di lavoro** orchestrate con Business AI, i deliverable prodotti sono:
 
 | # | Deliverable | Quantità |
 |---|---|---|
@@ -125,7 +125,7 @@ In **~12 ore di lavoro** orchestrate con Personal OS, i deliverable prodotti son
 | 2 | Dossier intel pre-meeting verificati | 13 (di cui 6 deep HOT) |
 | 3 | Briefing operativo per giorno evento | 2 documenti consolidati |
 | 4 | Cheat-sheet armi + 6 case study | 1 pagina A4 stampabile |
-| 5 | Script demo Personal OS 90 secondi | 1 + fallback verbale |
+| 5 | Script demo Business AI 90 secondi | 1 + fallback verbale |
 | 6 | Playbook obiezioni | 12 scenari + risposte |
 | 7 | Template follow-up segmentati | 13 bozze |
 | 8 | Recap pre-compilati formato standard | 13 template |
@@ -145,7 +145,7 @@ In **~12 ore di lavoro** orchestrate con Personal OS, i deliverable prodotti son
 
 Questo workflow non è "una demo carina di AI". È esattamente il modello operativo che FIXUP applica ai progetti cliente, declinato in altri contesti:
 
-| Il tuo contesto | Equivalente Personal OS |
+| Il tuo contesto | Equivalente Business AI |
 |---|---|
 | Lancio campagna multi-paese | Targeting + audit tracking + creative variants + dashboard governance + report settimanali automatici |
 | Ottimizzazione account paid | Audit 28 sezioni + restructuring keyword + RSA/PMax copy + framework test + monitoring KPI live |
@@ -161,7 +161,7 @@ Questo workflow non è "una demo carina di AI". È esattamente il modello operat
 
 Se questo workflow ti interessa applicato al tuo contesto specifico:
 
-**Call discovery 30 minuti** → mappiamo insieme quale tuo processo ad alto consumo di tempo è candidato n.1 per essere orchestrato con Personal OS. Output: ipotesi ore consulenza + ROI atteso. Zero impegno, zero costo.
+**Call discovery 30 minuti** → mappiamo insieme quale tuo processo ad alto consumo di tempo è candidato n.1 per essere orchestrato con Business AI. Output: ipotesi ore consulenza + ROI atteso. Zero impegno, zero costo.
 
 👉 **https://cal.com/max-pavesio/discovery-call**
 

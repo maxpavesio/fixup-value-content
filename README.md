@@ -14,7 +14,7 @@
 | 📁 **App Amministrazione** | https://maxpavesio.github.io/fixup-value-content/admin-app/ |
 | ✈️ **App Gestione Trasferte** | https://maxpavesio.github.io/fixup-value-content/trasferte-app/ |
 | 📊 **Performance Dashboard** | https://maxpavesio.github.io/fixup-value-content/ads-dashboard/ |
-| 🟣 **Organigramma Personal OS** | https://maxpavesio.github.io/fixup-value-content/organigramma.html |
+| 🟣 **Organigramma Business AI** | https://maxpavesio.github.io/fixup-value-content/organigramma.html |
 | 📄 **Esempio Report Audit** | https://maxpavesio.github.io/fixup-value-content/esempio-report-audit-fixup.html |
 | 🚀 **Esempio Workflow Evento** | https://maxpavesio.github.io/fixup-value-content/esempio-workflow-evento-fixup.html |
 
@@ -24,7 +24,7 @@
 - `admin-app/` — demo app amministrazione (clienti, fatture, costi, fornitori, listini)
 - `trasferte-app/` — demo app gestione trasferte (form, riepiloghi, admin)
 - `ads-dashboard/` — demo dashboard performance multi-piattaforma
-- `organigramma.html` — Organigramma interattivo Personal OS FIXUP
+- `organigramma.html` — Organigramma interattivo Business AI FIXUP
 - `Esempio-Report-Audit-FIXUP.md` / `.html` — Esempio audit Google Ads multi-brand
 - `Esempio-Workflow-Evento-FIXUP.md` / `.html` — Workflow evento networking B2B
 
