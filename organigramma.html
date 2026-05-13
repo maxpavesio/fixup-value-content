@@ -598,7 +598,7 @@
       <div class="card">
         <div class="card-header">
           <div class="card-title"><span class="icon">⚙️</span> Commands</div>
-          <span class="count-badge">8</span>
+          <span class="count-badge">10</span>
         </div>
         <div class="section-title">Global (~/.claude/commands/)</div>
         <div class="pills">
@@ -615,6 +615,8 @@
           <span class="pill pill-success">/contratti:genera</span>
           <span class="pill pill-success">/marketing-adv:analisi</span>
           <span class="pill pill-success">/marketing-adv:report</span>
+          <span class="pill pill-success">/dashboard:sync</span>
+          <span class="pill pill-success">/dashboard:crea</span>
         </div>
       </div>
 
@@ -958,6 +960,78 @@
     </div>
   </div>
 
+  <!-- LEVEL 4.7 — DASHBOARD CLIENTE -->
+  <div class="tree-level">
+    <div class="grid-2">
+
+      <!-- Dashboard Template -->
+      <div class="card" style="border-color: var(--primary); background: linear-gradient(180deg, rgba(234,93,11,0.06) 0%, var(--bg-card) 100%);">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">📊</span> Dashboard Cliente · Template</div>
+          <span class="status-badge status-on">NEW</span>
+        </div>
+        <p class="item-dim" style="margin-bottom:12px;">Subdomain dedicato per cliente · dati real-time MCP · zero-touch deploy</p>
+
+        <div class="section-title">PATTERN</div>
+        <ul class="item-list">
+          <li><code>{cliente}.fixup.agency</code> · subdomain isolato</li>
+          <li>Single Pages project · multi custom domain</li>
+          <li>Token URL univoco · cookie 30gg · URL pulito</li>
+          <li class="item-dim">Pilot live: <strong style="color:var(--accent);">Parutto</strong></li>
+        </ul>
+
+        <div class="section-title">STRUTTURA REPO</div>
+        <ul class="item-list">
+          <li><code>data/{slug}.json</code> · 1 file = 1 cliente</li>
+          <li><code>template.js</code> · render(data) → HTML</li>
+          <li><code>build.js</code> · JSON + template → public/{slug}/</li>
+          <li><code>worker.js</code> + <code>wrangler.toml</code> · auth token</li>
+          <li><code>scripts/</code> · fetch-all-periods · ga4-auth · rotate-token</li>
+        </ul>
+
+        <div class="section-title">SLASH COMMANDS</div>
+        <div class="pills">
+          <span class="pill pill-success">/dashboard:sync</span>
+          <span class="pill pill-success">/dashboard:crea</span>
+        </div>
+      </div>
+
+      <!-- Data Flow + Stack -->
+      <div class="card" style="border-color: var(--primary); background: linear-gradient(180deg, rgba(234,93,11,0.06) 0%, var(--bg-card) 100%);">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">☁️</span> Dashboard · Build &amp; Deploy</div>
+          <span class="count-badge">5 step</span>
+        </div>
+        <p class="item-dim" style="margin-bottom:12px;">Da MCP a dashboard live in ~30 secondi · GitHub → Cloudflare auto</p>
+
+        <div class="section-title">DATA FLOW</div>
+        <ul class="item-list">
+          <li><code>1.</code> <code>/dashboard:sync {slug}</code> → MCP estrae KPI</li>
+          <li><code>2.</code> Google Ads + Meta Ads → <code>data/{slug}.json</code></li>
+          <li><code>3.</code> <code>node build.js {slug}</code> → HTML statico</li>
+          <li><code>4.</code> <code>git push</code> → Cloudflare Pages deploy (~30s)</li>
+          <li><code>5.</code> Worker route + <code>TOKEN_{SLUG}</code> secret</li>
+        </ul>
+
+        <div class="section-title">MCP DATA SOURCES</div>
+        <div class="pills">
+          <span class="pill pill-success">google-ads</span>
+          <span class="pill pill-success">meta-ads</span>
+          <span class="pill">GA4 Data API</span>
+        </div>
+
+        <div class="section-title">STACK</div>
+        <ul class="item-list">
+          <li><code>Cloudflare Pages</code> · static hosting + custom domain</li>
+          <li><code>Cloudflare Worker</code> · token auth · cookie 30gg</li>
+          <li><code>GitHub Actions</code> · deploy on push</li>
+          <li class="item-dim">Onboarding nuovo cliente: ~5 min end-to-end</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
   <!-- LEVEL 5 — INTEGRAZIONI -->
   <div class="tree-level">
     <div class="grid-3">
@@ -1023,6 +1097,10 @@
     <div class="stat">
       <div class="stat-value">365</div>
       <div class="stat-label">Run automatici/anno</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">1</div>
+      <div class="stat-label">Dashboard cliente live</div>
     </div>
   </div>
 
