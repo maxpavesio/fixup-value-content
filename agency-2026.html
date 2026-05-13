@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Come svolta una Agency nel 2026 · FIXUP</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #EA5D0B;
+    --primary-dark: #BB4A08;
+    --primary-light: #EE7D3B;
+    --accent: #FFE14D;
+    --bg: #0A0A0C;
+    --bg-card: #1A1A22;
+    --bg-card-hover: #22222C;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --text: #F5F5F7;
+    --text-dim: #9B9BA3;
+    --text-muted: #6A6A75;
+    --success: #4ADE80;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 500;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    padding: 40px 20px;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(234, 93, 11, 0.10) 0, transparent 55%),
+      radial-gradient(ellipse at 80% 90%, rgba(255, 225, 77, 0.06) 0, transparent 55%);
+  }
+  .container { max-width: 1280px; margin: 0 auto; }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 24px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--primary); }
+
+  header {
+    text-align: center;
+    margin-bottom: 56px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand-logo {
+    display: block;
+    margin: 0 auto 20px;
+    max-width: 220px;
+    height: auto;
+    opacity: 0.95;
+  }
+  h1 {
+    font-size: 44px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    padding: 4px 0;
+  }
+  .subtitle {
+    color: var(--text-dim);
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.55;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .subtitle strong { color: var(--accent); font-weight: 700; }
+  .meta {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-card);
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .meta-item strong { color: var(--accent); font-weight: 700; }
+
+  /* ===== FLOW DIAGRAM ===== */
+  .flow {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1.4fr;
+    gap: 12px;
+    align-items: stretch;
+    margin-bottom: 36px;
+  }
+  .flow-stage {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    transition: all 0.2s ease;
+  }
+  .flow-stage:hover { background: var(--bg-card-hover); border-color: rgba(234, 93, 11, 0.45); }
+  .flow-stage.input { background: linear-gradient(180deg, rgba(155,155,163,0.06) 0%, var(--bg-card) 100%); }
+  .flow-stage.orchestrator {
+    background: linear-gradient(180deg, rgba(234,93,11,0.14) 0%, rgba(255,225,77,0.04) 100%);
+    border-color: var(--primary);
+    box-shadow: 0 12px 30px rgba(234, 93, 11, 0.18);
+  }
+  .flow-stage.exec { background: linear-gradient(180deg, rgba(74,222,128,0.04) 0%, var(--bg-card) 100%); border-color: rgba(74,222,128,0.25); }
+  .flow-stage-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .flow-stage-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+  .flow-stage.input .flow-stage-title { color: var(--text-dim); }
+  .flow-stage.exec .flow-stage-title { color: var(--success); }
+  .flow-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .flow-list li {
+    padding: 8px 12px;
+    font-size: 13px;
+    color: var(--text);
+    background: rgba(255,255,255,0.02);
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+  .flow-list li code {
+    font-family: 'SF Mono', Monaco, monospace;
+    font-size: 12px;
+    color: var(--primary-light);
+    font-weight: 600;
+  }
+  .flow-arrow {
+    font-size: 32px;
+    color: var(--primary);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .agents-fan {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  .agent-chip {
+    background: rgba(234, 93, 11, 0.1);
+    border: 1px solid rgba(234, 93, 11, 0.3);
+    border-radius: 8px;
+    padding: 12px 6px;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+  .agent-chip:hover { background: rgba(234, 93, 11, 0.2); transform: translateY(-2px); }
+  .agent-chip-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+  .agent-chip-name { font-size: 10px; color: var(--primary-light); font-weight: 700; letter-spacing: 0.06em; }
+
+  /* ===== PARALLEL OUTPUTS ===== */
+  .parallel-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin: 40px 0 36px;
+    position: relative;
+  }
+  .parallel-row::before {
+    content: 'ESECUZIONE IN PARALLELO · zero attesa';
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.16em;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: var(--bg);
+    padding: 0 14px;
+    white-space: nowrap;
+  }
+  .parallel-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(234, 93, 11, 0.25);
+    border-radius: 12px;
+    padding: 18px 14px;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+  .parallel-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+  }
+  .parallel-card-icon { font-size: 26px; margin-bottom: 8px; }
+  .parallel-card-title { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+  .parallel-card-desc { font-size: 11px; color: var(--text-dim); line-height: 1.4; }
+
+  /* ===== SPEED BANNER ===== */
+  .speed-banner {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+    border-radius: 18px;
+    padding: 32px;
+    text-align: center;
+    margin-bottom: 64px;
+    box-shadow: 0 12px 40px rgba(234, 93, 11, 0.3);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    align-items: center;
+  }
+  .speed-stat-num {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+  .speed-stat-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.92);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    margin-top: 8px;
+  }
+
+  /* ===== EXPLAINER BLOCKS ===== */
+  .explainer {
+    margin-bottom: 64px;
+  }
+  .explainer-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+    text-align: center;
+  }
+  .explainer-title strong {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+  }
+  .explainer-sub {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 15px;
+    margin-bottom: 32px;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .explainer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .explainer-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 24px;
+    transition: all 0.2s ease;
+  }
+  .explainer-card:hover {
+    background: var(--bg-card-hover);
+    border-color: rgba(234, 93, 11, 0.4);
+    transform: translateY(-2px);
+  }
+  .explainer-card-icon {
+    font-size: 32px;
+    margin-bottom: 14px;
+  }
+  .explainer-card-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+  .explainer-card-body { color: var(--text-dim); font-size: 14px; line-height: 1.65; }
+  .explainer-card-body strong { color: var(--text); }
+
+  /* ===== CTA ===== */
+  .site-cta {
+    margin-top: 56px;
+    padding: 40px 28px;
+    background: linear-gradient(135deg, rgba(234, 93, 11, 0.15) 0%, rgba(255, 225, 77, 0.08) 100%);
+    border: 1px solid var(--primary);
+    border-radius: 18px;
+    text-align: center;
+  }
+  .site-cta h3 {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 14px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .site-cta p { color: var(--text-dim); margin: 0 0 24px; font-size: 15px; line-height: 1.65; }
+  .site-cta strong { color: var(--text); }
+  .site-cta .cta-button {
+    display: inline-block;
+    background: var(--primary);
+    color: var(--bg);
+    padding: 14px 28px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    transition: all 0.2s ease;
+  }
+  .site-cta .cta-button:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(234, 93, 11, 0.3); }
+
+  footer {
+    text-align: center;
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.8;
+  }
+  footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+  footer a:hover { color: var(--accent); }
+  .badges {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 22px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+  }
+  .badges img { max-height: 52px; width: auto; opacity: 0.78; transition: opacity 0.2s ease; }
+  .badges img:hover { opacity: 1; }
+
+  @media (max-width: 1100px) {
+    .flow { grid-template-columns: 1fr; }
+    .flow-arrow { transform: rotate(90deg); padding: 4px 0; }
+    .parallel-row { grid-template-columns: repeat(2, 1fr); }
+    .speed-banner { grid-template-columns: 1fr; gap: 16px; }
+    .explainer-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    h1 { font-size: 32px; }
+    .agents-fan { grid-template-columns: repeat(3, 1fr); }
+    .parallel-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="index.html" class="back-link">← Torna a Value Content</a>
+
+  <header>
+    <img src="loghi/fixup-logo-bianco.png" alt="FIXUP" class="brand-logo">
+    <h1>Come svolta una Agency nel 2026</h1>
+    <p class="subtitle">Brief cliente → orchestrator AI → 5 agenti in parallelo → output multi-canale in <strong>ore, non settimane</strong>. Stesso lavoro, leverage 10-20x.</p>
+    <div class="meta">
+      <div class="meta-item">📅 Last update <strong>13 Mag 2026</strong></div>
+      <div class="meta-item">⚡ <strong>Claude Code · Opus 4.7 (1M)</strong></div>
+      <div class="meta-item">🎯 <strong>Use case FIXUP</strong></div>
+    </div>
+  </header>
+
+  <!-- FLOW DIAGRAM -->
+  <div class="flow">
+
+    <div class="flow-stage input">
+      <div class="flow-stage-label">Input</div>
+      <div class="flow-stage-title">📥 Brief Cliente</div>
+      <ul class="flow-list">
+        <li>Obiettivo business</li>
+        <li>Budget · target · canali</li>
+        <li>Asset esistenti</li>
+      </ul>
+    </div>
+
+    <div class="flow-arrow">→</div>
+
+    <div class="flow-stage orchestrator">
+      <div class="flow-stage-label">Orchestrator</div>
+      <div class="flow-stage-title">⚡ Personal-OS</div>
+      <ul class="flow-list">
+        <li><code>Claude Code</code> · Opus 4.7</li>
+        <li>Capisce · scompone · delega</li>
+        <li>8 MCP · 24 agenti · 636 skill</li>
+      </ul>
+    </div>
+
+    <div class="flow-arrow">→</div>
+
+    <div class="flow-stage exec">
+      <div class="flow-stage-label">Esecuzione</div>
+      <div class="flow-stage-title">🤖 Agenti specialisti</div>
+      <div class="agents-fan">
+        <div class="agent-chip"><span class="agent-chip-icon">📈</span><div class="agent-chip-name">PAID</div></div>
+        <div class="agent-chip"><span class="agent-chip-icon">🔍</span><div class="agent-chip-name">SEO</div></div>
+        <div class="agent-chip"><span class="agent-chip-icon">🎨</span><div class="agent-chip-name">CREATIVE</div></div>
+        <div class="agent-chip"><span class="agent-chip-icon">✍️</span><div class="agent-chip-name">COPY</div></div>
+        <div class="agent-chip"><span class="agent-chip-icon">💼</span><div class="agent-chip-name">SALES</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PARALLEL OUTPUTS -->
+  <div class="parallel-row">
+    <div class="parallel-card">
+      <div class="parallel-card-icon">📊</div>
+      <div class="parallel-card-title">Audit Report</div>
+      <div class="parallel-card-desc">HTML brandizzato · MCP-driven</div>
+    </div>
+    <div class="parallel-card">
+      <div class="parallel-card-icon">📡</div>
+      <div class="parallel-card-title">Campagne live</div>
+      <div class="parallel-card-desc">Google + Meta · ottimizzate</div>
+    </div>
+    <div class="parallel-card">
+      <div class="parallel-card-icon">✉️</div>
+      <div class="parallel-card-title">Email sequence</div>
+      <div class="parallel-card-desc">Nurturing · cold · upsell</div>
+    </div>
+    <div class="parallel-card">
+      <div class="parallel-card-icon">📈</div>
+      <div class="parallel-card-title">Dashboard</div>
+      <div class="parallel-card-desc">{cliente}.fixup.agency 24/7</div>
+    </div>
+    <div class="parallel-card">
+      <div class="parallel-card-icon">📄</div>
+      <div class="parallel-card-title">Contratti</div>
+      <div class="parallel-card-desc">DOCX · /contratti:genera</div>
+    </div>
+  </div>
+
+  <!-- SPEED BANNER -->
+  <div class="speed-banner">
+    <div>
+      <div class="speed-stat-num">2h</div>
+      <div class="speed-stat-label">Audit completo (era: 2 settimane)</div>
+    </div>
+    <div>
+      <div class="speed-stat-num">30'</div>
+      <div class="speed-stat-label">Report mensile (era: 3 giorni)</div>
+    </div>
+    <div>
+      <div class="speed-stat-num">24/7</div>
+      <div class="speed-stat-label">Monitoring zero-touch</div>
+    </div>
+  </div>
+
+  <!-- EXPLAINER · cosa cambia davvero -->
+  <section class="explainer">
+    <h2 class="explainer-title">Cosa cambia <strong>davvero</strong> nell'operatività</h2>
+    <p class="explainer-sub">Non è "l'AI che sostituisce le persone". È un sistema che ne <strong>moltiplica</strong> la leva. Stessa testa, output 10-20x.</p>
+    <div class="explainer-grid">
+
+      <div class="explainer-card">
+        <div class="explainer-card-icon">🧠</div>
+        <div class="explainer-card-title">Lo strategist resta umano</div>
+        <div class="explainer-card-body">Decide <strong>cosa</strong> serve al cliente, valida output, prende decisioni di business. È la testa, non muore mai.</div>
+      </div>
+
+      <div class="explainer-card">
+        <div class="explainer-card-icon">⚡</div>
+        <div class="explainer-card-title">L'orchestrator esegue</div>
+        <div class="explainer-card-body">Personal-OS scompone il task, delega agli agenti specialisti in parallelo, ricompone l'output finale. <strong>Zero attesa fra step.</strong></div>
+      </div>
+
+      <div class="explainer-card">
+        <div class="explainer-card-icon">🚀</div>
+        <div class="explainer-card-title">Il margine si moltiplica</div>
+        <div class="explainer-card-body">1 strategist può seguire <strong>10+ clienti</strong> invece di 2-3. I costi struttura crollano, la qualità sale, il tempo cliente aumenta.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="site-cta">
+    <h3>Vuoi portare questo modello nella tua agency?</h3>
+    <p>Quello che vedi è il sistema che usiamo internamente <strong>ogni giorno</strong>. <strong>FIXUP:</strong> ti affianca con <strong>consulenza strategica</strong> e <strong>percorsi formativi</strong> per progettare e attivare un Personal-OS dentro il tuo team marketing, sales e operations.</p>
+    <a href="https://cal.com/max-pavesio/discovery-call" class="cta-button">📅 Prenota call discovery</a>
+  </div>
+
+  <footer>
+    <p>© 2026 FIXUP Agency · Google Premier Partner Top 3% Italia · ADworld Experience Winning Case Story 2023</p>
+    <p><a href="https://cal.com/max-pavesio/discovery-call">📅 Prenota call discovery</a> · <a href="mailto:info@fixup.agency">✉️ info@fixup.agency</a> · <a href="https://fixup.agency" target="_blank" rel="noopener">🌐 Visita fixup.agency</a></p>
+    <div class="badges">
+      <img src="loghi/google-premier-partner.png" alt="Google Premier Partner Top 3% Italia">
+    </div>
+  </footer>
+</div>
+</body>
+</html>
