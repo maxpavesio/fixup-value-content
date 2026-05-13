@@ -14,6 +14,7 @@
     --primary-light: #EE7D3B;
     --primary-dark: #BB4A08;
     --accent: #FFE14D;
+    --purple: #c084fc;
     --bg: #000000;
     --bg-card: #202020;
     --bg-card-hover: #2A2A2A;
@@ -37,15 +38,9 @@
       radial-gradient(ellipse at 20% 10%, rgba(234, 93, 11, 0.12) 0, transparent 55%),
       radial-gradient(ellipse at 80% 90%, rgba(255, 225, 77, 0.07) 0, transparent 55%);
   }
-  .container { max-width: 880px; margin: 0 auto; }
-  header { text-align: center; margin-bottom: 64px; }
-  .logo {
-    max-width: 220px;
-    width: 100%;
-    height: auto;
-    margin: 0 auto 20px;
-    display: block;
-  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 56px; }
+  .logo { max-width: 240px; width: 100%; height: auto; margin: 0 auto 22px; display: block; }
   .claim {
     color: var(--accent);
     font-size: 14px;
@@ -55,56 +50,179 @@
     margin-bottom: 28px;
   }
   h1 {
-    font-size: 44px;
+    font-size: 52px;
     font-weight: 700;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    background: linear-gradient(135deg, var(--primary), var(--accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     padding: 4px 0;
-    line-height: 1.2;
-    margin-bottom: 12px;
+    line-height: 1.15;
+    margin-bottom: 14px;
+    letter-spacing: -0.03em;
   }
-  .subtitle { color: var(--text-dim); font-size: 17px; font-weight: 500; margin-top: 8px; }
+  .subtitle { color: var(--text-dim); font-size: 18px; font-weight: 500; max-width: 680px; margin: 0 auto; }
+  .subtitle strong { color: var(--accent); font-weight: 700; }
   .meta { color: var(--text-muted); font-size: 13px; margin-top: 14px; }
-  .grid { display: grid; gap: 20px; }
-  .card {
+
+  .splitter {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .splitter-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 32px;
+    border-radius: 20px;
+    padding: 44px 36px;
     text-decoration: none;
     color: var(--text);
-    transition: all 0.25s ease;
-    display: block;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
   }
-  .card:hover {
-    background: var(--bg-card-hover);
+  .splitter-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, currentColor, transparent);
+    opacity: 0.6;
+  }
+  .splitter-card.agency {
+    background: linear-gradient(135deg, rgba(234,93,11,0.10) 0%, rgba(255,225,77,0.04) 100%);
+    border-color: rgba(234, 93, 11, 0.35);
+    color: var(--primary-light);
+  }
+  .splitter-card.agency:hover {
+    background: linear-gradient(135deg, rgba(234,93,11,0.18) 0%, rgba(255,225,77,0.08) 100%);
     border-color: var(--primary);
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(234, 93, 11, 0.18);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(234, 93, 11, 0.22);
   }
-  .card-icon { font-size: 32px; margin-bottom: 12px; }
-  .card h2 {
+  .splitter-card.business {
+    background: linear-gradient(135deg, rgba(168,85,247,0.08) 0%, rgba(96,165,250,0.04) 100%);
+    border-color: rgba(168, 85, 247, 0.30);
+    color: var(--purple);
+  }
+  .splitter-card.business:hover {
+    background: linear-gradient(135deg, rgba(168,85,247,0.14) 0%, rgba(96,165,250,0.06) 100%);
+    border-color: var(--purple);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(168, 85, 247, 0.18);
+  }
+
+  .splitter-icon { font-size: 52px; margin-bottom: 18px; line-height: 1; }
+  .splitter-pill {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    background: currentColor;
+    color: var(--bg);
+    width: fit-content;
+    filter: brightness(1.05);
+  }
+  .splitter-card.agency .splitter-pill { background: var(--primary); color: white; }
+  .splitter-card.business .splitter-pill { background: var(--purple); color: var(--bg); }
+
+  .splitter-card h2 {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .splitter-card p {
+    color: var(--text-dim);
+    font-size: 15.5px;
+    line-height: 1.65;
+    margin-bottom: 20px;
+    flex: 1;
+  }
+  .splitter-card p strong { color: var(--text); }
+
+  .splitter-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .splitter-bullets li {
+    font-size: 13.5px;
+    color: var(--text-dim);
+    padding-left: 22px;
+    position: relative;
+  }
+  .splitter-bullets li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    font-weight: 700;
+  }
+  .splitter-card.agency .splitter-bullets li::before { color: var(--primary-light); }
+  .splitter-card.business .splitter-bullets li::before { color: var(--purple); }
+
+  .splitter-arrow {
+    font-size: 16px;
+    font-weight: 700;
+    transition: transform 0.2s;
+    align-self: flex-start;
+  }
+  .splitter-card.agency .splitter-arrow { color: var(--accent); }
+  .splitter-card.business .splitter-arrow { color: var(--purple); }
+  .splitter-card:hover .splitter-arrow { transform: translateX(6px); }
+
+  .hint {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    margin: 24px 0 40px;
+    font-style: italic;
+  }
+
+  .site-cta {
+    margin-top: 24px;
+    padding: 36px 28px;
+    background: linear-gradient(135deg, rgba(234, 93, 11, 0.12) 0%, rgba(255, 225, 77, 0.06) 100%);
+    border: 1px solid var(--border-strong);
+    border-radius: 18px;
+    text-align: center;
+  }
+  .site-cta h3 {
     font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 10px;
+    font-weight: 700;
+    margin: 0 0 12px;
     color: var(--text);
   }
-  .card p { color: var(--text-dim); font-size: 15px; line-height: 1.65; }
-  .card .arrow {
+  .site-cta p { color: var(--text-dim); margin: 0 0 20px; font-size: 14.5px; line-height: 1.6; }
+  .site-cta .cta-button {
     display: inline-block;
-    margin-top: 18px;
-    color: var(--primary);
-    font-weight: 600;
+    background: var(--primary);
+    color: var(--bg);
+    padding: 12px 24px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
     font-size: 14px;
-    transition: transform 0.2s ease;
+    transition: all 0.2s;
   }
-  .card:hover .arrow { transform: translateX(4px); color: var(--accent); }
+  .site-cta .cta-button:hover { background: var(--accent); transform: translateY(-2px); }
+
   footer {
     text-align: center;
-    margin-top: 80px;
-    padding-top: 32px;
+    margin-top: 56px;
+    padding-top: 28px;
     border-top: 1px solid var(--border);
     color: var(--text-muted);
     font-size: 13px;
@@ -117,45 +235,19 @@
     justify-content: center;
     align-items: center;
     gap: 24px;
-    margin-top: 20px;
+    margin-top: 18px;
     flex-wrap: wrap;
   }
-  .badges img {
-    max-height: 56px;
-    width: auto;
-    opacity: 0.78;
-    transition: opacity 0.2s ease;
-  }
+  .badges img { max-height: 52px; width: auto; opacity: 0.78; transition: opacity 0.2s; }
   .badges img:hover { opacity: 1; }
-  .site-cta {
-    margin-top: 56px;
-    padding: 40px 28px;
-    background: linear-gradient(135deg, rgba(234, 93, 11, 0.15) 0%, rgba(255, 225, 77, 0.08) 100%);
-    border: 1px solid var(--primary);
-    border-radius: 18px;
-    text-align: center;
+
+  @media (max-width: 800px) {
+    h1 { font-size: 38px; }
+    .splitter { grid-template-columns: 1fr; }
+    .splitter-card { padding: 32px 24px; }
+    .splitter-card h2 { font-size: 24px; }
+    .splitter-icon { font-size: 42px; }
   }
-  .site-cta h3 {
-    font-size: 26px;
-    font-weight: 700;
-    margin: 0 0 14px;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  }
-  .site-cta p { color: var(--text-dim); margin: 0 0 24px; font-size: 15px; line-height: 1.65; }
-  .site-cta strong { color: var(--text); }
-  .site-cta .cta-button {
-    display: inline-block;
-    background: var(--primary);
-    color: var(--bg);
-    padding: 14px 28px;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 15px;
-    transition: all 0.2s ease;
-  }
-  .site-cta .cta-button:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(234, 93, 11, 0.3); }
 </style>
 </head>
 <body>
@@ -164,71 +256,47 @@
     <img src="loghi/fixup-logo-bianco.png" alt="FIXUP Agency" class="logo">
     <p class="claim">Consulenza · Formazione · Performance</p>
     <h1>Business AI</h1>
-    <p class="subtitle">Asset showcase · casi reali · workflow potenziati</p>
-    <p class="meta">📅 Last update 8 maggio 2026</p>
+    <p class="subtitle">Asset showcase, casi reali e workflow potenziati dall'AI. <strong>Scegli il percorso</strong> in base a chi sei.</p>
+    <p class="meta">📅 Last update 13 maggio 2026</p>
   </header>
 
-  <div class="grid">
-    <a href="agency-2026.html" class="card">
-      <div class="card-icon">🚀</div>
-      <h2>Come svolta una Agency nel 2026</h2>
-      <p>Il modello operativo Business AI in uno schema: brief cliente → orchestrator AI → 5 agenti specialisti in parallelo → output multi-canale. Audit in 2 ore (era 2 settimane), report in 30 minuti, monitoring 24/7. Stesso lavoro, leverage 10-20x.</p>
-      <span class="arrow">Apri use case →</span>
+  <div class="splitter">
+
+    <a href="agency.html" class="splitter-card agency">
+      <div class="splitter-icon">🎯</div>
+      <span class="splitter-pill">Per Agency · Performance · Media</span>
+      <h2>Sei una Agency</h2>
+      <p>Vuoi <strong>moltiplicare la leva</strong> del tuo team performance? Trovi il modello operativo, l'architettura completa e gli asset reali che FIXUP usa per audit, ads, monitoring e reporting cliente.</p>
+      <ul class="splitter-bullets">
+        <li>Come svolta una Agency nel 2026 (vision)</li>
+        <li>Organigramma Personal-OS (architettura)</li>
+        <li>Marketing Monitor 50 account adv (live)</li>
+        <li>Esempi: report audit, workflow evento, dashboard cliente</li>
+      </ul>
+      <span class="splitter-arrow">Apri percorso Agency →</span>
     </a>
 
-    <a href="organigramma.html" class="card">
-      <div class="card-icon">🟣</div>
-      <h2>Organigramma Personal OS</h2>
-      <p>Mappa visiva interattiva: 18+ agenti AI specializzati, MCP servers, plugin, hooks, skills. L'architettura completa che FIXUP orchestra ogni giorno via Claude Code + 1M context window.</p>
-      <span class="arrow">Apri organigramma →</span>
+    <a href="business.html" class="splitter-card business">
+      <div class="splitter-icon">🏢</div>
+      <span class="splitter-pill">Per Aziende · Operations · Back-office</span>
+      <h2>Sei una Azienda</h2>
+      <p>Vuoi portare l'AI nei tuoi <strong>processi marketing, sales, operations e back-office</strong>? Trovi l'architettura, le app interne e i workflow concreti che mostrano dove e come l'AI fa davvero la differenza.</p>
+      <ul class="splitter-bullets">
+        <li>Organigramma Personal-OS (architettura)</li>
+        <li>App amministrazione + trasferte (back-office)</li>
+        <li>Workflow evento B2B (operations)</li>
+        <li>Marketing Monitor (pipeline dati zero-touch)</li>
+      </ul>
+      <span class="splitter-arrow">Apri percorso Azienda →</span>
     </a>
 
-    <a href="marketing-monitor.html" class="card">
-      <div class="card-icon">📡</div>
-      <h2>Marketing Monitor · Daily AI Watchdog</h2>
-      <p>Use case di Business AI applicato al monitoraggio adv: ogni mattina alle 08:23 i tuoi account Google + Meta vengono controllati in autonomia, 11 KPI calcolati e confrontati WoW/MoM/YoY, semaforo per account, email scoped agli stakeholder giusti. Un esempio concreto di cosa puoi adottare nel tuo team.</p>
-      <span class="arrow">Apri use case →</span>
-    </a>
-
-    <a href="esempio-report-audit-fixup.html" class="card">
-      <div class="card-icon">📊</div>
-      <h2>Esempio Report Audit Google Ads</h2>
-      <p>Caso multi-brand · 28 sezioni · 6 capitoli operativi: sintesi KPI, struttura account, audit keyword, liste negative, keyword set finali, copy RSA + PMax pronti.</p>
-      <span class="arrow">Leggi report →</span>
-    </a>
-
-    <a href="esempio-workflow-evento-fixup.html" class="card">
-      <div class="card-icon">🚀</div>
-      <h2>Esempio Workflow Evento</h2>
-      <p>Preparazione end-to-end evento networking B2B · 13 meeting · -85% tempo prep · 15 deliverable in 12h vs 80h con metodo tradizionale.</p>
-      <span class="arrow">Leggi workflow →</span>
-    </a>
-
-    <a href="admin-app/index.html" class="card">
-      <div class="card-icon">📁</div>
-      <h2>Demo · App Amministrazione</h2>
-      <p>Software amministrazione FIXUP completo: dashboard finanziaria con KPI, gestione clienti, fornitori, fatture mensili, costi SaaS, listini. Sviluppato in-house con Next.js + Supabase, integrato con Notion.</p>
-      <span class="arrow">Apri demo interattiva →</span>
-    </a>
-
-    <a href="trasferte-app/index.html" class="card">
-      <div class="card-icon">✈️</div>
-      <h2>Demo · App Gestione Trasferte</h2>
-      <p>Modulo nota spese aziendale: form trasferta con calcolo automatico indennità ACI + rimborso chilometrico, allegati, riepiloghi admin con approvazione e export PDF/CSV. Use case Business AI applicato al backoffice.</p>
-      <span class="arrow">Apri demo interattiva →</span>
-    </a>
-
-    <a href="ads-dashboard/index.html" class="card">
-      <div class="card-icon">📊</div>
-      <h2>Demo · Performance Dashboard</h2>
-      <p>Dashboard cliente real-time multi-piattaforma: KPI blended (spend, revenue, ROAS, CPA), trend 30gg, breakdown Google/Meta/TikTok/LinkedIn, funnel conversioni, top campagne e creatives. Sync via tracking server-side + GA4.</p>
-      <span class="arrow">Apri dashboard demo →</span>
-    </a>
   </div>
 
+  <p class="hint">Non sei sicuro? I percorsi condividono diversi asset, puoi muoverti liberamente fra i due.</p>
+
   <div class="site-cta">
-    <h3>Sei pronto a trasformare il tuo Business?</h3>
-    <p>Quello che vedi qui è una selezione degli use case e degli strumenti che FIXUP usa ogni giorno. <strong>FIXUP:</strong> ti affianca con <strong>consulenza strategica</strong> e <strong>percorsi formativi</strong> per portare la Business AI nei tuoi processi marketing, sales e operations.</p>
+    <h3>Vuoi parlarne direttamente?</h3>
+    <p>Una call di 30 minuti per capire come applicare la Business AI al tuo contesto specifico.</p>
     <a href="https://cal.com/max-pavesio/discovery-call" class="cta-button">📅 Prenota call discovery</a>
   </div>
 

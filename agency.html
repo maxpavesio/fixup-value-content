@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIXUP · Business AI per Agency</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #EA5D0B;
+    --primary-light: #EE7D3B;
+    --primary-dark: #BB4A08;
+    --accent: #FFE14D;
+    --bg: #000000;
+    --bg-card: #202020;
+    --bg-card-hover: #2A2A2A;
+    --border: rgba(255, 255, 255, 0.10);
+    --border-strong: rgba(255, 255, 255, 0.18);
+    --text: #F0F0F0;
+    --text-dim: #B0B0B0;
+    --text-muted: #808080;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 500;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    padding: 60px 24px;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(234, 93, 11, 0.12) 0, transparent 55%),
+      radial-gradient(ellipse at 80% 90%, rgba(255, 225, 77, 0.07) 0, transparent 55%);
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 24px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--primary); }
+
+  header { text-align: center; margin-bottom: 48px; }
+  .logo { max-width: 220px; width: 100%; height: auto; margin: 0 auto 20px; display: block; }
+  .audience-pill {
+    display: inline-block;
+    background: rgba(234, 93, 11, 0.18);
+    color: var(--primary-light);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid rgba(234, 93, 11, 0.35);
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-size: 48px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    padding: 4px 0;
+  }
+  .subtitle { color: var(--text-dim); font-size: 17px; max-width: 680px; margin: 0 auto; }
+  .subtitle strong { color: var(--accent); font-weight: 700; }
+  .meta { color: var(--text-muted); font-size: 13px; margin-top: 14px; }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 26px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.25s ease;
+    display: block;
+    position: relative;
+  }
+  .card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(234, 93, 11, 0.15);
+  }
+  .card.featured {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, rgba(234,93,11,0.14) 0%, rgba(255,225,77,0.05) 100%);
+    border-color: var(--primary);
+    box-shadow: 0 10px 32px rgba(234, 93, 11, 0.18);
+  }
+  .card-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .tag-vision { background: rgba(234,93,11,0.18); color: var(--primary-light); border: 1px solid rgba(234,93,11,0.3); }
+  .tag-architecture { background: rgba(168,85,247,0.12); color: #c084fc; border: 1px solid rgba(168,85,247,0.25); }
+  .tag-live { background: rgba(74,222,128,0.12); color: #4ade80; border: 1px solid rgba(74,222,128,0.25); }
+  .tag-output { background: rgba(96,165,250,0.12); color: #60a5fa; border: 1px solid rgba(96,165,250,0.25); }
+  .tag-demo { background: rgba(255,225,77,0.10); color: var(--accent); border: 1px solid rgba(255,225,77,0.25); }
+  .card-icon { font-size: 28px; margin-bottom: 10px; }
+  .card h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+  .card.featured h2 {
+    font-size: 28px;
+    background: linear-gradient(135deg, var(--accent), var(--primary-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .card p { color: var(--text-dim); font-size: 14px; line-height: 1.6; }
+  .card.featured p { font-size: 15.5px; max-width: 760px; }
+  .card p strong { color: var(--text); }
+  .card .arrow {
+    display: inline-block;
+    margin-top: 14px;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 13px;
+    transition: transform 0.2s;
+  }
+  .card.featured .arrow { color: var(--accent); font-size: 14px; }
+  .card:hover .arrow { transform: translateX(4px); color: var(--accent); }
+
+  .site-cta {
+    margin-top: 56px;
+    padding: 40px 28px;
+    background: linear-gradient(135deg, rgba(234, 93, 11, 0.15) 0%, rgba(255, 225, 77, 0.08) 100%);
+    border: 1px solid var(--primary);
+    border-radius: 18px;
+    text-align: center;
+  }
+  .site-cta h3 {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 14px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .site-cta p { color: var(--text-dim); margin: 0 0 24px; font-size: 15px; line-height: 1.65; }
+  .site-cta strong { color: var(--text); }
+  .site-cta .cta-button {
+    display: inline-block;
+    background: var(--primary);
+    color: var(--bg);
+    padding: 14px 28px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    transition: all 0.2s;
+  }
+  .site-cta .cta-button:hover { background: var(--accent); transform: translateY(-2px); }
+
+  footer {
+    text-align: center;
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.8;
+  }
+  footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+  footer a:hover { color: var(--accent); }
+  .badges {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .badges img { max-height: 56px; width: auto; opacity: 0.78; transition: opacity 0.2s; }
+  .badges img:hover { opacity: 1; }
+
+  @media (max-width: 800px) {
+    h1 { font-size: 36px; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .card.featured { grid-column: auto; }
+    .card.featured h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="index.html" class="back-link">← Torna alla home</a>
+
+  <header>
+    <img src="loghi/fixup-logo-bianco.png" alt="FIXUP" class="logo">
+    <span class="audience-pill">🎯 Per Agency · Performance · Media</span>
+    <h1>Business AI per la tua Agency</h1>
+    <p class="subtitle">Use case, asset e workflow per <strong>moltiplicare la leva</strong> del tuo team performance: ads, audit, monitoring, reporting cliente. Tutto ciò che FIXUP usa ogni giorno.</p>
+    <p class="meta">📅 Last update 13 maggio 2026</p>
+  </header>
+
+  <div class="grid-2">
+
+    <a href="agency-2026.html" class="card featured">
+      <span class="card-tag tag-vision">⚡ Vision · The Big Picture</span>
+      <h2>Come svolta una Agency nel 2026</h2>
+      <p>Il modello operativo Business AI in uno schema: <strong>brief cliente → orchestrator AI → 5 agenti in parallelo → output multi-canale</strong>. Audit in 2h (era 2 sett), report in 30', monitoring 24/7. <strong>Stesso lavoro, leverage 10-20x.</strong></p>
+      <span class="arrow">Apri use case →</span>
+    </a>
+
+    <a href="organigramma.html" class="card">
+      <span class="card-tag tag-architecture">🏗️ Architettura</span>
+      <div class="card-icon">🟣</div>
+      <h2>Organigramma Personal-OS</h2>
+      <p>Mappa visiva: 24 agenti AI specializzati (sales · paid · growth · SEO), 8 MCP servers, plugin, hooks, 636 skills. L'architettura completa orchestrata via Claude Code + 1M context.</p>
+      <span class="arrow">Apri organigramma →</span>
+    </a>
+
+    <a href="marketing-monitor.html" class="card">
+      <span class="card-tag tag-live">📡 Live in produzione</span>
+      <div class="card-icon">📡</div>
+      <h2>Marketing Monitor · Daily AI Watchdog</h2>
+      <p>Ogni mattina alle 08:23: 50 account Google + Meta controllati in autonomia, 11 KPI calcolati e confrontati WoW/MoM/YoY, semaforo per account, email scoped agli stakeholder giusti. Zero touch.</p>
+      <span class="arrow">Apri use case →</span>
+    </a>
+
+    <a href="esempio-report-audit-fixup.html" class="card">
+      <span class="card-tag tag-output">📊 Esempio output</span>
+      <div class="card-icon">📊</div>
+      <h2>Report Audit Google Ads</h2>
+      <p>Caso multi-brand · 28 sezioni · 6 capitoli operativi: sintesi KPI, struttura account, audit keyword, liste negative, keyword set finali, copy RSA + PMax pronti.</p>
+      <span class="arrow">Leggi report →</span>
+    </a>
+
+    <a href="ads-dashboard/index.html" class="card">
+      <span class="card-tag tag-demo">💻 Demo cliente</span>
+      <div class="card-icon">📊</div>
+      <h2>Performance Dashboard cliente</h2>
+      <p>Dashboard real-time multi-piattaforma: KPI blended (spend, revenue, ROAS, CPA), trend 30gg, breakdown Google/Meta/TikTok/LinkedIn, funnel conversioni, top campagne e creatives. Sync via tracking server-side + GA4.</p>
+      <span class="arrow">Apri dashboard →</span>
+    </a>
+
+    <a href="esempio-workflow-evento-fixup.html" class="card">
+      <span class="card-tag tag-output">📊 Esempio output</span>
+      <div class="card-icon">🚀</div>
+      <h2>Workflow Evento B2B</h2>
+      <p>Preparazione end-to-end evento networking: 13 meeting · -85% tempo prep · 15 deliverable in 12h vs 80h con metodo tradizionale.</p>
+      <span class="arrow">Leggi workflow →</span>
+    </a>
+
+  </div>
+
+  <div class="site-cta">
+    <h3>Vuoi portare questo modello nella tua Agency?</h3>
+    <p>Quello che vedi qui è il sistema che FIXUP usa ogni giorno per <strong>moltiplicare la leva</strong> del team performance. <strong>FIXUP:</strong> ti affianca con <strong>consulenza strategica</strong> e <strong>percorsi formativi</strong> per progettare un Personal-OS dentro la tua agency.</p>
+    <a href="https://cal.com/max-pavesio/discovery-call" class="cta-button">📅 Prenota call discovery</a>
+  </div>
+
+  <footer>
+    <p>© 2026 FIXUP Agency · Google Premier Partner Top 3% Italia · ADworld Experience Winning Case Story 2023</p>
+    <p><a href="https://cal.com/max-pavesio/discovery-call">📅 Prenota call discovery</a> · <a href="mailto:info@fixup.agency">✉️ info@fixup.agency</a> · <a href="https://fixup.agency" target="_blank" rel="noopener">🌐 Visita fixup.agency</a></p>
+    <div class="badges">
+      <img src="loghi/google-premier-partner.png" alt="Google Premier Partner Top 3% Italia">
+    </div>
+  </footer>
+</div>
+</body>
+</html>
