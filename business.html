@@ -373,7 +373,7 @@ footer a:hover { color: var(--purple); }
 <body>
 
 <div class="container">
-  <a href="index.html" class="back-link">← Torna al portfolio</a>
+  <a href="index.html" class="back-link" onclick="return navBack(event)">← Indietro</a>
 </div>
 
 <!-- ===== HERO ===== -->
@@ -514,5 +514,6 @@ const io = new IntersectionObserver((entries) => {
 }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 </script>
+<script>function navBack(e){try{const r=document.referrer;if(r&&new URL(r).origin===location.origin&&history.length>1){e.preventDefault();history.back();return false}}catch(_){}return true}</script>
 </body>
 </html>
