@@ -1,4 +1,6 @@
 .DS_Store
+.wrangler/
+node_modules/
 presentazione/
 previews-index/
 schema-previews/

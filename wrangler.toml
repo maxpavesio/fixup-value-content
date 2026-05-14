@@ -1,0 +1,10 @@
+name = "fixup-value-content"
+compatibility_date = "2026-05-14"
+
+[assets]
+directory = "./"
+not_found_handling = "404-page"
+
+[[routes]]
+pattern = "demo.fixup.agency"
+custom_domain = true

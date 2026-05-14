@@ -1,0 +1,13 @@
+.git
+.gitignore
+.wrangler/
+node_modules/
+.DS_Store
+**/.DS_Store
+*.md
+wrangler.toml
+.assetsignore
+presentazione/
+previews-index/
+schema-previews/
+contenuti linkedin/
