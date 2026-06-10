@@ -284,7 +284,7 @@ function apply(card){const id=card.dataset.id;const s=store[id]||{};
   const t=card.querySelector('.state-tag');t.textContent=s.v?lbl[s.v]:'— da valutare';t.className='state-tag '+(s.v||'');
   if(s.note!=null)card.querySelector('.note').value=s.note;}
 function counts(){let o=0,d=0,n=0;Object.values(store).forEach(s=>{if(s.v==='ok')o++;else if(s.v==='disc')d++;else if(s.v==='no')n++;});
-  c_ok.textContent=o;c_disc.textContent=d;c_no.textContent=n;}
+  document.getElementById('c-ok').textContent=o;document.getElementById('c-disc').textContent=d;document.getElementById('c-no').textContent=n;}
 document.querySelectorAll('.act-card').forEach(card=>{const id=card.dataset.id;
   card.querySelectorAll('.db').forEach(b=>b.addEventListener('click',()=>{store[id]=store[id]||{};
     store[id].v=(store[id].v===b.dataset.v?'':b.dataset.v);save();apply(card);counts();}));
